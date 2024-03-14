@@ -5,8 +5,8 @@ interface ProtectedProps {
 }
 
 const Protected = ({ children }: ProtectedProps) => {
-  const isAuth = false
-  if (!isAuth) return <Navigate to="/login" />
+  const isAuth = true
+  if (!isAuth) return <Navigate to="/seller/login" />
   return <>{children}</>
 }
 

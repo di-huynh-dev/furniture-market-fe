@@ -1,9 +1,10 @@
+import { SellerHeader } from '@/components'
 import { Outlet } from 'react-router-dom'
 
 const SellerHome = () => {
   return (
     <>
-      <h1>Seller Home</h1>
+      <SellerHeader />
       <Outlet />
     </>
   )

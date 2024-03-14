@@ -5,9 +5,9 @@ export const buyer_routes = {
 }
 
 export const seller_routes = {
-  seller: '/seller',
+  seller: 'seller',
   login: 'login',
-  signup: 'sigup',
+  signup: 'signup',
   orders: 'orders',
   products: 'products',
   marketing: 'marketing',

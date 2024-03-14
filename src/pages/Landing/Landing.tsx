@@ -1,4 +1,4 @@
-import { BuyerHeader, BuyerFooter, TopHeader } from '@/components'
+import { BuyerHeader, TopHeader } from '@/components'
 import { Outlet } from 'react-router-dom'
 
 const Landing = () => {
@@ -6,9 +6,8 @@ const Landing = () => {
     <>
       <TopHeader />
       <BuyerHeader />
-      Landing
       <Outlet />
-      <BuyerFooter />
+      {/* <BuyerFooter /> */}
     </>
   )
 }

@@ -28,7 +28,7 @@ export default {
 
           info: '#dfad7c',
 
-          background: '#f6f9fC',
+          background: '#ffffff',
 
           success: '#36d399',
 

@@ -23,24 +23,19 @@ function App() {
       path: '/',
       element: <Landing />,
       errorElement: <Error />,
-      children: [{ path: buyer_routes.profile, element: <BuyerProfile /> }],
+      children: [
+        { path: buyer_routes.profile, element: <BuyerProfile /> },
+        {
+          path: buyer_routes.login,
+          element: <BuyerLogin />,
+        },
+        {
+          path: buyer_routes.signup,
+          element: <BuyerSignup />,
+        },
+      ],
     },
-    {
-      path: buyer_routes.login,
-      element: <BuyerLogin />,
-    },
-    {
-      path: buyer_routes.signup,
-      element: <BuyerSignup />,
-    },
-    {
-      path: seller_routes.login,
-      element: <SellerLogin />,
-    },
-    {
-      path: seller_routes.signup,
-      element: <SellerSignup />,
-    },
+
     {
       path: seller_routes.seller,
       element: (
@@ -49,6 +44,14 @@ function App() {
         </SellerProtected>
       ),
       children: [
+        {
+          path: seller_routes.login,
+          element: <SellerLogin />,
+        },
+        {
+          path: seller_routes.signup,
+          element: <SellerSignup />,
+        },
         {
           path: seller_routes.orders,
           element: <OrdersManagement />,
