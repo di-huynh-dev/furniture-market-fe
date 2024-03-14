@@ -15,12 +15,14 @@ import {
 } from './pages/Seller'
 import { buyer_routes, seller_routes } from './constants/routes-link'
 import { SellerProtected } from './components'
+import Error from './pages/Error/Error'
 
 function App() {
   const router = createBrowserRouter([
     {
       path: '/',
       element: <Landing />,
+      errorElement: <Error />,
       children: [{ path: buyer_routes.profile, element: <BuyerProfile /> }],
     },
     {

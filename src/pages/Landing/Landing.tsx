@@ -1,11 +1,15 @@
+import { BuyerHeader, BuyerFooter, TopHeader } from '@/components'
 import { Outlet } from 'react-router-dom'
 
 const Landing = () => {
   return (
-    <div>
+    <>
+      <TopHeader />
+      <BuyerHeader />
       Landing
       <Outlet />
-    </div>
+      <BuyerFooter />
+    </>
   )
 }
 
