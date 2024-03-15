@@ -16,6 +16,7 @@ import {
 import { buyer_routes, seller_routes } from './constants/routes-link'
 import { SellerProtected } from './components'
 import Error from './pages/Error/Error'
+import HomeLayout from './pages/HomeLayout'
 
 function App() {
   const router = createBrowserRouter([
@@ -24,6 +25,7 @@ function App() {
       element: <Landing />,
       errorElement: <Error />,
       children: [
+        { index: true, element: <HomeLayout /> },
         { path: buyer_routes.profile, element: <BuyerProfile /> },
         {
           path: buyer_routes.login,

@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 const BuyerHeader = () => {
   return (
     <div
-      className="bg-base-100 text-base-content sticky top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-shadow duration-100 [transform:translate3d(0,0,0)] 
+      className="bg-base-100 text-base-content sticky top-0 z-30 flex h-20 w-full justify-center bg-opacity-90 backdrop-blur transition-shadow duration-100 [transform:translate3d(0,0,0)] 
   
   "
     >
@@ -17,18 +17,18 @@ const BuyerHeader = () => {
             </NavLink>
           </div>
           <div className="lg:navbar-center hidden lg:flex">
-            <ul className="menu menu-horizontal px-1 ">
+            <ul className="menu menu-horizontal px-1 text-lg">
               <li>
-                <button className="btn btn-ghost">Trang chủ</button>
+                <NavLink to="/">Trang chủ</NavLink>
               </li>
               <li>
-                <button className="btn btn-ghost">Sản phẩm</button>
+                <NavLink to="/buyer/products">Sản phẩm</NavLink>
               </li>
               <li>
-                <button className="btn btn-ghost">Fnest mall</button>
+                <NavLink to="/buyer/mall">Fnest mall</NavLink>
               </li>
               <li>
-                <button className="btn btn-ghost">Về chúng tôi</button>
+                <NavLink to="/buyer/about">Về chúng tôi</NavLink>
               </li>
             </ul>
           </div>
