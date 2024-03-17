@@ -1,6 +1,18 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Landing from './pages/Landing/Landing'
-import { BuyerLogin, BuyerProfile, BuyerSignup } from './pages/Buyer'
+import {
+  BuyerAccount,
+  BuyerAddress,
+  BuyerLogin,
+  BuyerNotificationsOrder,
+  BuyerOrderDetail,
+  BuyerPassword,
+  BuyerProfile,
+  BuyerPurchase,
+  BuyerSignup,
+  BuyerVerify,
+  BuyerVoucher,
+} from './pages/Buyer'
 import {
   ChatCenter,
   IncomeManagement,
@@ -26,7 +38,41 @@ function App() {
       errorElement: <Error />,
       children: [
         { index: true, element: <HomeLayout /> },
-        { path: buyer_routes.profile, element: <BuyerProfile /> },
+        {
+          path: buyer_routes.account,
+          element: <BuyerAccount />,
+          children: [
+            { index: true, element: <BuyerProfile /> },
+            {
+              path: buyer_routes.purchase,
+              element: <BuyerPurchase />,
+            },
+            {
+              path: buyer_routes.order_detail,
+              element: <BuyerOrderDetail />,
+            },
+            {
+              path: buyer_routes.address,
+              element: <BuyerAddress />,
+            },
+            {
+              path: buyer_routes.change_password,
+              element: <BuyerPassword />,
+            },
+            {
+              path: buyer_routes.verify,
+              element: <BuyerVerify />,
+            },
+            {
+              path: buyer_routes.voucher,
+              element: <BuyerVoucher />,
+            },
+            {
+              path: buyer_routes.notifications_order,
+              element: <BuyerNotificationsOrder />,
+            },
+          ],
+        },
         {
           path: buyer_routes.login,
           element: <BuyerLogin />,

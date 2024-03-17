@@ -1,7 +1,15 @@
 export const buyer_routes = {
   login: '/buyer/login',
   signup: '/buyer/signup',
-  profile: '/buyer/profile',
+  account: '/buyer/account',
+  profile: 'buyer/account/profile',
+  purchase: 'purchase',
+  order_detail: 'purchase/order/:id',
+  address: 'address',
+  verify: 'verify-email',
+  voucher: 'vouchers',
+  notifications_order: 'notifications/order',
+  change_password: 'change-password',
 }
 
 export const seller_routes = {
