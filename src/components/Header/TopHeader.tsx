@@ -43,13 +43,13 @@ const TopHeader = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to="discounts" className="text-gray-600 hover:text-black flex  items-center">
+              <NavLink to="buyer/cart" className="text-gray-600 hover:text-black flex  items-center">
                 <IoBagHandleOutline className="mr-1" />
                 Giỏ hàng (10)
               </NavLink>
             </li>
             <li>
-              <NavLink to="discounts" className="text-gray-600 hover:text-black flex  items-center">
+              <NavLink to="buyer/whishlist" className="text-gray-600 hover:text-black flex  items-center">
                 <IoMdHeartEmpty className="mr-1" />
                 Yêu thích (3)
               </NavLink>

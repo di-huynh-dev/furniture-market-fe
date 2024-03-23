@@ -3,6 +3,7 @@ import Landing from './pages/Landing/Landing'
 import {
   BuyerAccount,
   BuyerAddress,
+  BuyerCart,
   BuyerLogin,
   BuyerNotificationsOrder,
   BuyerOrderDetail,
@@ -12,6 +13,7 @@ import {
   BuyerSignup,
   BuyerVerify,
   BuyerVoucher,
+  BuyerWhishlist,
 } from './pages/Buyer'
 import {
   ChatCenter,
@@ -72,6 +74,14 @@ function App() {
               element: <BuyerNotificationsOrder />,
             },
           ],
+        },
+        {
+          path: buyer_routes.cart,
+          element: <BuyerCart />,
+        },
+        {
+          path: buyer_routes.whishlist,
+          element: <BuyerWhishlist />,
         },
         {
           path: buyer_routes.login,

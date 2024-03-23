@@ -2,6 +2,8 @@ export const buyer_routes = {
   login: '/buyer/login',
   signup: '/buyer/signup',
   account: '/buyer/account',
+  cart: '/buyer/cart',
+  whishlist: '/buyer/whishlist',
   profile: 'buyer/account/profile',
   purchase: 'purchase',
   order_detail: 'purchase/order/:id',
