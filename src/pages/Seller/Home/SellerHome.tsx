@@ -1,12 +1,12 @@
 import { SellerHeader } from '@/components'
-import { Outlet } from 'react-router-dom'
+import { DrawerSide } from '@/components'
 
 const SellerHome = () => {
   return (
-    <>
+    <div className="bg-gray-100">
       <SellerHeader />
-      <Outlet />
-    </>
+      <DrawerSide />
+    </div>
   )
 }
 
