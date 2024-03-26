@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const axiosClient = axios.create({
-  baseURL: 'https://dummyapi.online/api/',
+  baseURL: import.meta.env.VITE_REACT_APP_BASE_URL,
 })
 
 axiosClient.interceptors.request.use(
