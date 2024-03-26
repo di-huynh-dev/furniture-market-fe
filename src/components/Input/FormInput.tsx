@@ -7,6 +7,7 @@ type FormInputProps = {
   defaultValue?: string
   size?: string
   placeholder?: string
+  large?: boolean
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
   value?: string
 } & InputHTMLAttributes<HTMLInputElement>
@@ -18,6 +19,7 @@ const FormInput: React.FC<FormInputProps> = ({
   defaultValue,
   size = 'input-base',
   placeholder,
+  large,
   onChange,
   value,
   ...rest
@@ -33,7 +35,7 @@ const FormInput: React.FC<FormInputProps> = ({
         name={name}
         placeholder={placeholder}
         defaultValue={defaultValue}
-        className={`input input-bordered ${size} text-sm`}
+        className={`input input-bordered ${size} ${large && 'input-lg'} text-sm`}
         onChange={onChange}
         {...rest}
       />

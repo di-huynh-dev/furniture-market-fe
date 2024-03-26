@@ -16,16 +16,26 @@ import {
   BuyerWhishlist,
 } from './pages/Buyer'
 import {
+  AddProduct,
+  BannedProduct,
+  CancelledOrder,
   ChatCenter,
+  CompletedOrder,
+  FailedDeliveryOrder,
   IncomeManagement,
   MarketingManagement,
   OrdersManagement,
+  ProductBrand,
   ProductsManagement,
+  ReturnOrder,
   SellerHome,
   SellerLogin,
   SellerSignup,
   Setting,
+  ShippingOrder,
   ShopManagement,
+  ToshipOrder,
+  UnpaidOrder,
 } from './pages/Seller'
 import { buyer_routes, seller_routes } from './constants/routes-link'
 import { SellerProtected } from './components'
@@ -113,10 +123,53 @@ function App() {
         {
           path: seller_routes.orders,
           element: <OrdersManagement />,
+          children: [
+            {
+              path: seller_routes.orders_unpaid,
+              element: <UnpaidOrder />,
+            },
+            {
+              path: seller_routes.orders_toship,
+              element: <ToshipOrder />,
+            },
+            {
+              path: seller_routes.orders_shipping,
+              element: <ShippingOrder />,
+            },
+            {
+              path: seller_routes.orders_compelted,
+              element: <CompletedOrder />,
+            },
+            {
+              path: seller_routes.orders_cacelled,
+              element: <CancelledOrder />,
+            },
+            {
+              path: seller_routes.orders_return,
+              element: <ReturnOrder />,
+            },
+            {
+              path: seller_routes.orders_failed_delivery,
+              element: <FailedDeliveryOrder />,
+            },
+          ],
         },
+
         {
           path: seller_routes.products,
           element: <ProductsManagement />,
+        },
+        {
+          path: seller_routes.add_product,
+          element: <AddProduct />,
+        },
+        {
+          path: seller_routes.product_banned,
+          element: <BannedProduct />,
+        },
+        {
+          path: seller_routes.product_brand,
+          element: <ProductBrand />,
         },
         {
           path: seller_routes.marketing,

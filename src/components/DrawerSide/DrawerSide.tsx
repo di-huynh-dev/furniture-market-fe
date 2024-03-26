@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import { CiReceipt, CiBookmarkCheck, CiShop, CiSettings } from 'react-icons/ci'
 import { MdOutlineTableRestaurant } from 'react-icons/md'
 
@@ -25,7 +25,7 @@ const DrawerSide = () => {
               </summary>
               <ul>
                 <li className="text-gray-500">
-                  <a>Tất cả</a>
+                  <Link to={'/seller/orders'}>Tất cả</Link>
                   <a>Đơn hủy</a>
                   <a>Trả hàng/hoàn tiền</a>
                   <a>Cài đặt vận chuyển</a>
@@ -41,10 +41,10 @@ const DrawerSide = () => {
               </summary>
               <ul>
                 <li className="text-gray-500">
-                  <a>Tất cả</a>
-                  <a>Thêm sản phẩm</a>
-                  <a>Sản phẩm vi phạm</a>
-                  <a>Cài đặt sản phẩm</a>
+                  <Link to={'/seller/products'}>Tất cả</Link>
+                  <Link to={'products/new'}>Thêm sản phẩm</Link>
+                  <Link to={'products/banned'}>Sản phẩm vi phạm</Link>
+                  <Link to={'products/brand'}>Cài đặt sản phẩm</Link>
                 </li>
               </ul>
             </details>
