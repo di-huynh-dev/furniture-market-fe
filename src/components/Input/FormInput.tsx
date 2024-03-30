@@ -1,44 +1,23 @@
-import React, { ChangeEvent, InputHTMLAttributes } from 'react'
+import React from 'react'
 
 type FormInputProps = {
-  name: string
-  label: string
   type: string
-  defaultValue?: string
-  size?: string
+  label: string
+  prop: string
   placeholder?: string
-  large?: boolean
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void
-  value?: string
-} & InputHTMLAttributes<HTMLInputElement>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  register: any
+  errorMessage?: string | undefined
+}
 
-const FormInput: React.FC<FormInputProps> = ({
-  name,
-  label,
-  type,
-  defaultValue,
-  size = 'input-base',
-  placeholder,
-  large,
-  onChange,
-  value,
-  ...rest
-}) => {
+const FormInput: React.FC<FormInputProps> = ({ type, label, placeholder, errorMessage, prop, register }) => {
   return (
     <div className="form-control">
-      <label htmlFor={name} className="label">
+      <label htmlFor={label} className="label">
         <span className="label-text capitalize text-sm">{label}</span>
       </label>
-      <input
-        value={value}
-        type={type}
-        name={name}
-        placeholder={placeholder}
-        defaultValue={defaultValue}
-        className={`input input-bordered ${size} ${large && 'input-lg'} text-sm`}
-        onChange={onChange}
-        {...rest}
-      />
+      <input type={type} placeholder={placeholder} className={`input input-bordered text-sm`} {...register(prop)} />
+      {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
     </div>
   )
 }

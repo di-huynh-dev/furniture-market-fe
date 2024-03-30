@@ -41,6 +41,7 @@ import { buyer_routes, seller_routes } from './constants/routes-link'
 import { SellerProtected } from './components'
 import Error from './pages/Error/Error'
 import HomeLayout from './pages/HomeLayout'
+import ConfirmEmail from './pages/Common/ConfirmEmail'
 
 function App() {
   const router = createBrowserRouter([
@@ -101,9 +102,24 @@ function App() {
           path: buyer_routes.signup,
           element: <BuyerSignup />,
         },
+        {
+          path: buyer_routes.confirm_email,
+          element: <ConfirmEmail />,
+        },
       ],
     },
-
+    {
+      path: seller_routes.login,
+      element: <SellerLogin />,
+    },
+    {
+      path: seller_routes.signup,
+      element: <SellerSignup />,
+    },
+    {
+      path: seller_routes.confirm_email,
+      element: <ConfirmEmail />,
+    },
     {
       path: seller_routes.seller,
       element: (
@@ -112,14 +128,6 @@ function App() {
         </SellerProtected>
       ),
       children: [
-        {
-          path: seller_routes.login,
-          element: <SellerLogin />,
-        },
-        {
-          path: seller_routes.signup,
-          element: <SellerSignup />,
-        },
         {
           path: seller_routes.orders,
           element: <OrdersManagement />,

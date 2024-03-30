@@ -4,8 +4,20 @@ import { IoBagHandleOutline } from 'react-icons/io5'
 import { IoMdHeartEmpty } from 'react-icons/io'
 import { CiUser } from 'react-icons/ci'
 import { seller_routes } from '../../constants/routes-link'
+import { useSelector } from 'react-redux'
+import { removeAuth, selectAuth } from '@/redux/reducers/authSlice'
+import { useDispatch } from 'react-redux'
+import toast from 'react-hot-toast'
 
 const TopHeader = () => {
+  const user = useSelector(selectAuth)
+
+  const dispatch = useDispatch()
+  const handleLogout = async () => {
+    dispatch(removeAuth())
+    toast.success('Đăng xuất thành công!')
+  }
+
   return (
     <>
       <header className="py-4 align-element text-sm lg:flex justify-between text-gray-700 hidden">
@@ -35,7 +47,7 @@ const TopHeader = () => {
         </nav>
 
         <nav className="flex justify-between">
-          <ul className="flex space-x-4">
+          <ul className="flex space-x-4 items-center">
             <li>
               <NavLink to="discounts" className="text-gray-600 hover:text-black flex  items-center">
                 <FaRegBell className="mr-1" />
@@ -55,10 +67,43 @@ const TopHeader = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to="buyer/login" className="text-gray-600 hover:text-black flex items-center">
-                <CiUser className="mr-1" />
-                Tài khoản
-              </NavLink>
+              {user.authData.accessToken ? (
+                <div className="dropdown dropdown-end flex items-center">
+                  <div>
+                    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                      <div className="w-10 rounded-full">
+                        <img
+                          alt="Tailwind CSS Navbar component"
+                          src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                        />
+                      </div>
+                    </div>
+                    <ul
+                      tabIndex={0}
+                      className="mt-3 z-[100] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+                    >
+                      <li>
+                        <a className="justify-between">
+                          Hồ sơ của bạn
+                          <span className="badge">New</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a>Cài đặt</a>
+                      </li>
+                      <li onClick={handleLogout}>
+                        <a>Đăng xuất</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <span className="font-semibold">{user.authData.user.fullName}</span>
+                </div>
+              ) : (
+                <NavLink to="buyer/login" className="text-gray-600 hover:text-black flex items-center">
+                  <CiUser className="mr-1" />
+                  Tài khoản
+                </NavLink>
+              )}
             </li>
           </ul>
         </nav>

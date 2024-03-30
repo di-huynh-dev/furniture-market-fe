@@ -1,6 +1,6 @@
 import { LoginData } from '@/types/user.type'
 import { createSlice } from '@reduxjs/toolkit'
-import { RootState } from '../store'
+import { RootState } from '../../store'
 
 export type AuthState = LoginData
 
@@ -20,8 +20,8 @@ const initialState: AuthState = {
   },
 }
 
-const authSlice = createSlice({
-  name: 'auth',
+const sellerAuthSlice = createSlice({
+  name: 'sellerAuth',
   initialState: {
     authData: initialState,
   },
@@ -36,7 +36,7 @@ const authSlice = createSlice({
   },
 })
 
-export const selectAuth = (state: RootState) => state.auth
+export const selectSellerAuth = (state: RootState) => state.sellerAuth
 
-export const { addAuth, removeAuth } = authSlice.actions
-export default authSlice.reducer
+export const { addAuth, removeAuth } = sellerAuthSlice.actions
+export default sellerAuthSlice.reducer

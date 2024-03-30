@@ -1,9 +1,11 @@
 export const buyer_routes = {
+  buyer: 'buyer',
   login: '/buyer/login',
   signup: '/buyer/signup',
+  confirm_email: '/buyer/confirm-email',
   account: '/buyer/account',
-  cart: '/buyer/cart',
-  whishlist: '/buyer/whishlist',
+  cart: '/cart',
+  whishlist: '/whishlist',
   profile: 'buyer/account/profile',
   purchase: 'purchase',
   order_detail: 'purchase/order/:id',
@@ -16,8 +18,9 @@ export const buyer_routes = {
 
 export const seller_routes = {
   seller: 'seller',
-  login: 'login',
-  signup: 'signup',
+  login: '/seller/login',
+  signup: '/seller/signup',
+  confirm_email: '/seller/confirm-email',
   orders: 'orders',
   orders_unpaid: 'unpaid',
   orders_toship: 'toship',

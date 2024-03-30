@@ -1,3 +1,5 @@
+import { selectSellerAuth } from '@/redux/reducers/seller/sellerAuthSlice'
+import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 
 interface ProtectedProps {
@@ -5,8 +7,10 @@ interface ProtectedProps {
 }
 
 const Protected = ({ children }: ProtectedProps) => {
-  const isAuth = true
-  if (!isAuth) return <Navigate to="/seller/login" />
+  const user = useSelector(selectSellerAuth)
+  console.log('sellers', user)
+
+  if (user.authData.user.role !== 'SELLER') return <Navigate to="/seller/login" />
   return <>{children}</>
 }
 
