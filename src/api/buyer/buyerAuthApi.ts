@@ -7,9 +7,6 @@ const authApi = {
     return axiosClient.post<ApiResponse<RegisterData>>('/auth/register-buyer', data)
   },
 
-  refreshToken() {
-    return axiosClient.post('/user/refresh', { withCredentials: true })
-  },
   sendOtp(email: string, type: string) {
     return axiosClient.post(
       '/otp',

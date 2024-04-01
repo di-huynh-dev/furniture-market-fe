@@ -8,7 +8,6 @@ interface ProtectedProps {
 
 const Protected = ({ children }: ProtectedProps) => {
   const user = useSelector(selectSellerAuth)
-  console.log('sellers', user)
 
   if (user.authData.user.role !== 'SELLER') return <Navigate to="/seller/login" />
   return <>{children}</>

@@ -32,7 +32,9 @@ const Login = () => {
     }
     try {
       const resp = await commonApi.login(userLogin)
+
       if (resp.status === 200) {
+        localStorage.setItem('accessToken', resp.data.data.accessToken)
         dispatch(addAuth(resp.data.data))
         toast.success('Đăng nhập thành công')
         navigate('/seller')

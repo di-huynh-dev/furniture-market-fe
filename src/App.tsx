@@ -32,6 +32,7 @@ import {
   SellerLogin,
   SellerSignup,
   Setting,
+  SettingProfile,
   ShippingOrder,
   ShopManagement,
   ToshipOrder,
@@ -194,6 +195,10 @@ function App() {
         {
           path: seller_routes.settings,
           element: <Setting />,
+        },
+        {
+          path: seller_routes.setting_profile,
+          element: <SettingProfile />,
         },
         {
           path: seller_routes.shop,

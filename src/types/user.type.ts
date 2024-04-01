@@ -14,6 +14,7 @@ export type UserType = {
 export type LoginData = {
   accessToken: string
   user: UserType
+  refreshToken: string
 }
 
 export type RegisterType = {

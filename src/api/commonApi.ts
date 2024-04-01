@@ -1,10 +1,25 @@
-import axiosClient from '@/libs/axios-client'
+import axiosClient, { axiosPrivate } from '@/libs/axios-client'
 import { LoginApiType } from '@/types/user.type'
 import { ApiResponse, LoginData } from '@/types/api.type'
 
 const commonApi = {
   login(data: LoginApiType) {
-    return axiosClient.post<ApiResponse<LoginData>>('/auth/login', data)
+    return axiosPrivate.post<ApiResponse<LoginData>>('/auth/login', data, { withCredentials: true })
+  },
+
+  getUserProfile() {
+    return axiosClient.get('/user')
+  },
+
+  refreshToken() {
+    return axiosClient.post('/auth/refresh', null, {
+      withCredentials: true,
+    })
+  },
+  logout() {
+    return axiosClient.post('/auth/logout', null, {
+      withCredentials: true,
+    })
   },
 }
 

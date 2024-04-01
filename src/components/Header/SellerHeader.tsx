@@ -9,6 +9,7 @@ import toast from 'react-hot-toast'
 
 const SellerHeader = () => {
   const user = useSelector(selectSellerAuth)
+
   const dispatch = useDispatch()
 
   const showModal = () => {

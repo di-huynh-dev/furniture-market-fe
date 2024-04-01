@@ -18,6 +18,7 @@ const initialState: AuthState = {
     role: '',
     emailConfirmed: false,
   },
+  refreshToken: '',
 }
 
 const sellerAuthSlice = createSlice({
@@ -29,6 +30,7 @@ const sellerAuthSlice = createSlice({
     addAuth: (state, action) => {
       state.authData.accessToken = action.payload.accessToken
       state.authData.user = action.payload.user
+      state.authData.refreshToken = action.payload.refreshToken
     },
     removeAuth: (state) => {
       state.authData = initialState
