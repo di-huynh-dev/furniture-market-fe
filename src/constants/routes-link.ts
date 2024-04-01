@@ -20,6 +20,7 @@ export const seller_routes = {
   seller: 'seller',
   login: '/seller/login',
   signup: '/seller/signup',
+  forgot_password: '/seller/forgot-password',
   confirm_email: '/seller/confirm-email',
   orders: 'orders',
   orders_unpaid: 'unpaid',

@@ -22,6 +22,7 @@ import {
   ChatCenter,
   CompletedOrder,
   FailedDeliveryOrder,
+  ForgotPassword,
   IncomeManagement,
   MarketingManagement,
   OrdersManagement,
@@ -119,6 +120,10 @@ function App() {
     {
       path: seller_routes.signup,
       element: <SellerSignup />,
+    },
+    {
+      path: seller_routes.forgot_password,
+      element: <ForgotPassword />,
     },
     {
       path: seller_routes.confirm_email,
