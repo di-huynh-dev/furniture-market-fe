@@ -43,8 +43,10 @@ export const seller_routes = {
   shop: 'shop',
   shop_address: 'shop/address',
   settings: 'settings',
-  setting_shop: 'settings/shop',
+  setting_shop: 'shop',
+  setting_profile: 'profile',
+  setting_vat: 'vat',
+  setting_identify: 'identify',
   setting_shop_rating: 'settings/shop/rating',
-  setting_profile: 'settings/shop/profile',
   setting_category: 'settings/shop/category',
 }

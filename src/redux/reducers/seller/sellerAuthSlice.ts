@@ -35,10 +35,13 @@ const sellerAuthSlice = createSlice({
     removeAuth: (state) => {
       state.authData = initialState
     },
+    updateProfile: (state, action) => {
+      state.authData.user = action.payload
+    },
   },
 })
 
 export const selectSellerAuth = (state: RootState) => state.sellerAuth
 
-export const { addAuth, removeAuth } = sellerAuthSlice.actions
+export const { addAuth, removeAuth, updateProfile } = sellerAuthSlice.actions
 export default sellerAuthSlice.reducer

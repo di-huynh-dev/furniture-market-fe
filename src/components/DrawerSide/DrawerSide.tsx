@@ -90,7 +90,7 @@ const DrawerSide = () => {
               <ul>
                 <li className="text-gray-500">
                   <a>Địa chỉ</a>
-                  <Link to={'settings/shop/profile'}>Tài khoản</Link>
+                  <Link to={'settings/profile'}>Tài khoản</Link>
                 </li>
               </ul>
             </details>

@@ -32,7 +32,10 @@ import {
   SellerLogin,
   SellerSignup,
   Setting,
+  SettingIdentify,
   SettingProfile,
+  SettingShop,
+  SettingVAT,
   ShippingOrder,
   ShopManagement,
   ToshipOrder,
@@ -163,7 +166,16 @@ function App() {
             },
           ],
         },
-
+        {
+          path: seller_routes.settings,
+          element: <Setting />,
+          children: [
+            { path: seller_routes.setting_shop, element: <SettingShop /> },
+            { path: seller_routes.setting_profile, element: <SettingProfile /> },
+            { path: seller_routes.setting_identify, element: <SettingIdentify /> },
+            { path: seller_routes.setting_vat, element: <SettingVAT /> },
+          ],
+        },
         {
           path: seller_routes.products,
           element: <ProductsManagement />,
@@ -192,14 +204,7 @@ function App() {
           path: seller_routes.chat,
           element: <ChatCenter />,
         },
-        {
-          path: seller_routes.settings,
-          element: <Setting />,
-        },
-        {
-          path: seller_routes.setting_profile,
-          element: <SettingProfile />,
-        },
+
         {
           path: seller_routes.shop,
           element: <ShopManagement />,
