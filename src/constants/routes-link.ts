@@ -42,6 +42,7 @@ export const seller_routes = {
   income: 'income',
   chat: 'chat',
   shop: 'shop',
+  shop_cagory: 'category',
   shop_address: 'shop/address',
   settings: 'settings',
   setting_shop: 'shop',

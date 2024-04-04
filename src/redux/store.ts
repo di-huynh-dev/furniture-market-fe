@@ -3,6 +3,7 @@ import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import authReducer from './reducers/authSlice'
 import sellerAuthReducer from './reducers/seller/sellerAuthSlice'
+import sellerShopReducer from './reducers/seller/sellerShopSlice'
 import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE } from 'redux-persist'
 
 const authPersistConfig = {
@@ -17,14 +18,23 @@ const sellerAuthPersistConfig = {
   blacklist: ['loading', 'error'],
 }
 
+const sellerShopPersistConfig = {
+  key: 'sellerShop',
+  storage,
+  blacklist: ['loading', 'error'],
+}
+
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer)
 
 const persistedSellerAuthReducer = persistReducer(sellerAuthPersistConfig, sellerAuthReducer)
+
+const persistedSellerShopReducer = persistReducer(sellerShopPersistConfig, sellerShopReducer)
 
 export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     sellerAuth: persistedSellerAuthReducer,
+    sellerShop: persistedSellerShopReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

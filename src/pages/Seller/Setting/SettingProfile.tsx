@@ -109,6 +109,10 @@ const SettingProfile = () => {
 
       <div className="card shadow-lg my-2 bg-white">
         <div className="card-body">
+          <div className="flex justify-between items-center">
+            <span className="font-bold">Thông tin chủ sở hữu</span>
+            <button className="btn btn-outline btn-primary ">Cập nhật thông tin</button>
+          </div>
           <div className="mx-20">
             <div className="overflow-x-auto">
               <table className="table table-zebra">

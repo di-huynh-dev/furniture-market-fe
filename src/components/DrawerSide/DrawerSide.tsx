@@ -75,7 +75,7 @@ const DrawerSide = () => {
                 <li className="text-gray-500">
                   <a>Đánh giá</a>
                   <a>Hồ sơ</a>
-                  <a>Danh mục hàng</a>
+                  <Link to={'category'}>Danh mục hàng</Link>
                   <a>Chương trình</a>
                 </li>
               </ul>

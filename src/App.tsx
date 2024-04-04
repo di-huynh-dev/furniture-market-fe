@@ -38,6 +38,7 @@ import {
   SettingShop,
   SettingVAT,
   ShippingOrder,
+  ShopCategory,
   ShopManagement,
   ToshipOrder,
   UnpaidOrder,
@@ -170,6 +171,10 @@ function App() {
               element: <FailedDeliveryOrder />,
             },
           ],
+        },
+        {
+          path: seller_routes.shop_cagory,
+          element: <ShopCategory />,
         },
         {
           path: seller_routes.settings,

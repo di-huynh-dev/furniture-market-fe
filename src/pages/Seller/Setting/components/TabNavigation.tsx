@@ -17,7 +17,7 @@ const TabNavigation = () => {
           activeTab === 'profile' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
         }`}
       >
-        Thông tin cá nhân
+        Thông tin chủ sở hữu
       </NavLink>
       <NavLink
         to={'shop'}
