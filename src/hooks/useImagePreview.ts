@@ -1,28 +1,34 @@
 import { useState, ChangeEvent } from 'react'
 
 type ImagePreviewHook = {
-  previewImage: string | undefined
+  previewImages: string[] | undefined
   handleFileChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 const useImagePreview = (): ImagePreviewHook => {
-  const [previewImage, setPreviewImage] = useState<string | undefined>(undefined)
+  const [previewImages, setPreviewImages] = useState<string[] | undefined>(undefined)
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0]
+      const files = Array.from(e.target.files)
+      const imagesDataUrls: string[] = []
 
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        if (e.target && e.target.result) {
-          setPreviewImage(e.target.result as string)
+      files.forEach((file) => {
+        const reader = new FileReader()
+        reader.onload = (event) => {
+          if (event.target && event.target.result) {
+            imagesDataUrls.push(event.target.result as string)
+            if (imagesDataUrls.length === files.length) {
+              setPreviewImages(imagesDataUrls)
+            }
+          }
         }
-      }
-      reader.readAsDataURL(file)
+        reader.readAsDataURL(file)
+      })
     }
   }
 
-  return { previewImage, handleFileChange }
+  return { previewImages, handleFileChange }
 }
 
 export default useImagePreview

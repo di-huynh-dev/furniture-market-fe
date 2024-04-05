@@ -22,7 +22,7 @@ type FormData = {
 const SettingShop = () => {
   const axiosPrivate = useAxiosPrivate()
   const dispatch = useDispatch()
-  const { previewImage, handleFileChange } = useImagePreview()
+  const { previewImages, handleFileChange } = useImagePreview()
   const info = useSelector(selectSellerShop)
 
   const { isLoading } = useQuery({
@@ -117,11 +117,12 @@ const SettingShop = () => {
               onChange={handleFileChange}
             />
             {errors.logo?.message && <p className="text-red-500 text-sm">{errors.logo.message}</p>}
-            {previewImage && (
-              <div className="mt-2">
-                <img src={previewImage} alt="Preview" className="w-60 h-60" />
-              </div>
-            )}
+            {previewImages &&
+              previewImages.map((image, index) => (
+                <div key={`back-${index}`} className="mt-2">
+                  <img src={image} alt={`Back Preview ${index}`} className="w-60 h-60" />
+                </div>
+              ))}
             <FormInput
               prop="address"
               type="text"
