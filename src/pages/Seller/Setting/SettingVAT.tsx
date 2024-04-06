@@ -20,6 +20,8 @@ const SettingVAT = () => {
   const updateTaxInfo = async (data: FormData) => {
     try {
       const resp = await axiosPrivate.put('/seller/store/tax', data)
+      console.log(resp)
+
       if (resp.status === 200) {
         toast.success(resp.data.messages[0])
         dispatch(addShopInfo(resp.data.data))
@@ -87,18 +89,22 @@ const SettingVAT = () => {
               Cập nhật thông tin
             </a>
           </div>
-          <div className="grid grid-cols-5 gap-4">
-            <div className="col-span-2 space-y-5">
-              <div className="grid grid-cols-2 gap-2">
-                <p>Loại hình thuế</p>
-                <p className="font-semibold italic">{taxInfo?.shopData.shopInfo.tax[0]}</p>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <p>Mã số thuế</p>
-                <p className="font-semibold italic">{taxInfo?.shopData.shopInfo.tax[1]}</p>
+          {taxInfo.shopData.shopInfo.tax[0] ? (
+            <div className="grid grid-cols-5 gap-4">
+              <div className="col-span-2 space-y-5">
+                <div className="grid grid-cols-2 gap-2">
+                  <p>Loại hình thuế</p>
+                  <p className="font-semibold italic">{taxInfo?.shopData.shopInfo.tax[0]}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <p>Mã số thuế</p>
+                  <p className="font-semibold italic">{taxInfo?.shopData.shopInfo.tax[1]}</p>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <p className="text-error">Thông tin về thuế chưa đầy đủ. Vui lòng cập nhật!</p>
+          )}
         </div>
       </div>
     </section>
