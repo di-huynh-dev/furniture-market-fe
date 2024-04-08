@@ -27,7 +27,7 @@ export type AddProductApiType = {
 }
 
 export type ProductDetailType = {
-  id: number
+  id: string
   name: string
   onSale: boolean
   price: number
@@ -44,4 +44,5 @@ export type ProductDetailType = {
   reviewAmount: number
   totalReviewPoint: number
   images: string[]
+  storeCategories: string[]
 }
