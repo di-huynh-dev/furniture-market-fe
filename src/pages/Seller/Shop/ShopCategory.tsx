@@ -34,6 +34,7 @@ const ShopCategory = () => {
     {
       name: 'Tên danh mục',
       selector: (row) => row.name,
+      sortable: true,
     },
     {
       name: 'Thao tác',

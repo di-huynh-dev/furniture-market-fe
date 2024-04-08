@@ -1,15 +1,29 @@
 export type ProductInfo = {
-  id: string
-  thumbnail: string
   name: string
-  inStock: number
   price: number
   salePrice: number
-  discountPrice?: number
-  description?: string
-  category?: string
-  featured?: boolean
-  onSale?: boolean
+  description: string
+  size: string
+  material: string
+  inStock: number
+  featured: boolean
+  systemCategoryId?: string
+  storeCategoryId?: string
+}
+
+export type AddProductApiType = {
+  name: string
+  price: number
+  salePrice: number
+  description: string
+  size: string
+  material: string
+  inStock: number
+  featured: boolean
+  systemCategoryId?: string
+  storeCategoryId?: string
+  thumbnail?: FileList | string | null
+  images?: FileList | string | null
 }
 
 export type ProductDetailType = {
@@ -29,5 +43,5 @@ export type ProductDetailType = {
   thumbnail: string
   reviewAmount: number
   totalReviewPoint: number
-  imageUrls: string[]
+  images: string[]
 }
