@@ -63,6 +63,7 @@ const SettingShop = () => {
     queryKey: [QueryKeys.SHOP_INFO],
     queryFn: async () => {
       const resp = await axiosPrivate.get('/seller/store')
+
       dispatch(addShopInfo(resp.data.data))
       return resp
     },

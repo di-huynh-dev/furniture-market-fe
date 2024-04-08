@@ -27,13 +27,14 @@ const Signup: React.FC = () => {
     }
     try {
       const resp = await authApi.register(userRegister)
-      if (typeof resp.status === 'string' && resp.status === 'OK') {
+      if (resp.status === 200) {
         const otpResp = await authApi.sendOtp(userRegister.email, 'REGISTER_USER')
-        if (typeof otpResp.status === 'string' && otpResp.status === 'OK') {
+        setIsLoading(false)
+
+        if (otpResp.status === 200) {
           localStorage.setItem('registeredEmail', userRegister.email)
-          toast.warning('Tài khoản đã được tạo. Vui lòng xác thực email để hoàn tất việc đăng ký!')
+          toast.success(resp.data.messages[0])
           navigate('/buyer/confirm-email')
-          setIsLoading(false)
         } else {
           toast.error('Unknown error occurred')
         }

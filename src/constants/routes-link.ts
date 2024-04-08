@@ -6,6 +6,7 @@ export const buyer_routes = {
   confirm_email: '/buyer/confirm-email',
   account: '/buyer/account',
   cart: '/cart',
+  product_detail: '/product/:id',
   whishlist: '/whishlist',
   profile: 'buyer/account/profile',
   purchase: 'purchase',

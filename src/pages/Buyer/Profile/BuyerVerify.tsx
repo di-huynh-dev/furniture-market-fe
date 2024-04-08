@@ -3,7 +3,7 @@ import { FormInput } from '@/components'
 
 const BuyerVerify = () => {
   return (
-    <div className="mx-4 my-2">
+    <div className="mx-4 my-2 ">
       <div className="modal" role="dialog" id="my_modal_8">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Mã xác thực</h3>

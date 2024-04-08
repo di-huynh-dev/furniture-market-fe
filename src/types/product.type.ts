@@ -57,6 +57,7 @@ export type ProductDetailType = {
   thumbnail: string
   reviewAmount: number
   totalReviewPoint: number
+  onDisplay: boolean
   images: string[]
   storeCategories: string[]
 }

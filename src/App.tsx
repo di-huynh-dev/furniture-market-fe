@@ -8,6 +8,7 @@ import {
   BuyerNotificationsOrder,
   BuyerOrderDetail,
   BuyerPassword,
+  BuyerProductDetail,
   BuyerProfile,
   BuyerPurchase,
   BuyerSignup,
@@ -97,6 +98,10 @@ function App() {
         {
           path: buyer_routes.cart,
           element: <BuyerCart />,
+        },
+        {
+          path: buyer_routes.product_detail,
+          element: <BuyerProductDetail />,
         },
         {
           path: buyer_routes.whishlist,

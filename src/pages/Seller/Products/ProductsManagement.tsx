@@ -7,6 +7,7 @@ import { useState } from 'react'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import toast from 'react-hot-toast'
 import { Link } from 'react-router-dom'
+import { BsToggleOn, BsToggleOff } from 'react-icons/bs'
 
 const ProductsManagement = () => {
   const axiosPrivate = useAxiosPrivate()
@@ -53,12 +54,15 @@ const ProductsManagement = () => {
     {
       name: 'Số lượng kho',
       selector: (row) => row.inStock,
-      sortable: true,
     },
     {
       name: 'Giá bán',
       selector: (row) => row.salePrice,
       sortable: true,
+    },
+    {
+      name: 'Trạng thái hiển thị',
+      cell: (row) => <>{row.onDisplay ? <BsToggleOn className="text-green-500" /> : <BsToggleOff />}</>,
     },
     {
       name: 'Thao tác',
@@ -84,6 +88,10 @@ const ProductsManagement = () => {
   const ExpandedComponent = ({ data }: { data: ProductDetailType }) => {
     return (
       <div className="text-sm grid grid-cols-4 gap-2">
+        <div>
+          <p className="font-bold">Mã sản phẩm</p>
+          <p>{data.id}</p>
+        </div>
         <div>
           <p className="font-bold">Chất liệu</p>
           <p>{data.material}</p>

@@ -11,8 +11,6 @@ import commonApi from '@/api/commonApi'
 import { useDispatch } from 'react-redux'
 import { addAuth } from '@/redux/reducers/authSlice'
 import toast from 'react-hot-toast'
-import { selectSellerAuth } from '@/redux/reducers/seller/sellerAuthSlice'
-import { useSelector } from 'react-redux'
 
 export type FormData = LoginApiType
 
@@ -20,8 +18,6 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const auth = useSelector(selectSellerAuth)
-  console.log(auth)
 
   const validationSchema = yup.object({
     email: yup.string().email('Email không hợp lệ!').required('Không được để trống'),
@@ -38,6 +34,8 @@ const Login = () => {
       const resp = await commonApi.login(userLogin)
       if (resp.status === 200) {
         dispatch(addAuth(resp.data.data))
+        console.log(resp)
+
         toast.success('Đăng nhập thành công')
         navigate('/')
       } else {
