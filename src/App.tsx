@@ -43,6 +43,7 @@ import {
   ShopManagement,
   ToshipOrder,
   UnpaidOrder,
+  UpdateProduct,
 } from './pages/Seller'
 import { buyer_routes, seller_routes } from './constants/routes-link'
 import { SellerProtected } from './components'
@@ -198,6 +199,10 @@ function App() {
         {
           path: seller_routes.add_product,
           element: <AddProduct />,
+        },
+        {
+          path: seller_routes.update_product,
+          element: <UpdateProduct />,
         },
         {
           path: seller_routes.product_banned,

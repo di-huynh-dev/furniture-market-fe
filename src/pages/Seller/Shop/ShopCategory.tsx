@@ -99,6 +99,7 @@ const ShopCategory = () => {
       }
     },
   })
+
   const deleteCategoryMutation = useMutation({
     mutationFn: async (id: string) => {
       const resp = await axiosPrivate.delete(`/seller/category/${id}`)

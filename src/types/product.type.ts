@@ -25,6 +25,20 @@ export type AddProductApiType = {
   thumbnail?: FileList | string | null
   images?: FileList | string | null
 }
+export type UpdateProductApiType = {
+  name?: string
+  price?: number
+  salePrice?: number
+  description?: string
+  size?: string
+  material?: string
+  inStock?: number
+  featured?: boolean
+  systemCategoryId?: string
+  storeCategoryId?: string
+  thumbnail?: FileList | string | null
+  images?: FileList | string | null
+}
 
 export type ProductDetailType = {
   id: string

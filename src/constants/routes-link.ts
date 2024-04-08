@@ -34,6 +34,7 @@ export const seller_routes = {
   orders_failed_delivery: 'failed_delivery',
   products: 'products',
   add_product: 'products/new',
+  update_product: 'products/update/:id',
   product_banned: 'products/banned',
   product_brand: 'products/brand',
   marketing: 'marketing',

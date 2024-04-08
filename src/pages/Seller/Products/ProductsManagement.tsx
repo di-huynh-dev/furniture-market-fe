@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import toast from 'react-hot-toast'
+import { Link } from 'react-router-dom'
 
 const ProductsManagement = () => {
   const axiosPrivate = useAxiosPrivate()
@@ -16,8 +17,6 @@ const ProductsManagement = () => {
     queryKey: [QueryKeys.SHOP_PRODUCTS],
     queryFn: async () => {
       const resp = await axiosPrivate.get('/seller/product')
-      console.log(resp)
-
       return resp
     },
   })
@@ -65,7 +64,9 @@ const ProductsManagement = () => {
       name: 'Thao tác',
       cell: (row) => (
         <div className="flex gap-2 text-blue-500">
-          <button>Chỉnh sửa</button>
+          <Link to={`/seller/products/update/${row.id}`}>
+            <button>Chỉnh sửa</button>
+          </Link>
           <button
             onClick={() => {
               setSelectedRow(row.id)
