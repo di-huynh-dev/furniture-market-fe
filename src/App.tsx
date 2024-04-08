@@ -39,6 +39,7 @@ import {
   SettingVAT,
   ShippingOrder,
   ShopCategory,
+  ShopHome,
   ShopManagement,
   ToshipOrder,
   UnpaidOrder,
@@ -111,6 +112,10 @@ function App() {
         {
           path: buyer_routes.confirm_email,
           element: <ConfirmEmail />,
+        },
+        {
+          path: buyer_routes.seller_profile,
+          element: <ShopHome />,
         },
       ],
     },

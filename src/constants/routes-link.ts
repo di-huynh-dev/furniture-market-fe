@@ -1,6 +1,7 @@
 export const buyer_routes = {
   buyer: 'buyer',
   login: '/buyer/login',
+  seller_profile: '/shop/:id',
   signup: '/buyer/signup',
   confirm_email: '/buyer/confirm-email',
   account: '/buyer/account',

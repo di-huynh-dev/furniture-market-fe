@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 
 const Landing = () => {
   return (
-    <div className="">
+    <div className="bg-[#EDECEF]">
       <TopHeader />
       <BuyerHeader />
       <Outlet />

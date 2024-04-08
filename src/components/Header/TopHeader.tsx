@@ -19,8 +19,8 @@ const TopHeader = () => {
   }
 
   return (
-    <>
-      <header className="py-4 align-element text-sm lg:flex justify-between text-gray-700 hidden">
+    <div className="bg-white">
+      <header className="py-4 align-element text-sm lg:flex justify-between text-gray-700 hidden ">
         <nav className="flex justify-between">
           <ul className="flex space-x-4">
             <li>
@@ -108,7 +108,7 @@ const TopHeader = () => {
           </ul>
         </nav>
       </header>
-    </>
+    </div>
   )
 }
 

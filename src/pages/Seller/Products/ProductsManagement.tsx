@@ -18,9 +18,9 @@ const ProductsManagement = () => {
     },
   })
 
-  const handleDelete = () => {}
+  // const handleDelete = () => {}
 
-  const handleUpdate = () => {}
+  // const handleUpdate = () => {}
 
   const columns: TableColumn<ProductDetailType>[] = [
     {
@@ -45,7 +45,7 @@ const ProductsManagement = () => {
     },
     {
       name: 'Thao tác',
-      cell: (row) => (
+      cell: () => (
         <div className="flex gap-2 text-blue-500">
           <button>Chỉnh sửa</button>
           <button>Xóa</button>
