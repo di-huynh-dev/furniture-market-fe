@@ -22,13 +22,13 @@ const BuyerHeader = () => {
                 <NavLink to="/">Trang chủ</NavLink>
               </li>
               <li>
-                <NavLink to="/buyer/products">Sản phẩm</NavLink>
+                <NavLink to="/products">Sản phẩm</NavLink>
               </li>
               <li>
-                <NavLink to="/buyer/mall">Fnest mall</NavLink>
+                <NavLink to="/mall">Fnest mall</NavLink>
               </li>
               <li>
-                <NavLink to="/buyer/about">Về chúng tôi</NavLink>
+                <NavLink to="/about">Về chúng tôi</NavLink>
               </li>
             </ul>
           </div>

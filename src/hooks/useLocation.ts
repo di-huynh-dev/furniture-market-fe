@@ -1,4 +1,4 @@
-import { QueryKeys } from '@/constants/query-keys'
+import { Seller_QueryKeys } from '@/constants/query-keys'
 import axiosClient from '@/libs/axios-client'
 import { useQuery } from '@tanstack/react-query'
 
@@ -19,7 +19,7 @@ const useLocation = (provinceId: string, districtId: string) => {
     error: districtError,
     refetch: refetchDistrict,
   } = useQuery({
-    queryKey: [QueryKeys.DISTRICTS, provinceId],
+    queryKey: [Seller_QueryKeys.DISTRICTS, provinceId],
     queryFn: () => fetchDistricts(provinceId),
     enabled: !!provinceId,
   })
@@ -30,7 +30,7 @@ const useLocation = (provinceId: string, districtId: string) => {
     error: communeError,
     refetch: refetchCommune,
   } = useQuery({
-    queryKey: [QueryKeys.COMMUNES, districtId],
+    queryKey: [Seller_QueryKeys.COMMUNES, districtId],
     queryFn: () => fetchCommunes(districtId),
     enabled: !!districtId,
   })

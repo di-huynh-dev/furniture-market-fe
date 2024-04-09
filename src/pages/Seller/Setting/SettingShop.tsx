@@ -1,5 +1,5 @@
 import { FormInput, LoadingComponent } from '@/components'
-import { QueryKeys } from '@/constants/query-keys'
+import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { addShopInfo, selectSellerShop } from '@/redux/reducers/seller/sellerShopSlice'
 import { useQuery } from '@tanstack/react-query'
@@ -60,7 +60,7 @@ const SettingShop = () => {
   })
 
   const { isLoading } = useQuery({
-    queryKey: [QueryKeys.SHOP_INFO],
+    queryKey: [Seller_QueryKeys.SHOP_INFO],
     queryFn: async () => {
       const resp = await axiosPrivate.get('/seller/store')
 

@@ -1,5 +1,5 @@
 import { LoadingComponent } from '@/components'
-import { QueryKeys } from '@/constants/query-keys'
+import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { ProductDetailType } from '@/types/product.type'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -15,7 +15,7 @@ const ProductsManagement = () => {
   const client = useQueryClient()
 
   const { data: products, isLoading } = useQuery({
-    queryKey: [QueryKeys.SHOP_PRODUCTS],
+    queryKey: [Seller_QueryKeys.SHOP_PRODUCTS],
     queryFn: async () => {
       const resp = await axiosPrivate.get('/seller/product')
       return resp
@@ -29,7 +29,7 @@ const ProductsManagement = () => {
     },
     onSuccess: (resp) => {
       client.invalidateQueries({
-        queryKey: [QueryKeys.SHOP_PRODUCTS],
+        queryKey: [Seller_QueryKeys.SHOP_PRODUCTS],
       })
       toast.success(resp.data.messages[0])
     },

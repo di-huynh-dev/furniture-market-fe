@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { AddProductApiType, ProductInfo } from '@/types/product.type'
 import { useQuery } from '@tanstack/react-query'
-import { QueryKeys } from '@/constants/query-keys'
+import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { useState } from 'react'
 import useImagePreview from '@/hooks/useImagePreview'
@@ -24,8 +24,8 @@ const AddProduct = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<string>('')
 
-  const { data: shopCategories } = useQuery({
-    queryKey: [QueryKeys.SHOP_CATEGORY],
+  const { data: shopCategories, isLoading: isLoadingCategories } = useQuery({
+    queryKey: [Seller_QueryKeys.SHOP_CATEGORY],
     queryFn: async () => {
       const resp = await axiosPrivate.get('/seller/category')
       return resp.data.data
@@ -108,6 +108,10 @@ const AddProduct = () => {
   } = useForm<FormData>({
     resolver: yupResolver(validationSchema),
   })
+
+  if (isLoadingCategories) {
+    return <div>Loading...</div>
+  }
 
   return (
     <section className="mx-4 my-2 text-sm">
@@ -248,7 +252,7 @@ const AddProduct = () => {
                       <option disabled selected>
                         Danh mục hàng
                       </option>
-                      {shopCategories &&
+                      {shopCategories.length > 0 &&
                         shopCategories.map((category: CategoryType) => (
                           <option key={category.id} value={category.id}>
                             {category.name}

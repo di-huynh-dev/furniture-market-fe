@@ -1,4 +1,4 @@
-import { QueryKeys } from '@/constants/query-keys'
+import { Seller_QueryKeys } from '@/constants/query-keys'
 import axiosClient from '@/libs/axios-client'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
@@ -13,9 +13,11 @@ const BuyerProductDetail = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState('')
 
   const { data: product_detail, isLoading } = useQuery({
-    queryKey: [QueryKeys.PRODUCT_DETAIL],
+    queryKey: [Seller_QueryKeys.PRODUCT_DETAIL],
     queryFn: async () => {
       const resp = await axiosClient.get(`/product/${id}`)
+      console.log(resp)
+
       setSelectedImage(resp.data.data.images[0])
       return resp.data.data
     },
@@ -104,14 +106,10 @@ const BuyerProductDetail = () => {
               </div>
             </div>
           </div>
-          <div className="my-5 bg-white align-element p-10 grid grid-cols-5">
+          <div className="my-5 bg-white align-element p-10 grid grid-cols-5 gap-4">
             <div className="col-span-2">
               <div className="grid grid-cols-2 gap-2">
-                <img
-                  src="https://toquoc.mediacdn.vn/280518851207290880/2022/9/15/laz1172-166324522974472590661.jpg"
-                  alt=""
-                  className="rounded-full w-40 h-40 object-cover"
-                />
+                <img src={product_detail.storeInfo.logo} alt="" className="rounded-full w-40 h-40 object-cover" />
                 <div className="space-y-2">
                   <p className="text-lg font-bold">{product_detail.storeInfo.shopName}</p>
                   <p className="text-sm text-gray-500">{product_detail.storeInfo.address}</p>

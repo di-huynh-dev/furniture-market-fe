@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Landing from './pages/Landing/Landing'
 import {
+  AboutHome,
   BuyerAccount,
   BuyerAddress,
   BuyerCart,
@@ -9,12 +10,14 @@ import {
   BuyerOrderDetail,
   BuyerPassword,
   BuyerProductDetail,
+  BuyerProductHome,
   BuyerProfile,
   BuyerPurchase,
   BuyerSignup,
   BuyerVerify,
   BuyerVoucher,
   BuyerWhishlist,
+  MallHome,
 } from './pages/Buyer'
 import {
   AddProduct,
@@ -100,6 +103,10 @@ function App() {
           element: <BuyerCart />,
         },
         {
+          path: buyer_routes.products,
+          element: <BuyerProductHome />,
+        },
+        {
           path: buyer_routes.product_detail,
           element: <BuyerProductDetail />,
         },
@@ -120,8 +127,16 @@ function App() {
           element: <ConfirmEmail />,
         },
         {
-          path: buyer_routes.seller_profile,
+          path: buyer_routes.shop_home,
           element: <ShopHome />,
+        },
+        {
+          path: buyer_routes.mall,
+          element: <MallHome />,
+        },
+        {
+          path: buyer_routes.about,
+          element: <AboutHome />,
         },
       ],
     },

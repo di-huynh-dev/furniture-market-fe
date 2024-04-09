@@ -9,7 +9,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
-import { QueryKeys } from '@/constants/query-keys'
+import { Seller_QueryKeys } from '@/constants/query-keys'
 
 type FormData = {
   fullName: string
@@ -40,7 +40,7 @@ const SettingProfile = () => {
     onSuccess: (resp) => {
       dispatch(updateProfile(resp.data.data))
       client.invalidateQueries({
-        queryKey: [QueryKeys.USER_PROFILE],
+        queryKey: [Seller_QueryKeys.USER_PROFILE],
       })
       toast.success(resp.data.messages[0])
     },

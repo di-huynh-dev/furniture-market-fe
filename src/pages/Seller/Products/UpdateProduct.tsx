@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 // import * as yup from 'yup'
 import { UpdateProductApiType } from '@/types/product.type'
 import { useQuery } from '@tanstack/react-query'
-import { QueryKeys } from '@/constants/query-keys'
+import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { useState } from 'react'
 import useImagePreview from '@/hooks/useImagePreview'
@@ -28,7 +28,7 @@ const UpdateProduct = () => {
   const { id } = useParams()
 
   const { data: shopCategories } = useQuery({
-    queryKey: [QueryKeys.SHOP_CATEGORY],
+    queryKey: [Seller_QueryKeys.SHOP_CATEGORY],
     queryFn: async () => {
       const resp = await axiosPrivate.get('/seller/category')
       return resp.data.data

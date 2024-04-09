@@ -1,5 +1,5 @@
 import { LoadingComponent } from '@/components'
-import { QueryKeys } from '@/constants/query-keys'
+import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
@@ -20,7 +20,7 @@ const ShopCategory = () => {
   const client = useQueryClient()
 
   const { data, isLoading } = useQuery({
-    queryKey: [QueryKeys.SHOP_CATEGORY],
+    queryKey: [Seller_QueryKeys.SHOP_CATEGORY],
     queryFn: async () => {
       const resp = await axiosPrivate.get('/seller/category')
       return resp
@@ -70,7 +70,7 @@ const ShopCategory = () => {
     onSuccess: (resp) => {
       setCategoryName('')
       client.invalidateQueries({
-        queryKey: [QueryKeys.SHOP_CATEGORY],
+        queryKey: [Seller_QueryKeys.SHOP_CATEGORY],
       })
       toast.success(resp.data.messages[0])
     },
@@ -89,7 +89,7 @@ const ShopCategory = () => {
     onSuccess: (resp) => {
       setCategoryName('')
       client.invalidateQueries({
-        queryKey: [QueryKeys.SHOP_CATEGORY],
+        queryKey: [Seller_QueryKeys.SHOP_CATEGORY],
       })
       toast.success(resp.data.messages[0])
     },
@@ -107,7 +107,7 @@ const ShopCategory = () => {
     },
     onSuccess: (resp) => {
       client.invalidateQueries({
-        queryKey: [QueryKeys.SHOP_CATEGORY],
+        queryKey: [Seller_QueryKeys.SHOP_CATEGORY],
       })
       toast.success(resp.data.messages[0])
     },
