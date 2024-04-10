@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage'
 import authReducer from './reducers/authSlice'
 import sellerAuthReducer from './reducers/seller/sellerAuthSlice'
 import sellerShopReducer from './reducers/seller/sellerShopSlice'
+import cartReducer from './reducers/buyer/cartSlice'
 import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE } from 'redux-persist'
 
 const authPersistConfig = {
@@ -24,7 +25,14 @@ const sellerShopPersistConfig = {
   blacklist: ['loading', 'error'],
 }
 
+const cartPersistConfig = {
+  key: 'cart',
+  storage,
+  blacklist: ['loading', 'error'],
+}
+
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer)
+const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer)
 
 const persistedSellerAuthReducer = persistReducer(sellerAuthPersistConfig, sellerAuthReducer)
 
@@ -35,6 +43,7 @@ export const store = configureStore({
     auth: persistedAuthReducer,
     sellerAuth: persistedSellerAuthReducer,
     sellerShop: persistedSellerShopReducer,
+    cart: persistedCartReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

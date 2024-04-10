@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import { IoMdAddCircleOutline } from 'react-icons/io'
 import { BsStarFill } from 'react-icons/bs'
 import { CiLocationOn } from 'react-icons/ci'
+import { useDispatch } from 'react-redux'
+import { addToCart, getTotals } from '@/redux/reducers/buyer/cartSlice'
 
 const BuyerProductCard: React.FC<ProductDetailType> = ({
   id,
@@ -19,6 +21,12 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
   reviewAmount,
   storeInfo,
 }) => {
+  const product = { id, thumbnail, name, inStock, sold, price, featured, salePrice, onSale, reviewAmount, storeInfo }
+  const dispatch = useDispatch()
+  const handleAddToCart = () => {
+    dispatch(addToCart(product))
+    dispatch(getTotals())
+  }
   return (
     <div key={id} className="card w-full hover:shadow-2xl ease-in-out duration-300 bg-white">
       <Link to={`/product/${id}`}>
@@ -69,10 +77,13 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
       {inStock === 0 || inStock < 0 ? (
         <p className="text-warning text-center">Sản phẩm tạm hết hàng!</p>
       ) : (
-        <div className="flex items-center justify-center rounded-md bg-info px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-blue-300 cursor-pointer">
+        <button
+          onClick={handleAddToCart}
+          className="flex items-center justify-center rounded-md bg-info px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-blue-300 cursor-pointer"
+        >
           <IoMdAddCircleOutline className="w-6 h-6" />
           Thêm vào giỏ hàng
-        </div>
+        </button>
       )}
     </div>
   )

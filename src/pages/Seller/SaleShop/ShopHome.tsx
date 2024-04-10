@@ -188,9 +188,8 @@ const ShopHome = () => {
                 getProductsByCategoryMutation.mutate({ categoryName: categoryName })
               }}
             >
-              <option disabled>Theo giá</option>
-              <option value="ASC">Thấp đến cao</option>
-              <option value="DESC">Cao đến thấp</option>
+              <option value="ASC">Theo giá: Thấp đến cao</option>
+              <option value="DESC">Theo giá: Cao đến thấp</option>
             </select>
           </div>
           <p>Danh sách sản phẩm</p>
