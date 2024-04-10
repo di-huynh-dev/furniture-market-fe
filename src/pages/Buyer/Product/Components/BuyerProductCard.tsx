@@ -7,6 +7,8 @@ import { BsStarFill } from 'react-icons/bs'
 import { CiLocationOn } from 'react-icons/ci'
 import { useDispatch } from 'react-redux'
 import { addToCart, getTotals } from '@/redux/reducers/buyer/cartSlice'
+import { addItemToWishlist, getTotalsWishlist } from '@/redux/reducers/buyer/wishlistSlice'
+import React from 'react'
 
 const BuyerProductCard: React.FC<ProductDetailType> = ({
   id,
@@ -27,6 +29,12 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
     dispatch(addToCart(product))
     dispatch(getTotals())
   }
+
+  const handleAddToWishlist = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault()
+    dispatch(addItemToWishlist(product))
+    dispatch(getTotalsWishlist())
+  }
   return (
     <div key={id} className="card w-full hover:shadow-2xl ease-in-out duration-300 bg-white">
       <Link to={`/product/${id}`}>
@@ -34,7 +42,10 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
           <img src={thumbnail} alt={name} className="rounded-xl lg:h-64 md:h-48 w-full object-cover" />
         </figure>
         <div className="flex">
-          <button className="absolute btn btn-circle bg-white top-2 right-2 p-1 text-white tracking-wide group">
+          <button
+            onClick={handleAddToWishlist}
+            className="absolute btn btn-circle bg-white top-[-20px] right-2 p-1 text-white tracking-wide group"
+          >
             <AiOutlineHeart className="w-[30px] h-[30px] text-info transition duration-300 group-hover:text-red-500" />
           </button>
           {featured && (

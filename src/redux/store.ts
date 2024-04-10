@@ -5,6 +5,7 @@ import authReducer from './reducers/authSlice'
 import sellerAuthReducer from './reducers/seller/sellerAuthSlice'
 import sellerShopReducer from './reducers/seller/sellerShopSlice'
 import cartReducer from './reducers/buyer/cartSlice'
+import wishlistReducer from './reducers/buyer/wishlistSlice'
 import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE } from 'redux-persist'
 
 const authPersistConfig = {
@@ -31,11 +32,16 @@ const cartPersistConfig = {
   blacklist: ['loading', 'error'],
 }
 
+const wishlistPersistConfig = {
+  key: 'wishlist',
+  storage,
+  blacklist: ['loading', 'error'],
+}
+
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer)
 const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer)
-
+const persistedWishlistReducer = persistReducer(wishlistPersistConfig, wishlistReducer)
 const persistedSellerAuthReducer = persistReducer(sellerAuthPersistConfig, sellerAuthReducer)
-
 const persistedSellerShopReducer = persistReducer(sellerShopPersistConfig, sellerShopReducer)
 
 export const store = configureStore({
@@ -44,6 +50,7 @@ export const store = configureStore({
     sellerAuth: persistedSellerAuthReducer,
     sellerShop: persistedSellerShopReducer,
     cart: persistedCartReducer,
+    wishlist: persistedWishlistReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
