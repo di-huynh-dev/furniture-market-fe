@@ -60,5 +60,13 @@ export type ProductDetailType = {
   onDisplay: boolean
   images: string[]
   storeCategories: string[]
-  storeInfo?: string[]
+  storeInfo?: {
+    address: string
+    avgReviewStar: string
+    id: string
+    logo: string
+    numReview: number
+    productAmount: number
+    shopName: string
+  }
 }

@@ -2,13 +2,14 @@ import { Seller_QueryKeys } from '@/constants/query-keys'
 import axiosClient from '@/libs/axios-client'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { AiOutlineHeart } from 'react-icons/ai'
 import { FaStar } from 'react-icons/fa'
 import { formatPrice } from '@/utils/helpers'
 
 const BuyerProductDetail = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
   const [selectedImage, setSelectedImage] = useState('')
   const [selectedImageIndex, setSelectedImageIndex] = useState('')
 
@@ -16,7 +17,6 @@ const BuyerProductDetail = () => {
     queryKey: [Seller_QueryKeys.PRODUCT_DETAIL],
     queryFn: async () => {
       const resp = await axiosClient.get(`/product/${id}`)
-      console.log(resp)
 
       setSelectedImage(resp.data.data.images[0])
       return resp.data.data
@@ -28,6 +28,10 @@ const BuyerProductDetail = () => {
     setSelectedImage(imageUrl)
     setSelectedImageIndex(imageUrl)
   }
+
+  const handleAddToCart = () => {}
+
+  const handleAddToWishList = () => {}
   return (
     <>
       {isLoading ? (
@@ -104,6 +108,14 @@ const BuyerProductDetail = () => {
                   {product_detail.description}
                 </p>
               </div>
+              <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
+                <button className="btn btn-ghost bg-primary text-white" onClick={() => handleAddToCart()}>
+                  Thêm vào giỏ hàng
+                </button>
+                <button className="btn btn-ghost bg-accent text-white" onClick={() => handleAddToWishList()}>
+                  Thêm vào wishlist
+                </button>
+              </div>
             </div>
           </div>
           <div className="my-5 bg-white align-element p-10 grid grid-cols-5 gap-4">
@@ -114,7 +126,12 @@ const BuyerProductDetail = () => {
                   <p className="text-lg font-bold">{product_detail.storeInfo.shopName}</p>
                   <p className="text-sm text-gray-500">{product_detail.storeInfo.address}</p>
                   <div className="flex items-center gap-2">
-                    <button className="btn btn-sm btn-primary text-white">Xem shop</button>
+                    <button
+                      className="btn btn-sm btn-primary text-white"
+                      onClick={() => navigate(`/shop/${product_detail.storeInfo.id}`)}
+                    >
+                      Xem shop
+                    </button>
                     <button className="btn btn-sm btn-outline">Chat</button>
                   </div>
                 </div>

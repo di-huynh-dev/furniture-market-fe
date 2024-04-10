@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { LoadingComponent } from '@/components'
 import { Buyer_QueryKeys } from '@/constants/query-keys'
-import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import axiosClient from '@/libs/axios-client'
+import { BuyerProductCard } from '@/pages/Buyer'
 import { ProductDetailType } from '@/types/product.type'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
@@ -18,11 +19,10 @@ type CategoryType = {
 const ShopHome = () => {
   const { id } = useParams()
   const [initialLoad, setInitialLoad] = useState(true)
-  const axiosPrivate = useAxiosPrivate()
   const [categoryName, setCategoryName] = useState('')
   const [productList, setProductList] = useState<ProductDetailType[]>([])
   const [activeTab, setActiveTab] = useState('')
-  console.log(productList)
+  const [sortByPrice, setSortByPrice] = useState('ASC')
 
   useEffect(() => {
     if (initialLoad && id) {
@@ -57,10 +57,10 @@ const ShopHome = () => {
 
   const getProductsByCategoryMutation = useMutation({
     mutationFn: async ({ categoryName }: { categoryName: string }) => {
-      const resp = await axiosPrivate.get(
-        `product/search-filter?storeCategories.contains=${categoryName}&store.equals=id,${id}`,
+      const resp = await axiosClient.get(
+        `/product/search-filter?storeCategories.contains=${categoryName}&store.equals=id,${id}&sort=price.${sortByPrice}`,
       )
-      return resp.data.data
+      return resp.data.data.content
     },
     onSuccess: (data: ProductDetailType[]) => {
       setProductList(data)
@@ -98,7 +98,7 @@ const ShopHome = () => {
                 <button className="btn btn-sm btn-outline">Chat</button>
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-4 col-span-2">
+            <div className="grid grid-cols-3 col-span-2">
               {gridItems.map((item, index) => (
                 <div key={index} className="flex items-center gap-2">
                   {item.icon && <item.icon className="w-6 h-6 text-primary" />}
@@ -112,7 +112,9 @@ const ShopHome = () => {
           <div role="tablist" className="tabs tabs-lifted mt-4">
             <a
               role="tab"
-              className={`tab ${activeTab === '' ? 'tab-active text-primary [--tab-border-color:orange]' : ''}`}
+              className={`tab ${
+                activeTab === '' ? 'tab-active text-primary font-bold [--tab-border-color:orange]' : ''
+              }`}
               onClick={() => handleTabClick('')}
             >
               Tất cả
@@ -123,7 +125,7 @@ const ShopHome = () => {
                   key={category.id}
                   role="tab"
                   className={`tab ${
-                    activeTab === category.name ? 'tab-active text-primary [--tab-border-color:orange]' : ''
+                    activeTab === category.name ? 'tab-active  font-bold text-primary [--tab-border-color:orange]' : ''
                   }`}
                   onClick={() => handleTabClick(category.name)}
                 >
@@ -133,7 +135,7 @@ const ShopHome = () => {
           </div>
         </div>
       </div>
-      <div className="align-element bg-white shawdow-md my-10">
+      {/* <div className="align-element bg-white shawdow-md my-10">
         <div className="p-10">
           <p>VOUCHER CỦA SHOP</p>
           <div className="grid grid-cols-3 gap-4">
@@ -170,11 +172,37 @@ const ShopHome = () => {
           </div>
         </div>
         <div></div>
-      </div>
+      </div> */}
 
       <div className="align-element bg-white shawdow-md">
         <div className="p-10">
+          <div className="grid grid-cols-5 gap-2 items-center bg-gray-200 rounded-md p-2">
+            <p>Bộ lọc</p>
+            <button className="btn btn-outline btn-primary btn-sm w-40">Mới nhất</button>
+            <button className="btn btn-outline btn-primary btn-sm w-40">Phổ biến nhất</button>
+            <select
+              className="select w-full max-w-xs"
+              value={sortByPrice}
+              onChange={(e) => {
+                setSortByPrice(e.target.value)
+                getProductsByCategoryMutation.mutate({ categoryName: categoryName })
+              }}
+            >
+              <option disabled>Theo giá</option>
+              <option value="ASC">Thấp đến cao</option>
+              <option value="DESC">Cao đến thấp</option>
+            </select>
+          </div>
           <p>Danh sách sản phẩm</p>
+          {productList.length > 0 ? (
+            <div className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-6 my-10">
+              {productList.map((product) => (
+                <BuyerProductCard key={product.id} {...product} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-error">Chưa có sản phẩm nào</p>
+          )}
         </div>
         <div></div>
       </div>

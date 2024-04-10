@@ -17,7 +17,6 @@ import partner6 from '@/assets/images/partner/miizuki.jpg'
 import partner7 from '@/assets/images/partner/phudong.png'
 import partner8 from '@/assets/images/partner/vinhome.jpg'
 import { NavLink } from 'react-router-dom'
-import { BuyerProductCard } from './Buyer'
 
 const HomeLayout = () => {
   const settings = {
@@ -147,16 +146,6 @@ const HomeLayout = () => {
 
         {/* New producrs */}
         <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4">Sản phẩm mới</h2>
-        <BuyerProductCard
-          id="1"
-          name="Giường Coastal KD1058-18 1m6"
-          inStock={123}
-          price={100000}
-          thumbnail="https://nhaxinh.com/wp-content/uploads/2023/07/Giuong-Coastal-1m6-xanh-600x400.jpg"
-          onSale={true}
-          salePrice={120000}
-          featured={true}
-        />
 
         {/* Partner */}
         <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4">Đối tác</h2>
