@@ -8,10 +8,13 @@ import { useSelector } from 'react-redux'
 import { removeAuth, selectAuth } from '@/redux/reducers/authSlice'
 import { useDispatch } from 'react-redux'
 import toast from 'react-hot-toast'
+import { selectCart } from '@/redux/reducers/buyer/cartSlice'
+import { selectWishlist } from '@/redux/reducers/buyer/wishlistSlice'
 
 const TopHeader = () => {
   const user = useSelector(selectAuth)
-
+  const cartNum = useSelector(selectCart)
+  const wishlistNum = useSelector(selectWishlist)
   const dispatch = useDispatch()
   const handleLogout = async () => {
     dispatch(removeAuth())
@@ -57,13 +60,13 @@ const TopHeader = () => {
             <li>
               <NavLink to="buyer/cart" className="text-gray-600 hover:text-black flex  items-center">
                 <IoBagHandleOutline className="mr-1" />
-                Giỏ hàng (10)
+                Giỏ hàng ({cartNum.cartTotalQuantity})
               </NavLink>
             </li>
             <li>
               <NavLink to="buyer/whishlist" className="text-gray-600 hover:text-black flex  items-center">
                 <IoMdHeartEmpty className="mr-1" />
-                Yêu thích (3)
+                Yêu thích ({wishlistNum.wishlistTotalQuantity})
               </NavLink>
             </li>
             <li>

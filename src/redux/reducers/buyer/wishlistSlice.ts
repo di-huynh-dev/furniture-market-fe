@@ -30,7 +30,7 @@ const wishlistSlice = createSlice({
       const { wishlistItemList } = state
       const { quantity } = wishlistItemList.reduce(
         (wishlistTotal, wishlistItem) => {
-          const { wishlistQuantity } = wishlistItem // Sử dụng cartQuantity thay vì wishlistQuantity
+          const { wishlistQuantity } = wishlistItem
           wishlistTotal.quantity += wishlistQuantity
           return wishlistTotal
         },
@@ -42,6 +42,6 @@ const wishlistSlice = createSlice({
   },
 })
 
-export const selectWishlist = (state: RootState) => state.cart
+export const selectWishlist = (state: RootState) => state.wishlist
 export const { addItemToWishlist, getTotalsWishlist } = wishlistSlice.actions
 export default wishlistSlice.reducer
