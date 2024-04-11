@@ -1,17 +1,21 @@
-import { FormInput } from '@/components'
+// import { FormInput } from '@/components'
+import { selectAuth } from '@/redux/reducers/authSlice'
+import { formatDate } from '@/utils/helpers'
 import { CiCircleCheck } from 'react-icons/ci'
+import { useSelector } from 'react-redux'
 
 const BuyerProfile = () => {
+  const user = useSelector(selectAuth)
   return (
     <div className="mx-4 my-2">
       <div className="modal" role="dialog" id="my_modal_8">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Thay đổi thông tin cá nhân</h3>
           <div className="grid grid-cols-2 gap-2">
-            <FormInput type="text" label="Họ và tên" name="name" value="" placeholder="Nguyễn Văn A" />
+            {/* <FormInput type="text" label="Họ và tên" name="name" value="" placeholder="Nguyễn Văn A" />
             <FormInput type="text" label="Số điện thoại" name="phone" value="" placeholder="0351232345" />
             <FormInput type="email" label="Email" name="email" value="" placeholder="nguyenvan@gmail.com" />
-            <FormInput type="date" label="Ngày sinh" name="birthday" value="" placeholder="Thôn Trung Bình..." />
+            <FormInput type="date" label="Ngày sinh" name="birthday" value="" placeholder="Thôn Trung Bình..." /> */}
           </div>
           <div className="modal-action">
             <a href="#" className="btn">
@@ -29,32 +33,33 @@ const BuyerProfile = () => {
         <table className="table">
           <tbody>
             <tr>
-              <td>Tên đăng nhập</td>
-              <td>dihuynh123</td>
+              <td>ID</td>
+              <td>{user.authData.user.id}</td>
             </tr>
             <tr>
               <td>Họ và tên</td>
-              <td>Huỳnh Tiến Dĩ</td>
+              <td>{user.authData.user.fullName}</td>
             </tr>
             <tr>
               <td>Email</td>
               <td>
                 <div className="flex items-center gap-2">
-                  <span> phand613@gmail.com</span> <CiCircleCheck className="text-success font-bold w-10 h-10" />
+                  <span> {user.authData.user.email}</span>{' '}
+                  <CiCircleCheck className="text-success font-bold w-10 h-10" />
                 </div>
               </td>
             </tr>
             <tr>
               <td>Số điện thoại</td>
-              <td>0372639623</td>
+              <td>{user.authData.user.phone}</td>
             </tr>
             <tr>
               <td>Ngày sinh</td>
-              <td>18/01/2002</td>
+              <td>{formatDate(user.authData.user.birthday)}</td>
             </tr>
             <tr>
               <td>Giới tính</td>
-              <td>Nam</td>
+              <td>{user.authData.user.gender}</td>
             </tr>
           </tbody>
         </table>
