@@ -2,6 +2,8 @@ export type CartItem = {
   id: string
   thumbnail: string
   name: string
+  size: string
+  material: string
   inStock: number
   sold: number
   price: number

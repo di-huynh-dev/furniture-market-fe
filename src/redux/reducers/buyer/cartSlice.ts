@@ -32,6 +32,22 @@ const cartSlice = createSlice({
         localStorage.setItem('cartItems', JSON.stringify(state.cartItemList))
       }
     },
+    decreaseCart(state, action) {
+      const itemIndex = state.cartItemList.findIndex((item) => item.id === action.payload.id)
+
+      if (state.cartItemList[itemIndex].cartQuantity > 1) {
+        state.cartItemList = state.cartItemList.map((item) =>
+          item.id === action.payload.id ? { ...item, cartQuantity: item.cartQuantity - 1 } : item,
+        )
+        toast.info('Số lượng sản phẩm đã được cập nhật!')
+      } else if (state.cartItemList[itemIndex].cartQuantity === 1) {
+        const nextcartItemList = state.cartItemList.filter((item) => item.id !== action.payload.id)
+        state.cartItemList = nextcartItemList
+        toast.error('Sản phẩm đã được xóa!')
+      }
+
+      localStorage.setItem('cartItems', JSON.stringify(state.cartItemList))
+    },
     getTotals: (state) => {
       const { cartItemList } = state
       const { total, quantity } = cartItemList.reduce(
@@ -51,9 +67,25 @@ const cartSlice = createSlice({
       state.discountCode = ''
       state.discount = 0
     },
+    removeFromCart(state, action) {
+      state.cartItemList.map((cartItem) => {
+        if (cartItem.id === action.payload.id) {
+          const nextCartItems = state.cartItemList.filter((item) => item.id !== cartItem.id)
+
+          state.cartItemList = nextCartItems
+          toast.success('Xóa sản phẩm thành công')
+        }
+        localStorage.setItem('cartItems', JSON.stringify(state.cartItemList))
+        return state
+      })
+    },
+    clearCart(state) {
+      state.cartItemList = []
+      localStorage.setItem('cartItems', JSON.stringify(state.cartItemList))
+    },
   },
 })
 
 export const selectCart = (state: RootState) => state.cart
-export const { addToCart, getTotals } = cartSlice.actions
+export const { addToCart, getTotals, decreaseCart, removeFromCart, clearCart } = cartSlice.actions
 export default cartSlice.reducer

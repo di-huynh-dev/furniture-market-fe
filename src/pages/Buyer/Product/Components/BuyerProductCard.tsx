@@ -17,13 +17,29 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
   inStock,
   sold,
   price,
+  material,
+  size,
   featured,
   salePrice,
   onSale,
   reviewAmount,
   storeInfo,
 }) => {
-  const product = { id, thumbnail, name, inStock, sold, price, featured, salePrice, onSale, reviewAmount, storeInfo }
+  const product = {
+    id,
+    thumbnail,
+    name,
+    inStock,
+    sold,
+    price,
+    featured,
+    salePrice,
+    onSale,
+    reviewAmount,
+    storeInfo,
+    material,
+    size,
+  }
   const dispatch = useDispatch()
   const handleAddToCart = () => {
     dispatch(addToCart(product))

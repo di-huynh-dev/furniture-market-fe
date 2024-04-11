@@ -17,6 +17,7 @@ import {
   BuyerVerify,
   BuyerVoucher,
   BuyerWhishlist,
+  Checkout,
   MallHome,
 } from './pages/Buyer'
 import {
@@ -101,6 +102,10 @@ function App() {
         {
           path: buyer_routes.cart,
           element: <BuyerCart />,
+        },
+        {
+          path: buyer_routes.checkout,
+          element: <Checkout />,
         },
         {
           path: buyer_routes.products,
