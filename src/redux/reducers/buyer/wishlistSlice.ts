@@ -39,9 +39,26 @@ const wishlistSlice = createSlice({
 
       state.wishlistTotalQuantity = quantity
     },
+    removeFromWishlist(state, action) {
+      state.wishlistItemList.map((wishlistItem) => {
+        if (wishlistItem.id === action.payload.id) {
+          const nextCartItems = state.wishlistItemList.filter((item) => item.id !== wishlistItem.id)
+
+          state.wishlistItemList = nextCartItems
+          toast.success('Xóa sản phẩm thành công')
+        }
+        localStorage.setItem('wishlistItems', JSON.stringify(state.wishlistItemList))
+        return state
+      })
+    },
+    clearWishlist(state) {
+      state.wishlistItemList = []
+      state.wishlistTotalQuantity = 0
+      localStorage.setItem('cartItems', JSON.stringify(state.wishlistItemList))
+    },
   },
 })
 
 export const selectWishlist = (state: RootState) => state.wishlist
-export const { addItemToWishlist, getTotalsWishlist } = wishlistSlice.actions
+export const { addItemToWishlist, getTotalsWishlist, removeFromWishlist, clearWishlist } = wishlistSlice.actions
 export default wishlistSlice.reducer

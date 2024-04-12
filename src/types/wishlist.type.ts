@@ -4,6 +4,8 @@ export type WishlistItem = {
   name: string
   inStock: number
   sold: number
+  size: string
+  material: string
   price: number
   featured: boolean
   salePrice: number

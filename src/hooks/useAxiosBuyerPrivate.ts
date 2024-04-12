@@ -3,9 +3,9 @@ import useRefreshToken from './useRefreshToken'
 import { useEffect } from 'react'
 import { store } from '@/redux/store'
 
-const useAxiosPrivate = () => {
+const useAxiosBuyerPrivate = () => {
   const refresh = useRefreshToken()
-  const user = store.getState().sellerAuth.authData
+  const user = store.getState().auth.authData
 
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
@@ -40,4 +40,4 @@ const useAxiosPrivate = () => {
   return axiosPrivate
 }
 
-export default useAxiosPrivate
+export default useAxiosBuyerPrivate

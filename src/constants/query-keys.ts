@@ -13,4 +13,6 @@ export const Seller_QueryKeys = {
 export const Buyer_QueryKeys = {
   SHOP_PROFILE: 'SHOP_PROFILE',
   SHOP_CATEGORIES: 'SHOP_CATEGORIES',
+  USER_PROFILE: 'USER_PROFILE',
+  USER_ADDRESS: 'USER_ADDRESS',
 }

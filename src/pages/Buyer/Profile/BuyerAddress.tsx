@@ -1,15 +1,30 @@
-import { FormInput } from '@/components'
+// import { FormInput } from '@/components'
+import { Buyer_QueryKeys } from '@/constants/query-keys'
+import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
+import { useQuery } from '@tanstack/react-query'
 import { BiPlus } from 'react-icons/bi'
 
 const BuyerAddress = () => {
+  const axiosPrivate = useAxiosBuyerPrivate()
+
+  const { data: addresses } = useQuery({
+    queryKey: [Buyer_QueryKeys.USER_ADDRESS],
+    queryFn: async () => {
+      const resp = await axiosPrivate.get('/buyer/delivery-address')
+      return resp.data.data
+    },
+  })
+
+  console.log('addresses', addresses)
+
   return (
     <div className="mx-4 my-2">
       <div className="modal" role="dialog" id="my_modal_8">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Thêm địa chỉ mới</h3>
           <div className="grid grid-cols-2 gap-2">
-            <FormInput type="text" label="Họ và tên" name="name" value="" placeholder="Nguyễn Văn A" />
-            <FormInput type="text" label="Số điện thoại" name="phone" value="" placeholder="0351232345" />
+            {/* <FormInput type="text" label="Họ và tên" name="name" value="" placeholder="Nguyễn Văn A" />
+            <FormInput type="text" label="Số điện thoại" name="phone" value="" placeholder="0351232345" /> */}
             <select className="select select-bordered w-full max-w-xs">
               <option disabled selected>
                 Tỉnh/thành phố?
@@ -33,7 +48,7 @@ const BuyerAddress = () => {
             </select>
           </div>
           <div>
-            <FormInput type="text" label="Chi tiết" name="detail" value="" placeholder="Thôn Trung Bình..." />
+            {/* <FormInput type="text" label="Chi tiết" name="detail" value="" placeholder="Thôn Trung Bình..." /> */}
           </div>
           <div className="form-control">
             <label className="label cursor-pointer">
@@ -62,6 +77,13 @@ const BuyerAddress = () => {
           </div>
         </div>
       </div>
+      {addresses.deliveryAddresses.length === 0 ? (
+        <>
+          <p className="text-center text-error text-xl">Vui lòng thêm địa chỉ giao và nhận hàng!</p>
+        </>
+      ) : (
+        <></>
+      )}
       <div className="flex flex-col w-full">
         <div className="grid h-30 card rounded-box space-y-2 lg:text-base text-sm">
           <div className="flex justify-between">

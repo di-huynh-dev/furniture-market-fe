@@ -81,6 +81,10 @@ const cartSlice = createSlice({
     },
     clearCart(state) {
       state.cartItemList = []
+      state.cartTotalQuantity = 0
+      state.cartTotalAmount = 0
+      state.shipping = 0
+      state.discountCode = ''
       localStorage.setItem('cartItems', JSON.stringify(state.cartItemList))
     },
   },

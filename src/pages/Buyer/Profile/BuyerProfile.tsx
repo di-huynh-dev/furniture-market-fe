@@ -1,11 +1,25 @@
 // import { FormInput } from '@/components'
+import { Buyer_QueryKeys } from '@/constants/query-keys'
+import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 import { selectAuth } from '@/redux/reducers/authSlice'
 import { formatDate } from '@/utils/helpers'
+import { useQuery } from '@tanstack/react-query'
 import { CiCircleCheck } from 'react-icons/ci'
 import { useSelector } from 'react-redux'
 
 const BuyerProfile = () => {
   const user = useSelector(selectAuth)
+  const axiosPrivate = useAxiosBuyerPrivate()
+
+  const { data: userProfile } = useQuery({
+    queryKey: [Buyer_QueryKeys.USER_PROFILE],
+    queryFn: async () => {
+      const resp = await axiosPrivate.get('/user')
+      return resp.data.data
+    },
+    enabled: !!user.authData.accessToken,
+  })
+
   return (
     <div className="mx-4 my-2">
       <div className="modal" role="dialog" id="my_modal_8">
@@ -34,32 +48,31 @@ const BuyerProfile = () => {
           <tbody>
             <tr>
               <td>ID</td>
-              <td>{user.authData.user.id}</td>
+              <td>{userProfile.id}</td>
             </tr>
             <tr>
               <td>Họ và tên</td>
-              <td>{user.authData.user.fullName}</td>
+              <td>{userProfile.fullName}</td>
             </tr>
             <tr>
               <td>Email</td>
               <td>
                 <div className="flex items-center gap-2">
-                  <span> {user.authData.user.email}</span>{' '}
-                  <CiCircleCheck className="text-success font-bold w-10 h-10" />
+                  <span> {userProfile.email}</span> <CiCircleCheck className="text-success font-bold w-10 h-10" />
                 </div>
               </td>
             </tr>
             <tr>
               <td>Số điện thoại</td>
-              <td>{user.authData.user.phone}</td>
+              <td>{userProfile.phone}</td>
             </tr>
             <tr>
               <td>Ngày sinh</td>
-              <td>{formatDate(user.authData.user.birthday)}</td>
+              <td>{formatDate(userProfile.birthday)}</td>
             </tr>
             <tr>
               <td>Giới tính</td>
-              <td>{user.authData.user.gender}</td>
+              <td>{userProfile.gender}</td>
             </tr>
           </tbody>
         </table>
