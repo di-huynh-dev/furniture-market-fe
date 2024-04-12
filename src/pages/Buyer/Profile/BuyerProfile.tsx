@@ -11,7 +11,7 @@ const BuyerProfile = () => {
   const user = useSelector(selectAuth)
   const axiosPrivate = useAxiosBuyerPrivate()
 
-  const { data: userProfile } = useQuery({
+  const { data: userProfile, isLoading } = useQuery({
     queryKey: [Buyer_QueryKeys.USER_PROFILE],
     queryFn: async () => {
       const resp = await axiosPrivate.get('/user')
@@ -19,6 +19,8 @@ const BuyerProfile = () => {
     },
     enabled: !!user.authData.accessToken,
   })
+
+  if (isLoading) return <div>Loading...</div>
 
   return (
     <div className="mx-4 my-2">

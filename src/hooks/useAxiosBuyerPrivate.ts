@@ -1,10 +1,10 @@
 import { axiosPrivate } from '@/libs/axios-client'
-import useRefreshToken from './useRefreshToken'
 import { useEffect } from 'react'
 import { store } from '@/redux/store'
+import useRefreshBuyerToken from './useRefreshBuyerToken'
 
 const useAxiosBuyerPrivate = () => {
-  const refresh = useRefreshToken()
+  const refresh = useRefreshBuyerToken()
   const user = store.getState().auth.authData
 
   useEffect(() => {
