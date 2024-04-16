@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LoadingComponent } from '@/components'
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
@@ -17,8 +18,14 @@ const ProductsManagement = () => {
   const { data: products, isLoading } = useQuery({
     queryKey: [Seller_QueryKeys.SHOP_PRODUCTS],
     queryFn: async () => {
-      const resp = await axiosPrivate.get('/seller/product')
-      return resp
+      try {
+        const resp = await axiosPrivate.get('/seller/product')
+        if (resp.status === 200) {
+          return resp
+        }
+      } catch (error: any) {
+        toast.error(error.response.data.messages[0])
+      }
     },
   })
 

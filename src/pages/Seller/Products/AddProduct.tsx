@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormInput } from '@/components'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -27,8 +28,16 @@ const AddProduct = () => {
   const { data: shopCategories, isLoading: isLoadingCategories } = useQuery({
     queryKey: [Seller_QueryKeys.SHOP_CATEGORY],
     queryFn: async () => {
-      const resp = await axiosPrivate.get('/seller/category')
-      return resp.data.data
+      try {
+        const resp = await axiosPrivate.get('/seller/category')
+        if (resp.status === 200) {
+          return resp.data.data
+        } else {
+          toast.error(resp.data.messages[0])
+        }
+      } catch (error: any) {
+        toast.error(error.response.data.messages[0])
+      }
     },
   })
 
@@ -79,14 +88,16 @@ const AddProduct = () => {
 
       if (resp.status === 200) {
         toast.success(resp.data.messages[0])
-
         setIsLoading(false)
-      } else {
-        setIsLoading(false)
-        toast.error(resp.data.messages[0])
       }
-    } catch (error) {
-      console.log(error)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error.response.data.messages[0])
+      } else {
+        console.error(error)
+        toast.error('Đã xảy ra lỗi khi thêm sản phẩm.')
+      }
     }
   }
 
@@ -252,7 +263,7 @@ const AddProduct = () => {
                       <option disabled selected>
                         Danh mục hàng
                       </option>
-                      {shopCategories.length > 0 &&
+                      {shopCategories &&
                         shopCategories.map((category: CategoryType) => (
                           <option key={category.id} value={category.id}>
                             {category.name}

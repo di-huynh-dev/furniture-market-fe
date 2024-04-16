@@ -58,7 +58,7 @@ const DrawerSide = () => {
               <ul>
                 <li className="text-gray-500">
                   <a>Quảng cáo Fnest</a>
-                  <a>Khuyến mãi của shop</a>
+                  <Link to={'marketing/discount'}>Khuyến mãi của shop</Link>
                   <a>Flash sale</a>
                   <a>Chương trình</a>
                 </li>

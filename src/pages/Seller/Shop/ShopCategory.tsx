@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LoadingComponent } from '@/components'
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
@@ -22,8 +23,12 @@ const ShopCategory = () => {
   const { data, isLoading } = useQuery({
     queryKey: [Seller_QueryKeys.SHOP_CATEGORY],
     queryFn: async () => {
-      const resp = await axiosPrivate.get('/seller/category')
-      return resp
+      try {
+        const resp = await axiosPrivate.get('/seller/category')
+        return resp
+      } catch (error: any) {
+        toast.error(error.response.data.messages[0])
+      }
     },
   })
   const columns: TableColumn<DataRow>[] = [
@@ -179,6 +184,7 @@ const ShopCategory = () => {
           </div>
         </div>
       </dialog>
+
       <div className="card shadow-lg my-2 bg-white">
         <div className="card-body">
           <div className="flex justify-between items-center">

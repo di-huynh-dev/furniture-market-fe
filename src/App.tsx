@@ -26,6 +26,7 @@ import {
   CancelledOrder,
   ChatCenter,
   CompletedOrder,
+  DiscountManagement,
   FailedDeliveryOrder,
   ForgotPassword,
   IncomeManagement,
@@ -240,6 +241,10 @@ function App() {
         {
           path: seller_routes.marketing,
           element: <MarketingManagement />,
+        },
+        {
+          path: seller_routes.discount_marketing,
+          element: <DiscountManagement />,
         },
         {
           path: seller_routes.income,
