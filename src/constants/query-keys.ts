@@ -8,6 +8,7 @@ export const Seller_QueryKeys = {
   DISTRICTS: 'DISTRICTS',
   COMMUNES: 'COMMUNES',
   PRODUCT_DETAIL: 'PRODUCT_DETAIL',
+  SYSTEM_CATEGORY: 'SYSTEM_CATEGORY',
 }
 
 export const Buyer_QueryKeys = {

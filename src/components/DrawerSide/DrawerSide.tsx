@@ -66,7 +66,7 @@ const DrawerSide = () => {
             </details>
           </li>
           <li>
-            <details>
+            <details open>
               <summary className="font-bold text-gray-500">
                 <CiShop />
                 Quản lý shop
@@ -82,7 +82,7 @@ const DrawerSide = () => {
             </details>
           </li>
           <li>
-            <details>
+            <details open>
               <summary className="font-bold text-gray-500">
                 <CiSettings />
                 Thiết lập shop

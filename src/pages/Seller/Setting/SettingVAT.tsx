@@ -17,19 +17,24 @@ const SettingVAT = () => {
   const taxInfo = useSelector(selectSellerShop)
   const dispatch = useDispatch()
 
+  const closeModal = () => {
+    const dialog = document.getElementById('my_modal_8') as HTMLDialogElement
+    dialog.close()
+  }
+
   const updateTaxInfo = async (data: FormData) => {
     try {
       const resp = await axiosPrivate.put('/seller/store/tax', data)
-      console.log(resp)
-
       if (resp.status === 200) {
         toast.success(resp.data.messages[0])
         dispatch(addShopInfo(resp.data.data))
+        closeModal()
       }
     } catch (error) {
       console.log(error)
     }
   }
+
   const validationSchema = yup.object({
     taxType: yup.string().required('Vui lòng chọn loại hình thuế!'),
     taxCode: yup
@@ -80,7 +85,6 @@ const SettingVAT = () => {
           </form>
         </div>
       </div>
-      <div className="modal" role="dialog" id="my_modal_8"></div>
       <div className="card shadow-lg my-2 bg-white">
         <div className="card-body">
           <div className="flex justify-between items-center">

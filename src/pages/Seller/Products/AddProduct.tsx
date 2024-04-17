@@ -24,6 +24,7 @@ const AddProduct = () => {
   const { previewImages: images, handleFileChange: handleImagesChange } = useImagePreview()
   const [isLoading, setIsLoading] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<string>('')
+  const [selectedSystemCategory, setSelectedSystemCategory] = useState<string>('')
 
   const { data: shopCategories, isLoading: isLoadingCategories } = useQuery({
     queryKey: [Seller_QueryKeys.SHOP_CATEGORY],
@@ -32,8 +33,20 @@ const AddProduct = () => {
         const resp = await axiosPrivate.get('/seller/category')
         if (resp.status === 200) {
           return resp.data.data
-        } else {
-          toast.error(resp.data.messages[0])
+        }
+      } catch (error: any) {
+        toast.error(error.response.data.messages[0])
+      }
+    },
+  })
+
+  const { data: systemCategories, isLoading: isLoadingSystemCategories } = useQuery({
+    queryKey: [Seller_QueryKeys.SYSTEM_CATEGORY],
+    queryFn: async () => {
+      try {
+        const resp = await axiosPrivate.get('/category/system')
+        if (resp.status === 200) {
+          return resp.data.data
         }
       } catch (error: any) {
         toast.error(error.response.data.messages[0])
@@ -54,9 +67,13 @@ const AddProduct = () => {
       material: data.material,
       inStock: data.inStock,
       featured: data.featured,
+      used: data.used,
     }
     if (selectedCategory !== '') {
       info['storeCategoryId'] = selectedCategory
+    }
+    if (selectedSystemCategory !== '') {
+      info['systemCategoryId'] = selectedSystemCategory
     }
     const json = JSON.stringify(info)
     const blob = new Blob([json], {
@@ -110,6 +127,7 @@ const AddProduct = () => {
     material: yup.string().required('Không được để trống!'),
     inStock: yup.number().moreThan(0, 'Giá phải lớn hơn 0').required('Không được để trống!'),
     featured: yup.boolean().required('Không được để trống!'),
+    used: yup.boolean().required('Không được để trống!'),
   })
 
   const {
@@ -120,179 +138,185 @@ const AddProduct = () => {
     resolver: yupResolver(validationSchema),
   })
 
-  if (isLoadingCategories) {
+  if (isLoadingCategories || isLoadingSystemCategories) {
     return <div>Loading...</div>
   }
 
   return (
     <section className="mx-4 my-2 text-sm">
-      <div className="card shadow-lg my-2 bg-white">
+      <div className="card shadow-lg bg-white">
         <div className="card-body">
           <form onSubmit={handleSubmit(handleAddProduct)} encType="multipart/form-data">
-            <div className="my-2">
-              <span className="font-bold text-xl">Thêm sản phẩm mới</span>
-              <div className="">
-                <div className=" ">1. Hình ảnh sản phẩm</div>
-                <div className="grid grid-cols-3 gap-2">
-                  <div className="col-span-1">
-                    <label className="label" htmlFor="logo">
-                      <span className="label-text capitalize text-sm">Thumbnail(*)</span>
-                    </label>
-                    <input
-                      id="thumbnail"
-                      type="file"
-                      accept="image/*"
-                      {...register('thumbnail')}
-                      className="input input-bordered text-sm"
-                      onChange={handleThumbnailChange}
-                    />
-                    {errors.thumbnail?.message && <p className="text-red-500 text-sm">{errors.thumbnail.message}</p>}
-                    {thumbnail &&
-                      thumbnail.map((image, index) => (
-                        <div key={`back-${index}`} className="mt-2">
+            <span className="font-bold text-xl">Thêm sản phẩm mới</span>
+            <div className="">
+              <div className=" ">1. Hình ảnh sản phẩm</div>
+              <div className="grid grid-cols-3 gap-2">
+                <div className="col-span-1">
+                  <label className="label" htmlFor="logo">
+                    <span className="label-text capitalize text-sm">Thumbnail(*)</span>
+                  </label>
+                  <input
+                    id="thumbnail"
+                    type="file"
+                    accept="image/*"
+                    {...register('thumbnail')}
+                    className="input input-bordered text-sm"
+                    onChange={handleThumbnailChange}
+                  />
+                  {errors.thumbnail?.message && <p className="text-red-500 text-sm">{errors.thumbnail.message}</p>}
+                  {thumbnail &&
+                    thumbnail.map((image, index) => (
+                      <div key={`back-${index}`} className="mt-2">
+                        <img src={image} alt={`Back Preview ${index}`} className="w-60 h-60" />
+                      </div>
+                    ))}
+                </div>
+                <div className="col-span-2">
+                  <label className="label" htmlFor="logo">
+                    <span className="label-text capitalize text-sm">Hình ảnh sản phẩm(*)</span>
+                  </label>
+                  <input
+                    id="logo"
+                    type="file"
+                    accept="image/*"
+                    className="input input-bordered text-sm"
+                    {...register('images')}
+                    onChange={handleImagesChange}
+                    multiple
+                  />
+                  {errors.images?.message && <p className="text-red-500 text-sm">{errors.images.message}</p>}
+                  <div className="grid grid-cols-4 gap-2">
+                    {images &&
+                      images.map((image, index) => (
+                        <div key={`back-${index}`} className="mt-2 flex">
                           <img src={image} alt={`Back Preview ${index}`} className="w-60 h-60" />
                         </div>
                       ))}
                   </div>
-                  <div className="col-span-2">
-                    <label className="label" htmlFor="logo">
-                      <span className="label-text capitalize text-sm">Hình ảnh sản phẩm(*)</span>
-                    </label>
+                </div>
+              </div>
+              <div>
+                <span>2. Thông tin chi tiết sản phẩm</span>
+                <div className="px-10">
+                  <FormInput
+                    prop="name"
+                    type="text"
+                    label="Tên sản phẩm(*)"
+                    register={register}
+                    placeholder="Bàn gỗ cao cấp Italia"
+                    errorMessage={errors?.name?.message}
+                  />
+
+                  <FormInput
+                    prop="material"
+                    label="Chất liệu(*)"
+                    register={register}
+                    type="text"
+                    errorMessage={errors.material?.message}
+                    placeholder="Ví dụ: Gỗ Beech, MDF Veneer beech"
+                  />
+                  <FormInput
+                    prop="size"
+                    register={register}
+                    errorMessage={errors.size?.message}
+                    label="Kích thước (*)"
+                    type="text"
+                    placeholder="Chiều dài- chiều rộng - chiều cao. Ví dụ: D2000 - R550 - C562 mm"
+                  />
+                  <FormInput
+                    prop="description"
+                    label="Mô tả chi tiết (*)"
+                    register={register}
+                    errorMessage={errors.description?.message}
+                    type="text"
+                    placeholder="Mô tả chi tiết sản phẩm"
+                  />
+                </div>
+              </div>
+              <div>
+                <span>3. Thông tin bán hàng</span>
+                <div className="px-10 grid grid-cols-3 gap-4">
+                  <FormInput
+                    label="Số lượng trong kho (*)"
+                    prop="inStock"
+                    type="number"
+                    placeholder="Vd: 124"
+                    register={register}
+                    errorMessage={errors.inStock?.message}
+                  />
+                  <FormInput
+                    label="Giá nhập (*)"
+                    prop="price"
+                    type="number"
+                    placeholder="Vd: 124"
+                    register={register}
+                    errorMessage={errors.price?.message}
+                  />
+                  <FormInput
+                    label="Giá bán (*)"
+                    prop="salePrice"
+                    type="number"
+                    placeholder="Vd: 124"
+                    register={register}
+                    errorMessage={errors.salePrice?.message}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <span>4. Thuộc</span>
+                <div className="mx-10 grid grid-cols-4 gap-4">
+                  <select
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="select select-bordered w-full max-w-xs"
+                  >
+                    <option disabled selected>
+                      Danh mục hàng của shop
+                    </option>
+                    {shopCategories.length > 0 &&
+                      shopCategories?.map((category: CategoryType) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
+                  </select>
+                  <select
+                    onChange={(e) => setSelectedSystemCategory(e.target.value)}
+                    className="select select-bordered w-full max-w-xs"
+                  >
+                    <option disabled selected>
+                      Danh mục hàng của sàn
+                    </option>
+                    {systemCategories.length > 0 &&
+                      systemCategories?.map((category: CategoryType) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
+                  </select>
+                  <select className="select select-bordered w-full max-w-xs" {...register('used')}>
+                    <option disabled selected value="">
+                      Tình trạng (*)
+                    </option>
+                    <option value="false">Mới</option>
+                    <option value="true"> Đã qua sử dụng</option>
+                  </select>
+                  {errors.used?.message && <p className="text-red-500 text-sm">{errors.used.message}</p>}
+                  <div className="flex items-center">
                     <input
-                      id="logo"
-                      type="file"
-                      accept="image/*"
-                      className="input input-bordered text-sm"
-                      {...register('images')}
-                      onChange={handleImagesChange}
-                      multiple
+                      id="featured"
+                      type="checkbox"
+                      {...register('featured')} // Bind checkbox with register
+                      className="form-checkbox h-5 w-5 text-blue-500"
                     />
-                    {errors.images?.message && <p className="text-red-500 text-sm">{errors.images.message}</p>}
-                    <div className="grid grid-cols-4 gap-2">
-                      {images &&
-                        images.map((image, index) => (
-                          <div key={`back-${index}`} className="mt-2 flex">
-                            <img src={image} alt={`Back Preview ${index}`} className="w-60 h-60" />
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <span>2. Thông tin chi tiết sản phẩm</span>
-                  <div className="px-10">
-                    <FormInput
-                      prop="name"
-                      type="text"
-                      label="Tên sản phẩm(*)"
-                      register={register}
-                      placeholder="Bàn gỗ cao cấp Italia"
-                      errorMessage={errors?.name?.message}
-                    />
-
-                    <FormInput
-                      prop="material"
-                      label="Chất liệu(*)"
-                      register={register}
-                      type="text"
-                      errorMessage={errors.material?.message}
-                      placeholder="Ví dụ: Gỗ Beech, MDF Veneer beech"
-                    />
-                    <FormInput
-                      prop="size"
-                      register={register}
-                      errorMessage={errors.size?.message}
-                      label="Kích thước (*)"
-                      type="text"
-                      placeholder="Chiều dài- chiều rộng - chiều cao. Ví dụ: D2000 - R550 - C562 mm"
-                    />
-                    <FormInput
-                      prop="description"
-                      label="Mô tả chi tiết (*)"
-                      register={register}
-                      errorMessage={errors.description?.message}
-                      type="text"
-                      placeholder="Mô tả chi tiết sản phẩm"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <span>3. Thông tin bán hàng</span>
-                  <div className="px-10 grid grid-cols-3 gap-4">
-                    <FormInput
-                      label="Số lượng trong kho (*)"
-                      prop="inStock"
-                      type="number"
-                      placeholder="Vd: 124"
-                      register={register}
-                      errorMessage={errors.inStock?.message}
-                    />
-                    <FormInput
-                      label="Giá nhập (*)"
-                      prop="price"
-                      type="number"
-                      placeholder="Vd: 124"
-                      register={register}
-                      errorMessage={errors.price?.message}
-                    />
-                    <FormInput
-                      label="Giá bán (*)"
-                      prop="salePrice"
-                      type="number"
-                      placeholder="Vd: 124"
-                      register={register}
-                      errorMessage={errors.salePrice?.message}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <span>4. Thông tin vận chuyển</span>
-                  <div className="px-10">
-                    <span>Kích thước đóng gói</span>
-                    <div className="grid grid-cols-3 gap-2"></div>
-                  </div>
-                </div>
-
-                <div>
-                  <span>5. Khác</span>
-                  <div className="mx-10 grid grid-cols-3 gap-4">
-                    <select
-                      onChange={(e) => setSelectedCategory(e.target.value)}
-                      className="select select-bordered w-full max-w-xs"
-                    >
-                      <option disabled selected>
-                        Danh mục hàng
-                      </option>
-                      {shopCategories &&
-                        shopCategories.map((category: CategoryType) => (
-                          <option key={category.id} value={category.id}>
-                            {category.name}
-                          </option>
-                        ))}
-                    </select>
-                    <select className="select select-bordered w-full max-w-xs">
-                      <option disabled selected>
-                        Tình trạng
-                      </option>
-                      <option>Mới</option>
-                      <option>Đã qua sử dụng</option>
-                    </select>
-                    <div className="flex items-center">
-                      <input
-                        id="featured"
-                        type="checkbox"
-                        {...register('featured')} // Bind checkbox with register
-                        className="form-checkbox h-5 w-5 text-blue-500"
-                      />
-                      <label htmlFor="featured" className="ml-2">
-                        Sản phẩm nổi bật
-                      </label>
-                    </div>
+                    <label htmlFor="featured" className="ml-2">
+                      Sản phẩm nổi bật
+                    </label>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center my-2">
               <button type="submit" className="btn btn-primary text-white">
                 {isLoading ? 'Đang xử lý ...' : 'Thêm sản phẩm'}
               </button>

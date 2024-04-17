@@ -20,12 +20,14 @@ const ShopCategory = () => {
   const [categoryName, setCategoryName] = useState('')
   const client = useQueryClient()
 
-  const { data, isLoading } = useQuery({
+  const { data: shopCategories, isLoading } = useQuery({
     queryKey: [Seller_QueryKeys.SHOP_CATEGORY],
     queryFn: async () => {
       try {
         const resp = await axiosPrivate.get('/seller/category')
-        return resp
+        if (resp.status === 200) {
+          return resp.data
+        }
       } catch (error: any) {
         toast.error(error.response.data.messages[0])
       }
@@ -204,7 +206,7 @@ const ShopCategory = () => {
           <div>
             <DataTable
               columns={columns}
-              data={data?.data.data}
+              data={shopCategories?.data}
               pagination
               progressPending={isLoading}
               progressComponent={<LoadingComponent />}

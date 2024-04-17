@@ -51,6 +51,11 @@ const SettingShop = () => {
     setSelectedDistrictName(districtName)
   }
 
+  const closeModal = () => {
+    const dialog = document.getElementById('my_modal_8') as HTMLDialogElement
+    dialog.close()
+  }
+
   const { data: provinces } = useQuery({
     queryKey: ['provinces'],
     queryFn: async () => {
@@ -82,7 +87,7 @@ const SettingShop = () => {
         formData.append('logo', data.logo[0])
       }
     } else {
-      toast.error('Vui lòng chọn một hình ảnh cho logo.')
+      toast.error('Vui lòng chọn một hình ảnh cho logo')
       return
     }
     formData.append('description', data.description)
@@ -97,6 +102,7 @@ const SettingShop = () => {
         toast.success(resp.data.messages[0])
         dispatch(addShopInfo(resp.data.data))
         setIsPending(false)
+        closeModal()
       }
     } catch (error) {
       console.log(error)

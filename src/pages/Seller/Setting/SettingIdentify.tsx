@@ -24,6 +24,11 @@ const SettingIdentify = () => {
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
 
+  const closeModal = () => {
+    const dialog = document.getElementById('my_modal_8') as HTMLDialogElement
+    dialog.close()
+  }
+
   const updateIdentifyInfo = async (data: FormData) => {
     setIsLoading(true)
     const formData = new FormData()
@@ -45,6 +50,7 @@ const SettingIdentify = () => {
       toast.error('Vui lòng chọn một hình ảnh cho logo.')
       return
     }
+
     try {
       const resp = await axiosPrivate.put('/seller/store/identifier', formData, {
         headers: {
@@ -55,6 +61,7 @@ const SettingIdentify = () => {
         toast.success(resp.data.messages[0])
         dispatch(addShopInfo(resp.data.data))
         setIsLoading(false)
+        closeModal()
       } else {
         setIsLoading(false)
         toast.error(resp.data.messages[0])

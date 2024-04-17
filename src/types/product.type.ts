@@ -7,6 +7,7 @@ export type ProductInfo = {
   material: string
   inStock: number
   featured: boolean
+  used: boolean
   systemCategoryId?: string
   storeCategoryId?: string
 }
@@ -20,6 +21,7 @@ export type AddProductApiType = {
   material: string
   inStock: number
   featured: boolean
+  used: boolean
   systemCategoryId?: string
   storeCategoryId?: string
   thumbnail?: FileList | string | null
