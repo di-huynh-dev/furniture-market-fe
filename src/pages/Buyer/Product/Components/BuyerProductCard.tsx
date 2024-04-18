@@ -7,8 +7,11 @@ import { BsStarFill } from 'react-icons/bs'
 import { CiLocationOn } from 'react-icons/ci'
 import { useDispatch } from 'react-redux'
 import { addToCart, getTotals } from '@/redux/reducers/buyer/cartSlice'
-import { addItemToWishlist, getTotalsWishlist } from '@/redux/reducers/buyer/wishlistSlice'
+// import { addItemToWishlist, getTotalsWishlist } from '@/redux/reducers/buyer/wishlistSlice'
 import React from 'react'
+import { useMutation } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
+import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 
 const BuyerProductCard: React.FC<ProductDetailType> = ({
   id,
@@ -40,17 +43,30 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
     material,
     size,
   }
+  const axiosPrivate = useAxiosBuyerPrivate()
   const dispatch = useDispatch()
   const handleAddToCart = () => {
     dispatch(addToCart(product))
     dispatch(getTotals())
   }
 
-  const handleAddToWishlist = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault()
-    dispatch(addItemToWishlist(product))
-    dispatch(getTotalsWishlist())
-  }
+  const addToWishlistMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const resp = await axiosPrivate.put(`/buyer/favorite-product/${id}`)
+      return resp
+    },
+    onSuccess: (resp) => {
+      toast.success(resp.data.messages[0])
+    },
+    onError: (error) => {
+      console.log(error)
+    },
+  })
+  // const handleAddToWishlist = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  //   event.preventDefault()
+  //   dispatch(addItemToWishlist(product))
+  //   dispatch(getTotalsWishlist())
+  // }
   return (
     <div key={id} className="card w-full hover:shadow-2xl ease-in-out duration-300 bg-white">
       <Link to={`/product/${id}`}>
@@ -59,7 +75,7 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
         </figure>
         <div className="flex">
           <button
-            onClick={handleAddToWishlist}
+            onClick={() => addToWishlistMutation.mutate(id)}
             className="absolute btn btn-circle bg-white top-[-20px] right-2 p-1 text-white tracking-wide group"
           >
             <AiOutlineHeart className="w-[30px] h-[30px] text-info transition duration-300 group-hover:text-red-500" />
