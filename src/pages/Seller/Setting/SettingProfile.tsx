@@ -113,23 +113,27 @@ const SettingProfile = () => {
             <span className="font-bold">Thông tin chủ sở hữu</span>
             <button className="btn btn-outline btn-primary ">Cập nhật thông tin</button>
           </div>
-          <div className="mx-20">
+          <div className="">
             <div className="overflow-x-auto">
               <table className="table table-zebra">
                 <tbody>
                   <tr>
-                    <td>Tên chủ shop</td>
+                    <td>Shop ID</td>
+                    <td>Người đại diện</td>
                     <td>Email</td>
                     <td>Ngày sinh</td>
                     <td>Số điện thoại</td>
                     <td>Giới tính</td>
+                    <td>Trạng thái tài khoản</td>
                   </tr>
                   <tr>
+                    <td>{userProfile?.id}</td>
                     <td>{userProfile?.fullName}</td>
                     <td>{userProfile?.email}</td>
                     <td>{userProfile?.birthday ? formatDate(userProfile?.birthday) : '-'}</td>
                     <td>{userProfile?.phone}</td>
                     <td>{userProfile?.gender === 'FEMALE' ? 'Nữ' : 'Nam'}</td>
+                    <td>{userProfile?.status ? 'Đang hoạt động' : 'Đã khóa'}</td>
                     <td>
                       <a className="btn btn-ghost" href="#my_modal_8">
                         <CiEdit className="w-6 h-6 text-primary" />

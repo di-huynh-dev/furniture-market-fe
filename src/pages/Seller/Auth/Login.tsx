@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import login from '@/assets/images/login-seller.jpg'
 import { FormInput, LoadingButton } from '@/components'
 import { FcGoogle } from 'react-icons/fc'
@@ -34,17 +35,15 @@ const Login = () => {
       const resp = await commonApi.login(userLogin)
 
       if (resp.status === 200) {
+        setIsLoading(false)
         localStorage.setItem('accessToken', resp.data.data.accessToken)
         dispatch(addAuth(resp.data.data))
         toast.success('Đăng nhập thành công')
         navigate('/seller')
-      } else {
-        toast.error('Đăng nhập thất bại')
       }
+    } catch (error: any) {
       setIsLoading(false)
-    } catch (error) {
-      toast.error('Đăng nhập thất bại')
-      setIsLoading(false)
+      toast.error(error.response.data.messages[0])
     }
   }
 

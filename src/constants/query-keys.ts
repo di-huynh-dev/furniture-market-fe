@@ -9,6 +9,7 @@ export const Seller_QueryKeys = {
   COMMUNES: 'COMMUNES',
   PRODUCT_DETAIL: 'PRODUCT_DETAIL',
   SYSTEM_CATEGORY: 'SYSTEM_CATEGORY',
+  SHOP_VOUCHER: 'SHOP_VOUCHER',
 }
 
 export const Buyer_QueryKeys = {

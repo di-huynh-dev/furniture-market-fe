@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LoadingComponent } from '@/components'
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { ProductDetailType } from '@/types/product.type'
@@ -7,13 +6,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import toast from 'react-hot-toast'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { BsToggleOn, BsToggleOff } from 'react-icons/bs'
 
 const ProductsManagement = () => {
   const axiosPrivate = useAxiosPrivate()
   const [selectedRow, setSelectedRow] = useState('')
   const client = useQueryClient()
+  const navigate = useNavigate()
 
   const { data: products, isLoading } = useQuery({
     queryKey: [Seller_QueryKeys.SHOP_PRODUCTS],
@@ -44,8 +44,6 @@ const ProductsManagement = () => {
       console.log(error)
     },
   })
-
-  // const handleUpdate = () => {}
 
   const columns: TableColumn<ProductDetailType>[] = [
     {
@@ -126,6 +124,10 @@ const ProductsManagement = () => {
           <p> {data.description}</p>
         </div>
         <div>
+          <p className="font-bold">Trạng thái </p>
+          <p> {data.used ? 'Đã sử dụng' : 'Mới'}</p>
+        </div>
+        <div>
           <p className="font-bold">Thumbnail</p>
           <img src={data.thumbnail} alt="Thumbnail sản phẩm" className="w-18 h-18" />
         </div>
@@ -166,6 +168,9 @@ const ProductsManagement = () => {
         <div className="card-body">
           <div className="flex justify-between items-center">
             <span className="font-bold text-xl">Danh sách sản phẩm của shop</span>
+            <button onClick={() => navigate('/seller/products/new')} className="btn btn-outline btn-primary">
+              + Thêm sản phẩm mới
+            </button>
           </div>
           <div>
             <DataTable
@@ -173,7 +178,6 @@ const ProductsManagement = () => {
               data={products?.data.data}
               pagination
               progressPending={isLoading}
-              progressComponent={<LoadingComponent />}
               expandableRowsComponent={ExpandedComponent}
               expandableRows
             />

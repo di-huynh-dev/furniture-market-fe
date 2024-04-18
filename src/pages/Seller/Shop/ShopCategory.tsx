@@ -89,8 +89,6 @@ const ShopCategory = () => {
   const addCategoryMutation = useMutation({
     mutationFn: async () => {
       const resp = await axiosPrivate.post('/seller/category', { name: categoryName })
-      console.log(resp)
-
       return resp
     },
     onSuccess: (resp) => {

@@ -40,6 +40,8 @@ const AddProduct = () => {
     },
   })
 
+  console.log('shop', shopCategories)
+
   const { data: systemCategories, isLoading: isLoadingSystemCategories } = useQuery({
     queryKey: [Seller_QueryKeys.SYSTEM_CATEGORY],
     queryFn: async () => {
@@ -106,13 +108,15 @@ const AddProduct = () => {
       if (resp.status === 200) {
         toast.success(resp.data.messages[0])
         setIsLoading(false)
+        reset()
+        setSelectedCategory('')
+        setSelectedSystemCategory('')
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(error.response.data.messages[0])
       } else {
-        console.error(error)
         toast.error('Đã xảy ra lỗi khi thêm sản phẩm.')
       }
     }
@@ -133,6 +137,7 @@ const AddProduct = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(validationSchema),
@@ -274,7 +279,7 @@ const AddProduct = () => {
                       Danh mục hàng của shop
                     </option>
                     {shopCategories.length > 0 &&
-                      shopCategories?.map((category: CategoryType) => (
+                      shopCategories.map((category: CategoryType) => (
                         <option key={category.id} value={category.id}>
                           {category.name}
                         </option>
@@ -288,7 +293,7 @@ const AddProduct = () => {
                       Danh mục hàng của sàn
                     </option>
                     {systemCategories.length > 0 &&
-                      systemCategories?.map((category: CategoryType) => (
+                      systemCategories.map((category: CategoryType) => (
                         <option key={category.id} value={category.id}>
                           {category.name}
                         </option>
