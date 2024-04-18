@@ -81,8 +81,8 @@ const ShopCategory = () => {
       })
       toast.success(resp.data.messages[0])
     },
-    onError: (error) => {
-      console.log(error)
+    onError: (error: any) => {
+      toast.error(error.response.data.messages[0])
     },
   })
 
@@ -98,10 +98,8 @@ const ShopCategory = () => {
       })
       toast.success(resp.data.messages[0])
     },
-    onError: (error: Error) => {
-      if (error.message === 'Request failed with status code 400') {
-        toast.error('Bạn chưa cung cấp đủ thông tin cửa hàng')
-      }
+    onError: (error: any) => {
+      toast.error(error.response.data.messages[0])
     },
   })
 
@@ -116,8 +114,8 @@ const ShopCategory = () => {
       })
       toast.success(resp.data.messages[0])
     },
-    onError: (error) => {
-      console.log(error)
+    onError: (error: any) => {
+      toast.error(error.response.data.messages[0])
     },
   })
 

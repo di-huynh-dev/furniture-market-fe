@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormInput, LoadingComponent } from '@/components'
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
@@ -37,7 +38,7 @@ const SettingShop = () => {
   const [selectedProvinceName, setSelectedProvinceName] = useState<string>('')
   const [selectedDistrictId, setSelectedDistrictId] = useState<string>('')
   const [selectedDistrictName, setSelectedDistrictName] = useState<string>('')
-  const [selectedCommune, setSelectedCommune] = useState<string>('')
+  const [selectedCommuneName, setSelectedCommuneName] = useState<string>('')
   const { districtData, communeData } = useLocation(selectedProvinceId, selectedDistrictId)
 
   const handleProvinceChange = (provinceId: string, provinceName: string) => {
@@ -68,7 +69,6 @@ const SettingShop = () => {
     queryKey: [Seller_QueryKeys.SHOP_INFO],
     queryFn: async () => {
       const resp = await axiosPrivate.get('/seller/store')
-
       dispatch(addShopInfo(resp.data.data))
       return resp
     },
@@ -80,7 +80,10 @@ const SettingShop = () => {
     const formData = new FormData()
     formData.append('shopName', data.shopName)
     formData.append('ownerName', data.ownerName)
-    formData.append('address', `${data.address}, ${selectedCommune}, ${selectedDistrictName}, ${selectedProvinceName}`)
+    formData.append(
+      'address',
+      `${data.address}, ${selectedCommuneName}, ${selectedDistrictName}, ${selectedProvinceName}`,
+    )
 
     if (data.logo instanceof FileList) {
       if (data.logo.length > 0) {
@@ -104,9 +107,8 @@ const SettingShop = () => {
         setIsPending(false)
         closeModal()
       }
-    } catch (error) {
-      console.log(error)
-      setIsPending(false)
+    } catch (error: any) {
+      toast.error(error.response.data.messages[0])
     }
   }
 
@@ -131,7 +133,7 @@ const SettingShop = () => {
 
   return (
     <section className="mx-4 my-2 text-sm">
-      <div className="modal" role="dialog" id="my_modal_8">
+      <dialog className="modal" role="dialog" id="my_modal_8">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Cập nhật thông tin shop</h3>
           <form onSubmit={handleSubmit(updateShopInfo)} encType="multipart/form-data">
@@ -201,15 +203,17 @@ const SettingShop = () => {
               </select>
               <select
                 className="select select-bordered w-full max-w-xs"
-                value={selectedDistrictId}
-                onChange={(e) => (e.target.value, setSelectedCommune(e.target.options[e.target.selectedIndex].text))}
+                value={selectedCommuneName}
+                onChange={(e) => (
+                  e.target.value, setSelectedCommuneName(e.target.options[e.target.selectedIndex].text)
+                )}
               >
                 <option disabled selected>
                   Chọn xã, phường
                 </option>
                 {communeData &&
                   communeData.map((commune: Location) => (
-                    <option key={commune.id} value={commune.id}>
+                    <option key={commune.id} value={commune.name}>
                       {commune.name}
                     </option>
                   ))}
@@ -241,7 +245,7 @@ const SettingShop = () => {
             </div>
           </form>
         </div>
-      </div>
+      </dialog>
 
       <div className="card shadow-lg my-2 bg-white">
         <div className="card-body ">

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import authApi from '@/api/buyer/buyerAuthApi'
 import { LoadingButton } from '@/components'
 import { useEffect, useRef, useState } from 'react'
@@ -64,10 +65,9 @@ const ConfirmEmail: React.FC = () => {
       } else {
         toast.error('OTP không hợp lệ')
       }
-    } catch (error) {
-      const errorMessage = (error as Error)?.message || 'An unknown error occurred'
-      toast.error(errorMessage)
+    } catch (error: any) {
       setIsLoading(false)
+      toast.error(error.response.data.messages[0])
     }
   }
 

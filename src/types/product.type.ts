@@ -3,7 +3,11 @@ export type ProductInfo = {
   price: number
   salePrice: number
   description: string
-  size: string
+  size?: string
+  weight: number
+  height: number
+  length: number
+  width: number
   material: string
   inStock: number
   featured: boolean
@@ -17,7 +21,10 @@ export type AddProductApiType = {
   price: number
   salePrice: number
   description: string
-  size: string
+  weight: number
+  height: number
+  length: number
+  width: number
   material: string
   inStock: number
   featured: boolean
@@ -50,6 +57,10 @@ export type ProductDetailType = {
   salePrice: number
   description: string
   size: string
+  weight: number
+  height: number
+  length: number
+  width: number
   material: string
   sold: number
   inStock: number

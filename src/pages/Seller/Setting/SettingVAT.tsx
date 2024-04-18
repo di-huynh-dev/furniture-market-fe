@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { addShopInfo, selectSellerShop } from '@/redux/reducers/seller/sellerShopSlice'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -30,8 +31,8 @@ const SettingVAT = () => {
         dispatch(addShopInfo(resp.data.data))
         closeModal()
       }
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      toast.error(error.response.data.messages[0])
     }
   }
 

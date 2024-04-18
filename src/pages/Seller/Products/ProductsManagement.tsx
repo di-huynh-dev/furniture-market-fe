@@ -128,12 +128,19 @@ const ProductsManagement = () => {
           <p> {data.used ? 'Đã sử dụng' : 'Mới'}</p>
         </div>
         <div>
+          <p className="font-bold">Thông tin vận chuyển</p>
+          <p>Chiều dài: {data.width} mm</p>
+          <p>Chiều rộng: {data.length} mm</p>
+          <p>Chiều cao: {data.height} mm</p>
+          <p>Cân nặng: {data.weight} g</p>
+        </div>
+        <div>
           <p className="font-bold">Thumbnail</p>
           <img src={data.thumbnail} alt="Thumbnail sản phẩm" className="w-18 h-18" />
         </div>
         <div>
           <p className="font-bold">Hình ảnh sản phẩm</p>
-          <div className="flex">
+          <div className="grid grid-cols-2">
             {data.images.map((image) => (
               <img key={image} src={image} alt="Hình ảnh sản phẩm" className="w-18 h-18" />
             ))}

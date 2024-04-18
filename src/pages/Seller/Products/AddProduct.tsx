@@ -40,8 +40,6 @@ const AddProduct = () => {
     },
   })
 
-  console.log('shop', shopCategories)
-
   const { data: systemCategories, isLoading: isLoadingSystemCategories } = useQuery({
     queryKey: [Seller_QueryKeys.SYSTEM_CATEGORY],
     queryFn: async () => {
@@ -65,7 +63,10 @@ const AddProduct = () => {
       price: data.price,
       salePrice: data.salePrice,
       description: data.description,
-      size: data.size,
+      weight: data.weight,
+      height: data.height,
+      length: data.length,
+      width: data.width,
       material: data.material,
       inStock: data.inStock,
       featured: data.featured,
@@ -124,12 +125,15 @@ const AddProduct = () => {
 
   const validationSchema = yup.object({
     name: yup.string().required('Không được để trống!'),
-    price: yup.number().moreThan(0, 'Giá phải lớn hơn 0').required('Không được để trống!'),
+    price: yup.number().required('Không được để trống!').moreThan(0, 'Giá phải lớn hơn 0'),
     salePrice: yup.number().moreThan(0, 'Giá phải lớn hơn 0').required('Không được để trống!'),
     description: yup.string().required('Không được để trống!'),
-    size: yup.string().required('Không được để trống!'),
+    weight: yup.number().required('Không được để trống!').moreThan(0, 'Giá trị phải lớn hơn 0'),
+    height: yup.number().required('Không được để trống!').moreThan(0, 'Giá trị phải lớn hơn 0'),
+    length: yup.number().required('Không được để trống!').moreThan(0, 'Giá trị phải lớn hơn 0'),
+    width: yup.number().required('Không được để trống!').moreThan(0, 'Giá trị phải lớn hơn 0'),
     material: yup.string().required('Không được để trống!'),
-    inStock: yup.number().moreThan(0, 'Giá phải lớn hơn 0').required('Không được để trống!'),
+    inStock: yup.number().required('Không được để trống!').moreThan(0, 'Giá phải lớn hơn 0'),
     featured: yup.boolean().required('Không được để trống!'),
     used: yup.boolean().required('Không được để trống!'),
   })
@@ -221,14 +225,6 @@ const AddProduct = () => {
                     placeholder="Ví dụ: Gỗ Beech, MDF Veneer beech"
                   />
                   <FormInput
-                    prop="size"
-                    register={register}
-                    errorMessage={errors.size?.message}
-                    label="Kích thước (*)"
-                    type="text"
-                    placeholder="Chiều dài- chiều rộng - chiều cao. Ví dụ: D2000 - R550 - C562 mm"
-                  />
-                  <FormInput
                     prop="description"
                     label="Mô tả chi tiết (*)"
                     register={register}
@@ -267,7 +263,6 @@ const AddProduct = () => {
                   />
                 </div>
               </div>
-
               <div>
                 <span>4. Thuộc</span>
                 <div className="mx-10 grid grid-cols-4 gap-4">
@@ -278,12 +273,15 @@ const AddProduct = () => {
                     <option disabled selected>
                       Danh mục hàng của shop
                     </option>
-                    {shopCategories.length > 0 &&
-                      shopCategories.map((category: CategoryType) => (
+                    {shopCategories.length <= 0 ? (
+                      <p>Chưa có danh mục nào</p>
+                    ) : (
+                      shopCategories?.map((category: CategoryType) => (
                         <option key={category.id} value={category.id}>
                           {category.name}
                         </option>
-                      ))}
+                      ))
+                    )}
                   </select>
                   <select
                     onChange={(e) => setSelectedSystemCategory(e.target.value)}
@@ -318,6 +316,43 @@ const AddProduct = () => {
                       Sản phẩm nổi bật
                     </label>
                   </div>
+                </div>
+              </div>
+              <div>
+                <span>5. Thông tin vận chuyển</span>
+                <div className="mx-10 grid grid-cols-4 gap-4">
+                  <FormInput
+                    label="Chiều dài(*)"
+                    prop="length"
+                    type="number"
+                    placeholder="Đơn vị: mm"
+                    register={register}
+                    errorMessage={errors.length?.message}
+                  />
+                  <FormInput
+                    label="Chiều rộng(*)"
+                    prop="width"
+                    type="number"
+                    placeholder="Đơn vị: mm"
+                    register={register}
+                    errorMessage={errors.width?.message}
+                  />
+                  <FormInput
+                    label="Chiều cao(*)"
+                    prop="height"
+                    type="number"
+                    placeholder="Đơn vị: mm"
+                    register={register}
+                    errorMessage={errors.height?.message}
+                  />
+                  <FormInput
+                    label="Cân nặng(*)"
+                    prop="weight"
+                    type="number"
+                    placeholder="Đơn vị: gram"
+                    register={register}
+                    errorMessage={errors.weight?.message}
+                  />
                 </div>
               </div>
             </div>

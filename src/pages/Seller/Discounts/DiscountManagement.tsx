@@ -351,59 +351,59 @@ const DiscountManagement = () => {
           {modalType === 'update' && <p className="text-red-500">Lưu ý: Chỉ điền thông tin ở ô cần cập nhật</p>}
           <form onSubmit={handleSubmit(handleAddOrUpdateVoucher)}>
             <div className="flex gap-2">
+              <div>
+                <p className="m-2">Chọn loại mã giảm</p>
+                <select
+                  className="select select-bordered w-full max-w-xs"
+                  {...register('type')}
+                  onChange={(e) => {
+                    setVoucherType(e.target.value)
+                    if (e.target.value === 'SHOP_VOUCHER') {
+                      setProductIds([])
+                    }
+                  }}
+                >
+                  <option value="SHOP_VOUCHER">Áp dụng cho toàn Shop</option>
+                  <option value="PRODUCT_VOUCHER"> Áp dụng cho sản phẩm</option>
+                </select>
+              </div>
+              {errors?.type?.message && <p className="text-red-500 text-sm">{errors.type.message}</p>}
               {voucherType === 'PRODUCT_VOUCHER' && (
                 <>
-                  <div>
-                    <p className="m-2">Chọn loại mã giảm</p>
-                    <select
-                      className="select select-bordered w-full max-w-xs"
-                      {...register('type')}
-                      onChange={(e) => {
-                        setVoucherType(e.target.value)
-                        if (e.target.value === 'SHOP_VOUCHER') {
-                          setProductIds([])
-                        }
-                      }}
-                    >
-                      <option value="SHOP_VOUCHER">Áp dụng cho toàn Shop</option>
-                      <option value="PRODUCT_VOUCHER"> Áp dụng cho sản phẩm</option>
-                    </select>
-                  </div>
-                  {errors?.type?.message && <p className="text-red-500 text-sm">{errors.type.message}</p>}
-                </>
-              )}
-              {voucherType === 'PRODUCT_VOUCHER' && (
-                <div className="flex items-end justify-end">
-                  <label htmlFor="my_modal_6" className="btn btn-accent text-white">
-                    Chọn sản phẩm
-                  </label>
+                  {/* {modalType === 'update' && voucherType === 'PRODUCT_VOUCHER' && ( */}
+                  <div className="flex items-end justify-end">
+                    <label htmlFor="my_modal_6" className="btn btn-accent text-white">
+                      Chọn sản phẩm
+                    </label>
 
-                  <input type="checkbox" id="my_modal_6" className="modal-toggle" />
-                  <div className="modal" role="dialog">
-                    <div className="modal-box max-w-4xl">
-                      <h3 className="font-bold text-lg">Danh sách sản phẩm</h3>
-                      <div>
-                        <DataTable
-                          columns={columnsProduct}
-                          data={products?.data.data}
-                          selectableRows
-                          onSelectedRowsChange={(selectedRows) => {
-                            const selectedProductIds = selectedRows.selectedRows.map((row) => row.id)
-                            setProductIds(selectedProductIds)
-                          }}
-                          pagination
-                          progressPending={isLoading}
-                          progressComponent={<LoadingComponent />}
-                        />
-                      </div>
-                      <div className="modal-action">
-                        <label htmlFor="my_modal_6" className="btn">
-                          Hoàn tất
-                        </label>
+                    <input type="checkbox" id="my_modal_6" className="modal-toggle" />
+                    <div className="modal" role="dialog">
+                      <div className="modal-box max-w-4xl">
+                        <h3 className="font-bold text-lg">Danh sách sản phẩm</h3>
+                        <div>
+                          <DataTable
+                            columns={columnsProduct}
+                            data={products?.data.data}
+                            selectableRows
+                            onSelectedRowsChange={(selectedRows) => {
+                              const selectedProductIds = selectedRows.selectedRows.map((row) => row.id)
+                              setProductIds(selectedProductIds)
+                            }}
+                            pagination
+                            progressPending={isLoading}
+                            progressComponent={<LoadingComponent />}
+                          />
+                        </div>
+                        <div className="modal-action">
+                          <label htmlFor="my_modal_6" className="btn">
+                            Hoàn tất
+                          </label>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                  {/* )} */}
+                </>
               )}
             </div>
 

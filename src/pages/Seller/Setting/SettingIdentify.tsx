@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { addShopInfo, selectSellerShop } from '@/redux/reducers/seller/sellerShopSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import * as yup from 'yup'
@@ -62,12 +63,9 @@ const SettingIdentify = () => {
         dispatch(addShopInfo(resp.data.data))
         setIsLoading(false)
         closeModal()
-      } else {
-        setIsLoading(false)
-        toast.error(resp.data.messages[0])
       }
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      toast.error(error.response.data.messages[0])
     }
   }
 
