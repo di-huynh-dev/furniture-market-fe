@@ -23,6 +23,7 @@ const ShopHome = () => {
   const [productList, setProductList] = useState<ProductDetailType[]>([])
   const [activeTab, setActiveTab] = useState('')
   const [sortByPrice, setSortByPrice] = useState('ASC')
+  const [evaluate, setEvaluate] = useState(0)
 
   useEffect(() => {
     if (initialLoad && id) {
@@ -58,7 +59,7 @@ const ShopHome = () => {
   const getProductsByCategoryMutation = useMutation({
     mutationFn: async ({ categoryName }: { categoryName: string }) => {
       const resp = await axiosClient.get(
-        `/product/search-filter?storeCategories.contains=${categoryName}&store.equals=id,${id}&sort=price.${sortByPrice}`,
+        `/product/search-filter?storeCategories.contains=${categoryName}&store.equals=id,${id}&sort=price.${sortByPrice}&totalReviewPoint.min=${evaluate}`,
       )
       return resp.data.data.content
     },
@@ -85,7 +86,7 @@ const ShopHome = () => {
       <div className=" bg-white shadow-md">
         <div className="align-element my-4">
           <div className="grid grid-cols-3 gap-2">
-            <div>
+            <div className="border p-2 rounded-md border-base-300">
               <div className="flex items-center gap-2 ">
                 <img src={shop_profile?.logo} alt="logo" className="rounded-full w-32 h-32" />
                 <div className="">
@@ -109,70 +110,49 @@ const ShopHome = () => {
               ))}
             </div>
           </div>
-          <div role="tablist" className="tabs tabs-lifted mt-4">
-            <a
-              role="tab"
-              className={`tab ${
-                activeTab === '' ? 'tab-active text-primary font-bold [--tab-border-color:orange]' : ''
-              }`}
-              onClick={() => handleTabClick('')}
-            >
-              Tất cả
-            </a>
-            {shop_categories.length > 0 &&
-              shop_categories.map((category: CategoryType) => (
+          <div className="grid grid-cols-6 gap-2 items-center mt-4">
+            <div role="tablist" className="tabs tabs-lifted capitalize col-span-5">
+              <a
+                role="tab"
+                className={`tab ${
+                  activeTab === '' ? 'tab-active text-primary font-bold [--tab-border-color:red]' : ''
+                }`}
+                onClick={() => handleTabClick('')}
+              >
+                Tất cả
+              </a>
+              {shop_categories.slice(0, 5).map((category: CategoryType) => (
                 <a
                   key={category.id}
                   role="tab"
                   className={`tab ${
-                    activeTab === category.name ? 'tab-active  font-bold text-primary [--tab-border-color:orange]' : ''
+                    activeTab === category.name ? 'tab-active font-bold text-primary [--tab-border-color:orange]' : ''
                   }`}
                   onClick={() => handleTabClick(category.name)}
                 >
                   {category.name}
                 </a>
               ))}
+            </div>
+            <div className="col-span-1">
+              {shop_categories.length > 5 && (
+                <select
+                  value={activeTab}
+                  onChange={(e) => handleTabClick(e.target.value)}
+                  className="select w-full max-w-xs"
+                >
+                  <option>Xem thêm</option>
+                  {shop_categories.slice(5).map((category: CategoryType) => (
+                    <option key={category.id} value={category.name}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
           </div>
         </div>
       </div>
-      {/* <div className="align-element bg-white shawdow-md my-10">
-        <div className="p-10">
-          <p>VOUCHER CỦA SHOP</p>
-          <div className="grid grid-cols-3 gap-4">
-            <div className=" max-w-sm bg-orange-100 border-2 border-gray-300 border-dashed ">
-              <div className="p-4 grid grid-cols-3 items-center">
-                <div className="col-span-2">
-                  <p>Giảm giá 10k</p>
-                  <p>Đơn tối thiểu 199k</p>
-                  <p className="text-sm">HSD: 31.04.2022</p>
-                </div>
-                <button className="btn btn-sm btn-primary text-white">Lưu</button>
-              </div>
-            </div>
-            <div className=" max-w-sm bg-orange-100 border-2 border-gray-300 border-dashed ">
-              <div className="p-4 grid grid-cols-3 items-center">
-                <div className="col-span-2">
-                  <p>Giảm giá 10k</p>
-                  <p>Đơn tối thiểu 199k</p>
-                  <p className="text-sm">HSD: 31.04.2022</p>
-                </div>
-                <button className="btn btn-sm btn-primary text-white">Lưu</button>
-              </div>
-            </div>
-            <div className=" max-w-sm bg-orange-100 border-2 border-gray-300 border-dashed ">
-              <div className="p-4 grid grid-cols-3 items-center">
-                <div className="col-span-2">
-                  <p>Giảm giá 10k</p>
-                  <p>Đơn tối thiểu 199k</p>
-                  <p className="text-sm">HSD: 31.04.2022</p>
-                </div>
-                <button className="btn btn-sm btn-primary text-white">Lưu</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div></div>
-      </div> */}
 
       <div className="align-element bg-white shawdow-md">
         <div className="p-10">
@@ -188,11 +168,27 @@ const ShopHome = () => {
                 getProductsByCategoryMutation.mutate({ categoryName: categoryName })
               }}
             >
+              <option>Theo giá</option>
               <option value="ASC">Theo giá: Thấp đến cao</option>
               <option value="DESC">Theo giá: Cao đến thấp</option>
             </select>
+            <select
+              className="select w-full max-w-xs"
+              value={evaluate}
+              onChange={(e) => {
+                setEvaluate(parseInt(e.target.value, 10))
+                getProductsByCategoryMutation.mutate({ categoryName: categoryName })
+              }}
+            >
+              <option>Đánh giá</option>
+              <option value={5}>5 sao</option>
+              <option value={4}>4 sao trở lên</option>
+              <option value={3}>3 sao trở lên</option>
+              <option value={2}>2 sao trở lên</option>
+              <option value={1}>1 sao trở lên</option>
+            </select>
           </div>
-          <p>Danh sách sản phẩm</p>
+
           {productList.length > 0 ? (
             <div className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-6 my-10">
               {productList.map((product) => (

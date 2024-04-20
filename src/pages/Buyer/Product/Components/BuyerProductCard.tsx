@@ -52,7 +52,7 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
 
   const addToWishlistMutation = useMutation({
     mutationFn: async (id: string) => {
-      const resp = await axiosPrivate.put(`/buyer/favorite-product/${id}`)
+      const resp = await axiosPrivate.put(`/buyer/favourite-product/${id}`)
       return resp
     },
     onSuccess: (resp) => {
@@ -62,11 +62,10 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
       console.log(error)
     },
   })
-  // const handleAddToWishlist = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-  //   event.preventDefault()
-  //   dispatch(addItemToWishlist(product))
-  //   dispatch(getTotalsWishlist())
-  // }
+  const handleAddToWishlist = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault()
+    addToWishlistMutation.mutate(id)
+  }
   return (
     <div key={id} className="card w-full hover:shadow-2xl ease-in-out duration-300 bg-white">
       <Link to={`/product/${id}`}>
@@ -75,7 +74,7 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
         </figure>
         <div className="flex">
           <button
-            onClick={() => addToWishlistMutation.mutate(id)}
+            onClick={handleAddToWishlist}
             className="absolute btn btn-circle bg-white top-[-20px] right-2 p-1 text-white tracking-wide group"
           >
             <AiOutlineHeart className="w-[30px] h-[30px] text-info transition duration-300 group-hover:text-red-500" />

@@ -1,21 +1,45 @@
-import { clearWishlist, getTotalsWishlist, selectWishlist } from '@/redux/reducers/buyer/wishlistSlice'
 import { useSelector } from 'react-redux'
 import image from '@/assets/images/no-item.jpg'
-import WishlistItem from './WishlistItem'
-import { useDispatch } from 'react-redux'
+import { selectAuth } from '@/redux/reducers/authSlice'
+import { Buyer_QueryKeys } from '@/constants/query-keys'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 import { toast } from 'react-toastify'
-const WishlistItemList = () => {
-  const wishlist = useSelector(selectWishlist)
-  const dispatch = useDispatch()
+import { CiCircleRemove } from 'react-icons/ci'
 
-  const handleDeleteAll = () => {
-    dispatch(clearWishlist())
-    dispatch(getTotalsWishlist())
-    toast.success('Đã xóa tất cả sản phẩm khỏi wishlist!')
-  }
+const WishlistItemList = () => {
+  const axiosPrivate = useAxiosBuyerPrivate()
+  const user = useSelector(selectAuth)
+  const client = useQueryClient()
+
+  const { data: userWishlist, isLoading } = useQuery({
+    queryKey: [Buyer_QueryKeys.USER_WISHLIST],
+    queryFn: async () => {
+      const resp = await axiosPrivate.get('/buyer/favourite-product')
+      return resp.data.data
+    },
+    enabled: !!user.authData.accessToken,
+  })
+  const addToWishlistMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const resp = await axiosPrivate.put(`/buyer/favourite-product/${id}`)
+      return resp
+    },
+    onSuccess: (resp) => {
+      toast.success(resp.data.messages[0])
+      client.invalidateQueries({
+        queryKey: [Buyer_QueryKeys.USER_WISHLIST],
+      })
+    },
+    onError: (error) => {
+      console.log(error)
+    },
+  })
+
+  if (isLoading) return <p>Loading...</p>
   return (
     <div className="card py-4 bg-base-100 shadow-sm mx-2 lg:px-10 px-4">
-      {wishlist.wishlistItemList.length === 0 ? (
+      {userWishlist?.length === 0 ? (
         <div className="flex flex-col items-center lg:text-xl text-sm py-10">
           <img src={image} alt="Giỏ hàng trống" className="w-1/2 h-1/2" />
           <p className="font-bold">Không có sản phẩm yêu thích nào!</p>
@@ -23,20 +47,28 @@ const WishlistItemList = () => {
         </div>
       ) : (
         <>
-          {wishlist.wishlistItemList.map((item) => (
-            <WishlistItem item={item} key={item.id} />
+          {userWishlist.map((item: { id: string; thumbnail: string; name: string; material: string }) => (
+            <div className="flex space-x-3 w-full mb-10 border-b border-base-300 pb-6 last:border-b-0">
+              <img src={item.thumbnail} alt={item.name} className="lg:h-24 lg:w-24 h-12 w-12 rounded-lg object-cover" />
+              <div className="flex-1 flex flex-col">
+                <div className="flex flex-col lg:flex-row lg:items-center lg:space-x-6">
+                  <div className="flex-1">
+                    <p className="font-bold">{item.name}</p>
+                    <div className="mt-2 flex items-center gap-1 text-sm">
+                      <p className="font-bold">Chất liệu:</p>
+                      <p>{item.material}</p>
+                    </div>
+                  </div>
+                  <div className="mt-2 md:flex md:items-center md:justify-end">
+                    <button className="btn btn-ghost" onClick={() => addToWishlistMutation.mutate(item.id)}>
+                      Bỏ yêu thích
+                      <CiCircleRemove className="w-[30px] h-[30px]" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           ))}
-          <div className="grid md:grid-cols-2 grid-cols-1 gap-2">
-            <button className="btn btn-ghost btn-info">Khám phá ngay</button>
-            <button
-              className="btn btn-ghost btn-primary"
-              onClick={() => {
-                handleDeleteAll()
-              }}
-            >
-              Xóa tất cả
-            </button>
-          </div>
         </>
       )}
     </div>
