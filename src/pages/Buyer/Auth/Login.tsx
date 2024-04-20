@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import login from '@/assets/images/login.jpg'
 import { FcGoogle } from 'react-icons/fc'
 import { Link, useNavigate } from 'react-router-dom'
@@ -33,18 +34,17 @@ const Login = () => {
     try {
       const resp = await commonApi.login(userLogin)
       if (resp.status === 200) {
+        setIsLoading(false)
         dispatch(addAuth(resp.data.data))
-        console.log(resp)
-
         toast.success('Đăng nhập thành công')
         navigate('/')
       } else {
         toast.error('Đăng nhập thất bại')
       }
       setIsLoading(false)
-    } catch (error) {
-      toast.error('Đăng nhập thất bại')
+    } catch (error: any) {
       setIsLoading(false)
+      toast.error(error.response.data.messages[0])
     }
   }
   const {

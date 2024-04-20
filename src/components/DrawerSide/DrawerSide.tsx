@@ -1,5 +1,5 @@
 import { Link, Outlet } from 'react-router-dom'
-import { CiReceipt, CiBookmarkCheck, CiShop, CiSettings } from 'react-icons/ci'
+import { CiReceipt, CiBookmarkCheck, CiShop } from 'react-icons/ci'
 import { MdOutlineTableRestaurant } from 'react-icons/md'
 
 const DrawerSide = () => {
@@ -59,8 +59,6 @@ const DrawerSide = () => {
                 <li className="text-gray-500">
                   <a>Quảng cáo Fnest</a>
                   <Link to={'marketing/discount'}>Khuyến mãi của shop</Link>
-                  <a>Flash sale</a>
-                  <a>Chương trình</a>
                 </li>
               </ul>
             </details>
@@ -73,24 +71,11 @@ const DrawerSide = () => {
               </summary>
               <ul>
                 <li className="text-gray-500">
-                  <a>Đánh giá</a>
-                  <a>Hồ sơ</a>
-                  <Link to={'category'}>Danh mục hàng</Link>
-                  <a>Chương trình</a>
+                  <Link to={'settings/profile'}>Hồ sơ</Link>
                 </li>
-              </ul>
-            </details>
-          </li>
-          <li>
-            <details open>
-              <summary className="font-bold text-gray-500">
-                <CiSettings />
-                Thiết lập shop
-              </summary>
-              <ul>
                 <li className="text-gray-500">
-                  <a>Địa chỉ</a>
-                  <Link to={'settings/profile'}>Tài khoản</Link>
+                  <a>Đánh giá</a>
+                  <Link to={'category'}>Danh mục hàng</Link>
                 </li>
               </ul>
             </details>
