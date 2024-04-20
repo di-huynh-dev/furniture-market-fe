@@ -52,7 +52,7 @@ import {
   UpdateProduct,
 } from './pages/Seller'
 import { buyer_routes, seller_routes } from './constants/routes-link'
-import { SellerProtected } from './components'
+import { BuyerProtected, SellerProtected } from './components'
 import Error from './pages/Error/Error'
 import HomeLayout from './pages/HomeLayout'
 import ConfirmEmail from './pages/Common/ConfirmEmail'
@@ -67,7 +67,11 @@ function App() {
         { index: true, element: <HomeLayout /> },
         {
           path: buyer_routes.account,
-          element: <BuyerAccount />,
+          element: (
+            <BuyerProtected>
+              <BuyerAccount />
+            </BuyerProtected>
+          ),
           children: [
             { index: true, element: <BuyerProfile /> },
             {
