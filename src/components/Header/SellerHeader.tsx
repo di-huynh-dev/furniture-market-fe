@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { ConfirmModal } from '..'
 import toast from 'react-hot-toast'
+import { Link } from 'react-router-dom'
 
 const SellerHeader = () => {
   const user = useSelector(selectSellerAuth)
@@ -79,10 +80,7 @@ const SellerHeader = () => {
             <div className="flex items-center justify-center">
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS Navbar component"
-                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                  />
+                  <img src={user.authData.user.avatar} alt="" />
                 </div>
               </div>
               <p>{user.authData.user.fullName}</p>
@@ -92,10 +90,10 @@ const SellerHeader = () => {
               className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
             >
               <li>
-                <a className="justify-between">
+                <Link to="/seller/settings/profile" className="justify-between">
                   Trang cá nhân
                   <span className="badge">New</span>
-                </a>
+                </Link>
               </li>
               <li>
                 <a>Cài đặt</a>

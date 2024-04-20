@@ -34,12 +34,15 @@ const Login = () => {
     try {
       const resp = await commonApi.login(userLogin)
 
-      if (resp.status === 200) {
+      if (resp.status === 200 && resp.data.data.user.role === 'SELLER') {
         setIsLoading(false)
         localStorage.setItem('accessToken', resp.data.data.accessToken)
         dispatch(addAuth(resp.data.data))
         toast.success('Đăng nhập thành công')
         navigate('/seller')
+      } else {
+        setIsLoading(false)
+        toast.error('Tài khoản không tồn tại!')
       }
     } catch (error: any) {
       setIsLoading(false)

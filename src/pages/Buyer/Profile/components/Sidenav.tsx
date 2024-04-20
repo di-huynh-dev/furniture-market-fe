@@ -1,23 +1,26 @@
+import { selectAuth } from '@/redux/reducers/authSlice'
 import { useState } from 'react'
 import { BiSolidBellRing, BiUser } from 'react-icons/bi'
 import { BsCashStack, BsCheck } from 'react-icons/bs'
 import { PiNewspaperClippingThin } from 'react-icons/pi'
+import { useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
 
 const Sidenav = () => {
   const [isListVisible, setIsListVisible] = useState(true)
+  const user = useSelector(selectAuth)
   return (
     <div className="my-2 lg:mx-0 mx-4 lg:text-base text-sm capitalize">
       <Link to="/buyer/account" className="pb-6 border-b-2 hover:cursor-pointer">
         <label tabIndex={0} className="flex items-center space-x-3">
           <div className="avatar online">
             <div className="lg:w-24 w-16 rounded-full">
-              <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+              <img src={user.authData.user.avatar} />
             </div>
           </div>
           <div>
             <div className="font-bold">Xin chào,</div>
-            <span className="font-bold">Huỳnh Tiến Dĩ</span>
+            <span className="font-bold">{user.authData.user.fullName}</span>
             <div className="flex items-center space-x-2"></div>
           </div>
         </label>

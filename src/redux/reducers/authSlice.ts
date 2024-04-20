@@ -33,10 +33,13 @@ const authSlice = createSlice({
     removeAuth: (state) => {
       state.authData = initialState
     },
+    updateProfile: (state, action) => {
+      state.authData.user = action.payload
+    },
   },
 })
 
 export const selectAuth = (state: RootState) => state.auth
 
-export const { addAuth, removeAuth } = authSlice.actions
+export const { addAuth, removeAuth, updateProfile } = authSlice.actions
 export default authSlice.reducer
