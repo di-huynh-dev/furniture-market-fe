@@ -5,6 +5,7 @@ import {
   BuyerAccount,
   BuyerAddress,
   BuyerCart,
+  BuyerCheckout,
   BuyerLogin,
   BuyerNotificationsOrder,
   BuyerOrderDetail,
@@ -17,7 +18,6 @@ import {
   BuyerVerify,
   BuyerVoucher,
   BuyerWhishlist,
-  Checkout,
   MallHome,
 } from './pages/Buyer'
 import {
@@ -110,7 +110,7 @@ function App() {
         },
         {
           path: buyer_routes.checkout,
-          element: <Checkout />,
+          element: <BuyerCheckout />,
         },
         {
           path: buyer_routes.products,

@@ -92,7 +92,7 @@ const BuyerAddress = () => {
         if (resp.status === 200) {
           toast.success(resp.data.messages[0])
           queryClient.invalidateQueries({ queryKey: [Buyer_QueryKeys.USER_ADDRESS] })
-          reset()
+          resetForm()
         } else {
           toast.error('Lỗi')
         }
@@ -115,7 +115,16 @@ const BuyerAddress = () => {
       console.log(error)
     }
   }
-
+  const resetForm = () => {
+    reset()
+    setSelectedCommuneId('')
+    setSelectedCommune('')
+    setSelectedDistrictId('')
+    setSelectedDistrictName('')
+    setSelectedProvinceId('')
+    setSelectedProvinceName('')
+    setIsUpdateMode(false)
+  }
   const handleSetDefault = async (addressId: string) => {
     try {
       const resp = await axiosPrivate.patch(`/buyer/delivery-address/default`, {
@@ -164,7 +173,7 @@ const BuyerAddress = () => {
   return (
     <div className="mx-4 my-2">
       <dialog className="modal" id="my_modal_8">
-        <div className="modal-box">
+        <div className="modal-box max-w-3xl">
           <form onSubmit={handleSubmit(handleFormSubmit)}>
             {!isUpdateMode ? (
               <h3 className="font-bold text-lg">Thêm địa chỉ mới</h3>

@@ -21,7 +21,10 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
   sold,
   price,
   material,
-  size,
+  weight,
+  height,
+  length,
+  width,
   featured,
   salePrice,
   onSale,
@@ -34,6 +37,10 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
     name,
     inStock,
     sold,
+    weight,
+    height,
+    length,
+    width,
     price,
     featured,
     salePrice,
@@ -41,7 +48,6 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
     reviewAmount,
     storeInfo,
     material,
-    size,
   }
   const axiosPrivate = useAxiosBuyerPrivate()
   const dispatch = useDispatch()

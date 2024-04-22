@@ -16,4 +16,4 @@ export { default as BuyerProductCard } from './Product/Components/BuyerProductCa
 export { default as BuyerProductHome } from './Product/BuyerProductHome'
 export { default as MallHome } from './Mall/MallHome'
 export { default as AboutHome } from './About/AboutHome'
-export { default as Checkout } from './Order/Checkout'
+export { default as BuyerCheckout } from './Order/BuyerCheckout'
