@@ -16,6 +16,7 @@ export const buyer_routes = {
   purchase: 'purchase',
   order_detail: 'purchase/order/:id',
   address: 'address',
+  wallet: 'wallet',
   verify: 'verify-email',
   voucher: 'vouchers',
   notifications_order: 'notifications/order',
@@ -47,6 +48,8 @@ export const seller_routes = {
   shop_flashsale: 'marketing/shop-flash-sale',
   shop_campain: 'marketing/campaign',
   income: 'income',
+  payment_account: 'income/payment-account',
+  bank_list: 'income/bank-list',
   chat: 'chat',
   shop: 'shop',
   shop_cagory: 'category',
@@ -58,4 +61,8 @@ export const seller_routes = {
   setting_identify: 'identify',
   setting_shop_rating: 'settings/shop/rating',
   setting_category: 'settings/shop/category',
+}
+
+export const common_routes = {
+  vnpay_return: 'vnp-return',
 }

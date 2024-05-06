@@ -119,6 +119,8 @@ const ShopCategory = () => {
     },
   })
 
+  if (isLoading) return <LoadingComponent />
+
   return (
     <section className="mx-4 my-2 text-sm">
       <dialog id="my_modal_2" className="modal">

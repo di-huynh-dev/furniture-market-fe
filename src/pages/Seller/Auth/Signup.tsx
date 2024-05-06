@@ -37,7 +37,7 @@ const Sigup = () => {
         const otpResp = await authApi.sendOtp(userRegister.email, 'REGISTER_USER')
         setIsLoading(false)
         if (otpResp.status === 200) {
-          localStorage.setItem('registeredEmail', userRegister.email)
+          localStorage.setItem('registeredSellerEmail', userRegister.email)
           toast.success(resp.data.messages[0])
           navigate('/seller/confirm-email')
         } else {
@@ -81,125 +81,135 @@ const Sigup = () => {
   })
 
   return (
-    <section className="h-screen grid lg:grid-cols-2 grid-cols-1 place-items-center align-element">
-      <div className="mx-6 lg:mx-0">
-        <div className="lg:my-4 my-0">
-          <h3 className="md:text-2xl lg:text-2xl pb-2 font-semibold text-primary">Trở thành người bán ngay hôm nay</h3>
-          <h3 className="text-gray-500">Đăng ký bán hàng đơn giản chỉ với vài thao tác đơn giản và nhanh chóng</h3>
-        </div>
-        <img src={login} alt="Ảnh login" />
-        <div>
-          <ul className="steps gap-4 text-gray-500">
-            <li className="step step-primary">Đăng ký tài khoản</li>
-            <li className="step step-primary">Thiết lập thông tin</li>
-            <li className="step step-primary">Cài đặt vận chuyển</li>
-            <li className="step step-primary">Đăng bán sản phẩm</li>
-          </ul>
-        </div>
+    <>
+      <div className="navbar bg-base-10 shadow-lg">
+        <Link to="/" className="btn btn-ghost text-xl text-primary">
+          Trang chủ Fnest
+        </Link>
+        <p>Hệ thống quản lý Kênh người bán</p>
       </div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="card lg:w-[500px] md:w-[500px] w-[300px] p-8 bg-base-100 shadow-xl"
-      >
-        <h3 className="md:text-2xl lg:text-2xl pb-2 font-semibold text-center text-primary">
-          Đăng ký tài khoản người bán
-        </h3>
-        <div className="grid grid-cols-2 gap-4">
-          <FormInput
-            prop="email"
-            type="text"
-            label="Email(*)"
-            register={register}
-            placeholder="abc123@gmail.com"
-            errorMessage={errors.email?.message}
-          />
-          <FormInput
-            prop="shopName"
-            type="text"
-            label="Tên shop(*)"
-            register={register}
-            placeholder="Gỗ xưa shop"
-            errorMessage={errors.shopName?.message}
-          />
+      <section className="grid lg:grid-cols-2 grid-cols-1 place-items-center align-element mt-10">
+        <div className="mx-6 lg:mx-0">
+          <div className="lg:my-4 my-0">
+            <h3 className="md:text-2xl lg:text-2xl pb-2 font-semibold text-primary">
+              Trở thành người bán ngay hôm nay
+            </h3>
+            <h3 className="text-gray-500">Đăng ký bán hàng đơn giản chỉ với vài thao tác đơn giản và nhanh chóng</h3>
+          </div>
+          <img src={login} alt="Ảnh login" />
+          <div>
+            <ul className="steps gap-4 text-gray-500">
+              <li className="step step-primary">Đăng ký tài khoản</li>
+              <li className="step step-primary">Thiết lập thông tin</li>
+              <li className="step step-primary">Cài đặt vận chuyển</li>
+              <li className="step step-primary">Đăng bán sản phẩm</li>
+            </ul>
+          </div>
         </div>
-        <FormInput
-          prop="ownerName"
-          type="text"
-          label="Họ và tên người bán(*)"
-          register={register}
-          placeholder="Nguyễn Văn A"
-          errorMessage={errors.ownerName?.message}
-        />
-        <FormInput
-          prop="phone"
-          type="text"
-          label="Số điện thoại(*)"
-          register={register}
-          placeholder="0352639623"
-          errorMessage={errors.phone?.message}
-        />
-        <div className="grid grid-cols-2 gap-4 items-end">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="card lg:w-[500px] md:w-[500px] w-[300px] p-8 bg-base-100 shadow-xl"
+        >
+          <h3 className="md:text-2xl lg:text-2xl pb-2 font-semibold text-center text-primary">
+            Đăng ký tài khoản người bán
+          </h3>
+          <div className="grid grid-cols-2 gap-4">
+            <FormInput
+              prop="email"
+              type="text"
+              label="Email(*)"
+              register={register}
+              placeholder="abc123@gmail.com"
+              errorMessage={errors.email?.message}
+            />
+            <FormInput
+              prop="shopName"
+              type="text"
+              label="Tên shop(*)"
+              register={register}
+              placeholder="Gỗ xưa shop"
+              errorMessage={errors.shopName?.message}
+            />
+          </div>
           <FormInput
-            prop="birthday"
-            type="date"
-            label="Ngày sinh(*)"
+            prop="ownerName"
+            type="text"
+            label="Họ và tên người bán(*)"
             register={register}
-            errorMessage={errors.birthday?.message}
+            placeholder="Nguyễn Văn A"
+            errorMessage={errors.ownerName?.message}
           />
+          <FormInput
+            prop="phone"
+            type="text"
+            label="Số điện thoại(*)"
+            register={register}
+            placeholder="0352639623"
+            errorMessage={errors.phone?.message}
+          />
+          <div className="grid grid-cols-2 gap-4 items-end">
+            <FormInput
+              prop="birthday"
+              type="date"
+              label="Ngày sinh(*)"
+              register={register}
+              errorMessage={errors.birthday?.message}
+            />
 
-          <select
-            {...register('gender')}
-            className="select select-bordered w-full max-w-xs"
-            onChange={(e) => e.target.setCustomValidity('')}
-          >
-            <option value="" disabled selected>
-              Giới tính
-            </option>
-            <option value="MALE">Nam</option>
-            <option value="FEMALE">Nữ</option>
-          </select>
-        </div>
-        <FormInput
-          prop="password"
-          type="password"
-          label="Mật khẩu(*)"
-          placeholder="Tối thiểu 8 ký tự"
-          register={register}
-          errorMessage={errors.password?.message}
-        />
-        <FormInput
-          prop="confirmPassword"
-          type="password"
-          label="Xác nhận mật khẩu(*)"
-          placeholder="Mật khẩu xác nhận trùng với mật khẩu mới"
-          register={register}
-          errorMessage={errors.confirmPassword?.message}
-        />
-        <div className="my-2 flex items-center gap-2 text-sm text-gray-500">
-          <input
-            type="checkbox"
-            {...register('checked', { required: true })}
-            className="checkbox border-orange-400 checked:border-indigo-300 [--chkbg:theme(colors.indigo.600)] [--chkfg:orange]"
+            <select
+              {...register('gender')}
+              className="select select-bordered w-full max-w-xs"
+              onChange={(e) => e.target.setCustomValidity('')}
+            >
+              <option value="" disabled selected>
+                Giới tính
+              </option>
+              <option value="MALE">Nam</option>
+              <option value="FEMALE">Nữ</option>
+            </select>
+          </div>
+          <FormInput
+            prop="password"
+            type="password"
+            label="Mật khẩu(*)"
+            placeholder="Tối thiểu 8 ký tự"
+            register={register}
+            errorMessage={errors.password?.message}
           />
-          <p>
-            Tôi hoàn toàn đồng ý với những <Link to="/">Điều khoản</Link> và <Link to="/">Điều kiện</Link> của Fnest để
-            trở thành người bán
+          <FormInput
+            prop="confirmPassword"
+            type="password"
+            label="Xác nhận mật khẩu(*)"
+            placeholder="Mật khẩu xác nhận trùng với mật khẩu mới"
+            register={register}
+            errorMessage={errors.confirmPassword?.message}
+          />
+          <div className="my-2 flex items-center gap-2 text-sm text-gray-500">
+            <input
+              type="checkbox"
+              {...register('checked', { required: true })}
+              className="checkbox border-orange-400 checked:border-indigo-300 [--chkbg:theme(colors.indigo.600)] [--chkfg:orange]"
+            />
+            <p>
+              Tôi hoàn toàn đồng ý với những <Link to="/">Điều khoản</Link> và <Link to="/">Điều kiện</Link> của Fnest
+              để trở thành người bán
+            </p>
+          </div>
+          {errors.checked?.message && <p className="text-red-500 text-sm">{errors.checked?.message}</p>}
+
+          <button type="submit" className="btn btn-outline btn-primary mt-4 capitalize">
+            {isLoading ? <LoadingButton /> : 'Đăng ký'}
+          </button>
+          <div className="divider">OR</div>
+          <p className="text-center p-2 text-sm">
+            Bạn đã có tài khoản?
+            <Link to="/buyer/login" className="ml-2 link link-hover link-primary">
+              Đăng nhập!
+            </Link>
           </p>
-        </div>
-        {errors.checked?.message && <p className="text-red-500 text-sm">{errors.checked?.message}</p>}
-
-        <button type="submit" className="btn btn-outline btn-primary mt-4 capitalize">
-          {isLoading ? <LoadingButton /> : 'Đăng ký'}
-        </button>
-        <div className="divider">OR</div>
-        <p className="text-center p-2 text-sm">
-          Bạn đã có tài khoản?
-          <Link to="/buyer/login" className="ml-2 link link-hover link-primary">
-            Đăng nhập!
-          </Link>
-        </p>
-      </form>
-    </section>
+        </form>
+      </section>
+    </>
   )
 }
 

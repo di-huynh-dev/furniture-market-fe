@@ -39,7 +39,7 @@ const Login = () => {
         localStorage.setItem('accessToken', resp.data.data.accessToken)
         dispatch(addAuth(resp.data.data))
         toast.success('Đăng nhập thành công')
-        navigate('/seller')
+        navigate('/seller/settings/profile')
       } else {
         setIsLoading(false)
         toast.error('Tài khoản không tồn tại!')
@@ -58,62 +58,72 @@ const Login = () => {
     resolver: yupResolver(validationSchema),
   })
   return (
-    <section className="h-screen grid lg:grid-cols-2 grid-cols-1 place-items-center align-element">
-      <div className="mx-6 lg:mx-0">
-        <div className="my-4">
-          <h3 className="md:text-2xl lg:text-2xl pb-2 font-semibold text-primary">
-            Bán hàng chuyên nghiệp cùng Nội thất Fnest
-          </h3>
-          <h3 className="text-gray-500">Quản lý shop của bạn một cách hiệu quả hơn trên hệ thống với Kênh Người bán</h3>
-        </div>
-        <img src={login} alt="Ảnh login" />
-      </div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="card lg:w-[500px] md:w-[500px] w-[300px] p-8 bg-base-100 shadow-xl"
-      >
-        <h3 className="md:text-2xl lg:text-2xl pb-2 font-semibold text-center text-primary">
-          Đăng nhập tài khoản người bán
-        </h3>
-        <FormInput
-          prop="email"
-          type="text"
-          label="Email(*)"
-          register={register}
-          placeholder="abc123@gmail.com"
-          errorMessage={errors.email?.message}
-        />
-        <FormInput
-          prop="password"
-          type="password"
-          label="Mật khẩu(*)"
-          placeholder="Tối thiểu 8 ký tự"
-          register={register}
-          errorMessage={errors.password?.message}
-        />
-        <button type="submit" className="btn btn-outline btn-primary mt-4 capitalize">
-          {isLoading ? <LoadingButton /> : 'Đăng nhập'}
-        </button>
-        <p className="text-left text-sm text-primary p-2">
-          <Link to="/seller/forgot-password" className="">
-            Quên mật khẩu?
-          </Link>
-        </p>
-        <div className="divider">OR</div>
-        <Link to="https://fnest-store.api.codeforlife.blog/oauth2/authorization/google">
-          <div className="btn btn-ghost flex justify-center w-full items-center text-center">
-            <FcGoogle className="w-12 h-12 text-primary" />
-            <p className="hidden md:block lg:block"> Đăng nhập bằng Google</p>
-          </div>
+    <>
+      <div className="navbar bg-base-10 shadow-lg">
+        <Link to="/" className="btn btn-ghost text-xl text-primary">
+          Trang chủ Fnest
         </Link>
-        <div className="flex items-center justify-center text-center my-4 text-sm">
-          <p> Bạn muốn trở thành người bán?</p>
-          <Link to="/seller/signup" className="ml-2 link link-hover link-primary">
-            Đăng ký ngay!
-          </Link>
+        <p>Hệ thống quản lý Kênh người bán</p>
+      </div>
+      <section className="h-screen grid lg:grid-cols-2 grid-cols-1 place-items-center align-element">
+        <div className="mx-6 lg:mx-0">
+          <div className="my-4">
+            <h3 className="md:text-2xl lg:text-2xl pb-2 font-semibold text-primary">
+              Bán hàng chuyên nghiệp cùng Nội thất Fnest
+            </h3>
+            <h3 className="text-gray-500">
+              Quản lý shop của bạn một cách hiệu quả hơn trên hệ thống với Kênh Người bán
+            </h3>
+          </div>
+          <img src={login} alt="Ảnh login" />
         </div>
-      </form>
-    </section>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="card lg:w-[500px] md:w-[500px] w-[300px] p-8 bg-base-100 shadow-xl"
+        >
+          <h3 className="md:text-2xl lg:text-2xl pb-2 font-semibold text-center text-primary">
+            Đăng nhập tài khoản người bán
+          </h3>
+          <FormInput
+            prop="email"
+            type="text"
+            label="Email(*)"
+            register={register}
+            placeholder="abc123@gmail.com"
+            errorMessage={errors.email?.message}
+          />
+          <FormInput
+            prop="password"
+            type="password"
+            label="Mật khẩu(*)"
+            placeholder="Mật khẩu của bạn"
+            register={register}
+            errorMessage={errors.password?.message}
+          />
+          <button type="submit" className="btn btn-outline btn-primary mt-4 capitalize">
+            {isLoading ? <LoadingButton /> : 'Đăng nhập'}
+          </button>
+          <p className="text-left text-sm text-primary p-2">
+            <Link to="/seller/forgot-password" className="">
+              Quên mật khẩu?
+            </Link>
+          </p>
+          <div className="divider">OR</div>
+          <Link to="https://fnest-store.api.codeforlife.blog/oauth2/authorization/google">
+            <div className="btn btn-ghost flex justify-center w-full items-center text-center">
+              <FcGoogle className="w-12 h-12 text-primary" />
+              <p className="hidden md:block lg:block"> Đăng nhập bằng Google</p>
+            </div>
+          </Link>
+          <div className="flex items-center justify-center text-center my-4 text-sm">
+            <p> Bạn muốn trở thành người bán?</p>
+            <Link to="/seller/signup" className="ml-2 link link-hover link-primary">
+              Đăng ký ngay!
+            </Link>
+          </div>
+        </form>
+      </section>
+    </>
   )
 }
 

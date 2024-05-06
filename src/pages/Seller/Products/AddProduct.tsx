@@ -325,7 +325,7 @@ const AddProduct = () => {
                     label="Chiều dài(*)"
                     prop="length"
                     type="number"
-                    placeholder="Đơn vị: mm"
+                    placeholder="Đơn vị: cm"
                     register={register}
                     errorMessage={errors.length?.message}
                   />
@@ -333,7 +333,7 @@ const AddProduct = () => {
                     label="Chiều rộng(*)"
                     prop="width"
                     type="number"
-                    placeholder="Đơn vị: mm"
+                    placeholder="Đơn vị: cm"
                     register={register}
                     errorMessage={errors.width?.message}
                   />
@@ -341,7 +341,7 @@ const AddProduct = () => {
                     label="Chiều cao(*)"
                     prop="height"
                     type="number"
-                    placeholder="Đơn vị: mm"
+                    placeholder="Đơn vị: cm"
                     register={register}
                     errorMessage={errors.height?.message}
                   />

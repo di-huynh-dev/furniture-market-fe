@@ -16,19 +16,21 @@ export default {
     themes: [
       {
         mytheme: {
-          primary: '#F55555',
+          primary: '#DD9933',
 
           secondary: '#EF683A',
 
           accent: '#1dcdbc',
 
-          neutral: '#F6F9FC',
+          neutral: '#556970',
 
           'base-100': '#ffffff',
 
           info: '#dfad7c',
 
           background: '#ffffff',
+
+          title: '#556970',
 
           success: '#36d399',
 

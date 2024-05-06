@@ -9,8 +9,9 @@ const ConfirmEmail: React.FC = () => {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [otp, setOtp] = useState(['', '', '', '', '', ''])
-  const registeredEmail = localStorage.getItem('registeredEmail')
-  const email = registeredEmail || ''
+  const registeredBuyerEmail = localStorage.getItem('registeredBuyerEmail')
+  const registeredSellerEmail = localStorage.getItem('registeredSellerEmail')
+  const email = registeredBuyerEmail || registeredSellerEmail || ''
 
   const initialSeconds = 5 * 60
   const [countdown, setCountdown] = useState(initialSeconds)
@@ -60,8 +61,13 @@ const ConfirmEmail: React.FC = () => {
       setIsLoading(false)
       if (resp.status === 200) {
         toast.success(resp.data.messages[0])
-        navigate('/seller/login')
-        localStorage.setItem('registeredEmail', '')
+        if (registeredBuyerEmail) {
+          navigate('/buyer/login')
+          localStorage.setItem('registeredBuyerEmail', '')
+        } else if (registeredSellerEmail) {
+          navigate('/seller/login')
+          localStorage.setItem('registeredSellerEmail', '')
+        }
       } else {
         toast.error('OTP không hợp lệ')
       }
@@ -72,19 +78,24 @@ const ConfirmEmail: React.FC = () => {
   }
 
   const resendOtp = async () => {
+    if (email === '') {
+      toast.error('Không có địa chỉ email để gửi OTP')
+      return
+    }
+
     setIsLoading(true)
     try {
       const resp = await authApi.sendOtp(email, 'REGISTER_USER')
-      if (typeof resp.status === 'string' && resp.status === 'OK') {
+      if (resp.data.status === 'OK') {
         setIsLoading(false)
         setCountdown(initialSeconds)
         toast.success('Mã xác nhận đã được gửi lại')
       } else {
+        setIsLoading(false)
         toast.error('Unknown error occurred')
       }
-    } catch (error) {
-      setIsLoading(false)
-      toast.error('Error Api called')
+    } catch (error: any) {
+      toast.error(error.response.data.messages[0])
     }
   }
 
@@ -96,7 +107,8 @@ const ConfirmEmail: React.FC = () => {
         </div>
         <div className="text-center">
           <p className="text-sm m-2">Mã xác minh của bạn đã được gửi bằng tin nhắn đến email</p>
-          {registeredEmail && <p>{registeredEmail}</p>}
+          {registeredBuyerEmail && <p>{registeredBuyerEmail}</p>}
+          {registeredSellerEmail && <p>{registeredSellerEmail}</p>}
         </div>
         <div className="grid grid-cols-6 gap-6 my-12">
           {Array.from({ length: 6 }, (_, index) => (
@@ -122,7 +134,7 @@ const ConfirmEmail: React.FC = () => {
         </button>
         <div className="text-center m-4">
           <p className="text-sm">Bạn vẫn chưa nhận được?</p>
-          <p className="text-primary" onClick={() => resendOtp()}>
+          <p className="text-primary btn" onClick={() => resendOtp()}>
             Gửi lại
           </p>
         </div>

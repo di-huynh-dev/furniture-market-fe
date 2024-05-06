@@ -1,7 +1,11 @@
+import { useEffect } from 'react'
 import CartItemList from './components/CartItemList'
 import CartTotal from './components/CartTotal'
 
 const BuyerCart = () => {
+  useEffect(() => {
+    document.title = 'Fnest - Giỏ hàng của tôi'
+  }, [])
   return (
     <div className="align-element">
       <div className="text-sm breadcrumbs">

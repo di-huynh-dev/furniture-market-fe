@@ -34,7 +34,7 @@ const Sidenav = () => {
           <ul className={isListVisible ? 'block' : 'hidden'}>
             <li className="py-1 flex items-center">
               <BsCheck className="text-green" />
-              Ngân Hàng
+              <NavLink to="/buyer/account">Thông tin</NavLink>
             </li>
             <li className="py-1 flex items-center">
               <BsCheck className="text-green" />
@@ -42,7 +42,7 @@ const Sidenav = () => {
             </li>
             <li className="py-1 flex items-center">
               <BsCheck className="text-green" />
-              <NavLink to="/buyer/account/change-password">Đổi Mật Khẩu</NavLink>
+              <NavLink to="/buyer/account/wallet">Ví của tôi</NavLink>
             </li>
           </ul>
         </div>

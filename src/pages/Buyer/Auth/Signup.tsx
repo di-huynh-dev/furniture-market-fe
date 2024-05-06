@@ -32,7 +32,7 @@ const Signup: React.FC = () => {
         setIsLoading(false)
 
         if (otpResp.status === 200) {
-          localStorage.setItem('registeredEmail', userRegister.email)
+          localStorage.setItem('registeredBuyerEmail', userRegister.email)
           toast.success(resp.data.messages[0])
           navigate('/buyer/confirm-email')
         } else {

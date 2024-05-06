@@ -1,4 +1,4 @@
-import Logo from '@/assets/Logo/saller-logo.png'
+import Logo from '@/assets/Logo/logo-color.svg'
 import { CiBellOn } from 'react-icons/ci'
 import { CgMenuGridO } from 'react-icons/cg'
 import { removeAuth, selectSellerAuth } from '@/redux/reducers/seller/sellerAuthSlice'
@@ -25,24 +25,14 @@ const SellerHeader = () => {
   }
 
   return (
-    <header className="shadow-md navbar bg-base-100 text-base-content sticky top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-shadow duration-100 [transform:translate3d(0,0,0)]">
+    <header className="shadow-md bg-base-100 text-base-content sticky top-0 z-30 flex h-24 w-full justify-center bg-opacity-90 backdrop-blur transition-shadow duration-100 [transform:translate3d(0,0,0)]">
       <ConfirmModal content="Bạn có muốn đăng xuất" onClick={handleLogout} />
       <div className="navbar bg-base-100">
         <div className="flex-none">
-          <button className="btn btn-square btn-ghost">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              className="inline-block w-5 h-5 stroke-current"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-          </button>
+          <img src={Logo} alt="" className="w-24 h-24 object-cover" />
         </div>
         <div className="flex-1">
-          <img src={Logo} alt="" className="" />
-          <p className="text-xl ">Fnest Kênh người bán</p>
+          <p className="text-xl font-bold text-neutral">Fnest Kênh người bán</p>
         </div>
         <div className="flex-none">
           <div className="hidden flex-none items-center lg:block">

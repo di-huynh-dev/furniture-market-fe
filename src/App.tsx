@@ -17,11 +17,13 @@ import {
   BuyerSignup,
   BuyerVerify,
   BuyerVoucher,
+  BuyerWallet,
   BuyerWhishlist,
   MallHome,
 } from './pages/Buyer'
 import {
   AddProduct,
+  BankList,
   BannedProduct,
   CancelledOrder,
   ChatCenter,
@@ -32,6 +34,7 @@ import {
   IncomeManagement,
   MarketingManagement,
   OrdersManagement,
+  PaymentAccount,
   ProductBrand,
   ProductsManagement,
   ReturnOrder,
@@ -51,11 +54,12 @@ import {
   UnpaidOrder,
   UpdateProduct,
 } from './pages/Seller'
-import { buyer_routes, seller_routes } from './constants/routes-link'
+import { buyer_routes, common_routes, seller_routes } from './constants/routes-link'
 import { BuyerProtected, SellerProtected } from './components'
 import Error from './pages/Error/Error'
 import HomeLayout from './pages/HomeLayout'
 import ConfirmEmail from './pages/Common/ConfirmEmail'
+import VnPayReturn from './pages/Common/VnPayReturn'
 
 function App() {
   const router = createBrowserRouter([
@@ -87,6 +91,10 @@ function App() {
               element: <BuyerAddress />,
             },
             {
+              path: buyer_routes.wallet,
+              element: <BuyerWallet />,
+            },
+            {
               path: buyer_routes.change_password,
               element: <BuyerPassword />,
             },
@@ -107,6 +115,10 @@ function App() {
         {
           path: buyer_routes.cart,
           element: <BuyerCart />,
+        },
+        {
+          path: common_routes.vnpay_return,
+          element: <VnPayReturn />,
         },
         {
           path: buyer_routes.checkout,
@@ -253,6 +265,14 @@ function App() {
         {
           path: seller_routes.income,
           element: <IncomeManagement />,
+        },
+        {
+          path: seller_routes.payment_account,
+          element: <PaymentAccount />,
+        },
+        {
+          path: seller_routes.bank_list,
+          element: <BankList />,
         },
         {
           path: seller_routes.chat,

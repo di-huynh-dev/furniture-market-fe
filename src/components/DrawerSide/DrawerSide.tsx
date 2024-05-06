@@ -1,6 +1,5 @@
 import { Link, Outlet } from 'react-router-dom'
-import { CiReceipt, CiBookmarkCheck, CiShop } from 'react-icons/ci'
-import { MdOutlineTableRestaurant } from 'react-icons/md'
+import { CiReceipt, CiBookmarkCheck, CiShop, CiBank, CiChat2, CiMoneyCheck1 } from 'react-icons/ci'
 
 const DrawerSide = () => {
   return (
@@ -19,40 +18,68 @@ const DrawerSide = () => {
         <ul className="menu bg-white w-56 rounded-box">
           <li>
             <details open>
-              <summary className="font-bold text-gray-500">
-                <CiReceipt />
+              <summary className="font-bold text-neutral">
+                <CiBank className="w-6 h-6" />
+                Quản lý hàng hóa
+              </summary>
+              <ul>
+                <li className="text-gray-500">
+                  <Link to={'category'}>Danh mục hàng</Link>
+                  <Link to={'/seller/products'}>Tất cả</Link>
+                  <Link to={'products/new'}>Thêm sản phẩm</Link>
+                  <Link to={'products/banned'}>Sản phẩm vi phạm</Link>
+                </li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details open>
+              <summary className="font-bold text-neutral">
+                <CiReceipt className="w-6 h-6" />
                 Quản lý đơn hàng
               </summary>
               <ul>
                 <li className="text-gray-500">
                   <Link to={'/seller/orders'}>Tất cả</Link>
-                  <a>Đơn hủy</a>
                   <a>Trả hàng/hoàn tiền</a>
-                  <a>Cài đặt vận chuyển</a>
                 </li>
               </ul>
             </details>
           </li>
+
           <li>
             <details open>
-              <summary className="font-bold text-gray-500">
-                <MdOutlineTableRestaurant />
-                Quản lý sản phẩm
+              <summary className="font-bold text-neutral">
+                <CiMoneyCheck1 className="w-6 h-6" />
+                Quản lý tài chính
               </summary>
               <ul>
                 <li className="text-gray-500">
-                  <Link to={'/seller/products'}>Tất cả</Link>
-                  <Link to={'products/new'}>Thêm sản phẩm</Link>
-                  <Link to={'products/banned'}>Sản phẩm vi phạm</Link>
-                  <Link to={'products/brand'}>Cài đặt sản phẩm</Link>
+                  <Link to={'income'}>Doanh thu</Link>
+                  <Link to={'income/payment-account'}>Số dư tài khoản</Link>
+                  <Link to={'income/bank-list'}>Tài khoản ngân hàng</Link>
                 </li>
               </ul>
             </details>
           </li>
           <li>
             <details open>
-              <summary className="font-bold text-gray-500">
-                <CiBookmarkCheck />
+              <summary className="font-bold text-neutral">
+                <CiChat2 className="w-6 h-6" />
+                Chăm sóc khách hàng
+              </summary>
+              <ul>
+                <li className="text-gray-500">
+                  <a>Kênh chat</a>
+                  <Link to={'marketing/discount'}>Quản lý Feedback</Link>
+                </li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details open>
+              <summary className="font-bold text-neutral">
+                <CiBookmarkCheck className="w-6 h-6" />
                 Kênh marketing
               </summary>
               <ul>
@@ -65,17 +92,13 @@ const DrawerSide = () => {
           </li>
           <li>
             <details open>
-              <summary className="font-bold text-gray-500">
-                <CiShop />
+              <summary className="font-bold text-neutral">
+                <CiShop className="w-6 h-6" />
                 Quản lý shop
               </summary>
               <ul>
                 <li className="text-gray-500">
                   <Link to={'settings/profile'}>Hồ sơ</Link>
-                </li>
-                <li className="text-gray-500">
-                  <a>Đánh giá</a>
-                  <Link to={'category'}>Danh mục hàng</Link>
                 </li>
               </ul>
             </details>

@@ -68,9 +68,6 @@ const Login = () => {
         </h3>
         <p className="md:text-xl lg:text-xl text-sm font-bold text-center">Đăng nhập bằng tài khoản của bạn</p>
         <div className="form-control">
-          <label htmlFor="email" className="label">
-            <span className="label-text capitalize text-sm">Tên đăng nhập(*)</span>
-          </label>
           <FormInput
             prop="email"
             type="text"
