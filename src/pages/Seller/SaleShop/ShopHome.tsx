@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { LoadingComponent } from '@/components'
 import { Buyer_QueryKeys } from '@/constants/query-keys'
 import axiosClient from '@/libs/axios-client'
 import { BuyerProductCard } from '@/pages/Buyer'
 import { ProductDetailType } from '@/types/product.type'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { CiShoppingBasket, CiChat1, CiStar, CiLocationOn } from 'react-icons/ci'
 import { FiUserPlus } from 'react-icons/fi'
@@ -13,6 +14,8 @@ import { useParams } from 'react-router-dom'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { IoIosSend } from 'react-icons/io'
 import { FaFlag } from 'react-icons/fa'
+import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
+import toast from 'react-hot-toast'
 
 type CategoryType = {
   id: string
@@ -21,19 +24,14 @@ type CategoryType = {
 
 const ShopHome = () => {
   const { id } = useParams()
+  const axiosPrivate = useAxiosBuyerPrivate()
+  const client = useQueryClient()
   const [initialLoad, setInitialLoad] = useState(true)
   const [categoryName, setCategoryName] = useState('')
   const [productList, setProductList] = useState<ProductDetailType[]>([])
   const [activeTab, setActiveTab] = useState('')
   const [sortByPrice, setSortByPrice] = useState('ASC')
   const [evaluate, setEvaluate] = useState(0)
-
-  useEffect(() => {
-    if (initialLoad && id) {
-      getProductsByCategoryMutation.mutate({ categoryName: categoryName })
-      setInitialLoad(false)
-    }
-  }, [id, initialLoad])
 
   const { data: shop_profile, isLoading: shop_profile_loading } = useQuery({
     queryKey: [Buyer_QueryKeys.SHOP_PROFILE],
@@ -44,6 +42,25 @@ const ShopHome = () => {
     enabled: !!id,
   })
   console.log(shop_profile)
+
+  const handleFollow = async () => {
+    try {
+      const resp = await axiosPrivate.post(`/user/connection?id=${id}`)
+      if (resp.status === 200) {
+        toast.success(resp.data.messages[0])
+        client.invalidateQueries({ queryKey: [Buyer_QueryKeys.SHOP_PROFILE] })
+      }
+    } catch (error: any) {
+      toast.error(error.response.data.messages[0])
+    }
+  }
+
+  useEffect(() => {
+    if (initialLoad && id) {
+      getProductsByCategoryMutation.mutate({ categoryName: categoryName })
+      setInitialLoad(false)
+    }
+  }, [id, initialLoad])
 
   const handleTabClick = (selectedCategory: string) => {
     setActiveTab(selectedCategory)
@@ -103,7 +120,7 @@ const ShopHome = () => {
                     <p className="text-sm text-gray-500 italic">{shop_profile?.address}</p>
                   </div>
                   <div className="flex gap-4 my-2">
-                    <button className="btn btn-sm btn-error text-white">
+                    <button onClick={handleFollow} className="btn btn-sm btn-error text-white">
                       {shop_profile?.followed ? 'Đang theo dõi' : 'Theo dõi'}
                     </button>
                     <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
