@@ -48,6 +48,7 @@ import {
   SettingVAT,
   ShippingOrder,
   ShopCategory,
+  ShopError,
   ShopHome,
   ShopManagement,
   ToshipOrder,
@@ -151,6 +152,7 @@ function App() {
         {
           path: buyer_routes.shop_home,
           element: <ShopHome />,
+          errorElement: <ShopError />,
         },
         {
           path: buyer_routes.mall,

@@ -6,10 +6,13 @@ import { BuyerProductCard } from '@/pages/Buyer'
 import { ProductDetailType } from '@/types/product.type'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { CiShoppingBasket, CiChat1, CiStar } from 'react-icons/ci'
+import { CiShoppingBasket, CiChat1, CiStar, CiLocationOn } from 'react-icons/ci'
 import { FiUserPlus } from 'react-icons/fi'
 import { PiUsersFourThin } from 'react-icons/pi'
 import { useParams } from 'react-router-dom'
+import { BsThreeDotsVertical } from 'react-icons/bs'
+import { IoIosSend } from 'react-icons/io'
+import { FaFlag } from 'react-icons/fa'
 
 type CategoryType = {
   id: string
@@ -40,6 +43,7 @@ const ShopHome = () => {
     },
     enabled: !!id,
   })
+  console.log(shop_profile)
 
   const handleTabClick = (selectedCategory: string) => {
     setActiveTab(selectedCategory)
@@ -82,29 +86,55 @@ const ShopHome = () => {
   if (shop_profile_loading || shop_categories_loading) return <LoadingComponent />
 
   return (
-    <div>
+    <>
       <div className=" bg-white shadow-md">
-        <div className="align-element my-4">
+        <div className="align-element">
+          {shop_profile.topBanner && (
+            <img src={shop_profile.topBanner} alt="Top Banner" className=" max-h-[350px] w-full" />
+          )}
           <div className="grid grid-cols-3 gap-2">
             <div className="border p-2 rounded-md border-base-300">
               <div className="flex items-center gap-2 ">
                 <img src={shop_profile?.logo} alt="logo" className="rounded-full w-32 h-32" />
                 <div className="">
-                  <p className="text-lg font-bold">{shop_profile?.shopName}</p>
-                  <p className="text-sm text-gray-500">{shop_profile?.address}</p>
+                  <p className="text-xl font-bold">{shop_profile?.shopName}</p>
+                  <div className="flex gap-1">
+                    <CiLocationOn />
+                    <p className="text-sm text-gray-500 italic">{shop_profile?.address}</p>
+                  </div>
+                  <div className="flex gap-4 my-2">
+                    <button className="btn btn-sm btn-error text-white">
+                      {shop_profile?.followed ? 'Đang theo dõi' : 'Theo dõi'}
+                    </button>
+                    <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
+                      <div tabIndex={0} role="button" className="btn btn-sm">
+                        <BsThreeDotsVertical />
+                      </div>
+                      <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                        <li>
+                          <a>
+                            <IoIosSend />
+                            Gửi tin nhắn
+                          </a>
+                        </li>
+                        <li>
+                          <a>
+                            <FaFlag />
+                            Báo cáo
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-2 my-2">
-                <button className="btn btn-sm btn-primary text-white">+ Theo dõi</button>
-                <button className="btn btn-sm btn-outline">Chat</button>
               </div>
             </div>
             <div className="grid grid-cols-3 col-span-2">
               {gridItems.map((item, index) => (
                 <div key={index} className="flex items-center gap-2">
-                  {item.icon && <item.icon className="w-6 h-6 text-primary" />}
-                  <span>
-                    {item.label}: <span className="text-primary">{item.value}</span>
+                  {item.icon && <item.icon className="w-6 h-6" />}
+                  <span className="font-semibold text-neutral">
+                    {item.label}: <span className="text-red-500">{item.value}</span>
                   </span>
                 </div>
               ))}
@@ -115,7 +145,7 @@ const ShopHome = () => {
               <a
                 role="tab"
                 className={`tab ${
-                  activeTab === '' ? 'tab-active text-primary font-bold [--tab-border-color:red]' : ''
+                  activeTab === '' ? 'tab-active text-primary font-bold [--tab-border-color:primary]' : ''
                 }`}
                 onClick={() => handleTabClick('')}
               >
@@ -126,7 +156,9 @@ const ShopHome = () => {
                   key={category.id}
                   role="tab"
                   className={`tab ${
-                    activeTab === category.name ? 'tab-active font-bold text-primary [--tab-border-color:orange]' : ''
+                    activeTab === category.name
+                      ? 'tab-active font-semibold text-primary [--tab-border-color:primary]'
+                      : ''
                   }`}
                   onClick={() => handleTabClick(category.name)}
                 >
@@ -136,11 +168,7 @@ const ShopHome = () => {
             </div>
             <div className="col-span-1">
               {shop_categories.length > 5 && (
-                <select
-                  value={activeTab}
-                  onChange={(e) => handleTabClick(e.target.value)}
-                  className="select w-full max-w-xs"
-                >
+                <select value={activeTab} onChange={(e) => handleTabClick(e.target.value)} className="select w-full">
                   <option>Xem thêm</option>
                   {shop_categories.slice(5).map((category: CategoryType) => (
                     <option key={category.id} value={category.name}>
@@ -154,54 +182,56 @@ const ShopHome = () => {
         </div>
       </div>
 
-      <div className="align-element bg-white shawdow-md">
-        <div className="p-10">
-          <div className="grid grid-cols-5 gap-2 items-center bg-gray-200 rounded-md p-2">
-            <p>Bộ lọc</p>
-            <button className="btn btn-outline btn-primary btn-sm w-40">Mới nhất</button>
-            <button className="btn btn-outline btn-primary btn-sm w-40">Phổ biến nhất</button>
-            <select
-              className="select w-full max-w-xs"
-              value={sortByPrice}
-              onChange={(e) => {
-                setSortByPrice(e.target.value)
-                getProductsByCategoryMutation.mutate({ categoryName: categoryName })
-              }}
-            >
-              <option>Theo giá</option>
-              <option value="ASC">Theo giá: Thấp đến cao</option>
-              <option value="DESC">Theo giá: Cao đến thấp</option>
-            </select>
-            <select
-              className="select w-full max-w-xs"
-              value={evaluate}
-              onChange={(e) => {
-                setEvaluate(parseInt(e.target.value, 10))
-                getProductsByCategoryMutation.mutate({ categoryName: categoryName })
-              }}
-            >
-              <option>Đánh giá</option>
-              <option value={5}>5 sao</option>
-              <option value={4}>4 sao trở lên</option>
-              <option value={3}>3 sao trở lên</option>
-              <option value={2}>2 sao trở lên</option>
-              <option value={1}>1 sao trở lên</option>
-            </select>
-          </div>
+      {shop_profile.infoBanner && activeTab === '' && (
+        <img src={shop_profile.infoBanner} alt="Top Banner" className=" align-element w-full" />
+      )}
 
-          {productList.length > 0 ? (
-            <div className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-6 my-10">
-              {productList.map((product) => (
-                <BuyerProductCard key={product.id} {...product} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-error">Chưa có sản phẩm nào</p>
-          )}
+      <div className="align-element bg-white shawdow-md my-2">
+        <div className="grid grid-cols-5 gap-2 items-center rounded-md p-4">
+          <p>Sắp xếp theo</p>
+          <button className="btn btn-outline btn-error btn-sm w-40">Mới nhất</button>
+          <button className="btn btn-outline btn-error btn-sm w-40">Phổ biến nhất</button>
+          <select
+            className="select w-full max-w-xs"
+            value={sortByPrice}
+            onChange={(e) => {
+              setSortByPrice(e.target.value)
+              getProductsByCategoryMutation.mutate({ categoryName: categoryName })
+            }}
+          >
+            <option>Theo giá</option>
+            <option value="ASC">Theo giá: Thấp đến cao</option>
+            <option value="DESC">Theo giá: Cao đến thấp</option>
+          </select>
+          <select
+            className="select w-full max-w-xs"
+            value={evaluate}
+            onChange={(e) => {
+              setEvaluate(parseInt(e.target.value, 10))
+              getProductsByCategoryMutation.mutate({ categoryName: categoryName })
+            }}
+          >
+            <option>Đánh giá</option>
+            <option value={5}>5 sao</option>
+            <option value={4}>4 sao trở lên</option>
+            <option value={3}>3 sao trở lên</option>
+            <option value={2}>2 sao trở lên</option>
+            <option value={1}>1 sao trở lên</option>
+          </select>
         </div>
-        <div></div>
       </div>
-    </div>
+      <div className="align-element">
+        {productList.length > 0 ? (
+          <div className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-6 my-10">
+            {productList.map((product) => (
+              <BuyerProductCard key={product.id} {...product} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-error mt-10">Chưa có sản phẩm nào thuộc danh mục này được bán</p>
+        )}
+      </div>
+    </>
   )
 }
 

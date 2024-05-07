@@ -205,7 +205,7 @@ const SettingIdentify = () => {
                   <img
                     src={identifierInfo?.shopData.shopInfo.identifier[2]}
                     alt=""
-                    className="w-60 h-40 object-cover"
+                    className="w-80 h-80 object-cover border-2 border-primary"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
@@ -213,7 +213,7 @@ const SettingIdentify = () => {
                   <img
                     src={identifierInfo?.shopData.shopInfo.identifier[3]}
                     alt=""
-                    className="w-60 h-40 object-cover"
+                    className="w-80 h-80 object-cover border-2 border-primary"
                   />
                 </div>
               </div>

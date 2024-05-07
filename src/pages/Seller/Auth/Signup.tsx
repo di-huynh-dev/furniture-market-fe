@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { RegisterSellerType } from '@/types/user.type'
 import sellerAuthApi from '@/api/seller/sellerAuthApi'
 import toast from 'react-hot-toast'
@@ -15,6 +15,13 @@ export type FormData = RegisterSellerType
 const Sigup = () => {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    document.title = 'Kênh người bán - Đăng ký'
+    return () => {
+      document.title = 'Kênh người bán - Đăng ký'
+    }
+  }, [])
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true)
@@ -203,7 +210,7 @@ const Sigup = () => {
           <div className="divider">OR</div>
           <p className="text-center p-2 text-sm">
             Bạn đã có tài khoản?
-            <Link to="/buyer/login" className="ml-2 link link-hover link-primary">
+            <Link to="/seller/login" className="ml-2 link link-hover link-primary">
               Đăng nhập!
             </Link>
           </p>

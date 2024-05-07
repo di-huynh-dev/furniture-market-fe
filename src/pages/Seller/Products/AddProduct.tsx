@@ -27,7 +27,7 @@ const AddProduct = () => {
   const [selectedSystemCategory, setSelectedSystemCategory] = useState<string>('')
 
   const { data: shopCategories, isLoading: isLoadingCategories } = useQuery({
-    queryKey: [Seller_QueryKeys.SHOP_CATEGORY],
+    queryKey: ['shopCategories'],
     queryFn: async () => {
       try {
         const resp = await axiosPrivate.get('/seller/category')
@@ -39,6 +39,8 @@ const AddProduct = () => {
       }
     },
   })
+
+  console.log(shopCategories)
 
   const { data: systemCategories, isLoading: isLoadingSystemCategories } = useQuery({
     queryKey: [Seller_QueryKeys.SYSTEM_CATEGORY],
@@ -176,7 +178,7 @@ const AddProduct = () => {
                   {thumbnail &&
                     thumbnail.map((image, index) => (
                       <div key={`back-${index}`} className="mt-2">
-                        <img src={image} alt={`Back Preview ${index}`} className="w-60 h-60" />
+                        <img src={image} alt={`Back Preview ${index}`} className="w-80 h-60 object-contain" />
                       </div>
                     ))}
                 </div>
@@ -198,7 +200,7 @@ const AddProduct = () => {
                     {images &&
                       images.map((image, index) => (
                         <div key={`back-${index}`} className="mt-2 flex">
-                          <img src={image} alt={`Back Preview ${index}`} className="w-60 h-60" />
+                          <img src={image} alt={`Back Preview ${index}`} className="w-80 h-60 object-contain" />
                         </div>
                       ))}
                   </div>
@@ -273,15 +275,12 @@ const AddProduct = () => {
                     <option disabled selected>
                       Danh mục hàng của shop
                     </option>
-                    {shopCategories.length <= 0 ? (
-                      <p>Chưa có danh mục nào</p>
-                    ) : (
-                      shopCategories?.map((category: CategoryType) => (
+                    {shopCategories &&
+                      shopCategories.map((category: CategoryType) => (
                         <option key={category.id} value={category.id}>
                           {category.name}
                         </option>
-                      ))
-                    )}
+                      ))}
                   </select>
                   <select
                     onChange={(e) => setSelectedSystemCategory(e.target.value)}
@@ -290,7 +289,7 @@ const AddProduct = () => {
                     <option disabled selected>
                       Danh mục hàng của sàn
                     </option>
-                    {systemCategories.length > 0 &&
+                    {systemCategories &&
                       systemCategories.map((category: CategoryType) => (
                         <option key={category.id} value={category.id}>
                           {category.name}

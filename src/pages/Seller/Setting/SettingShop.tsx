@@ -20,6 +20,8 @@ type FormData = {
   ownerName: string
   address: string
   logo?: FileList | string | null
+  topBanner?: FileList | string | null
+  infoBanner?: FileList | string | null
   description: string
 }
 
@@ -31,8 +33,12 @@ interface Location {
 const SettingShop = () => {
   const axiosPrivate = useAxiosPrivate()
   const dispatch = useDispatch()
-  const { previewImages, handleFileChange } = useImagePreview()
+  const { previewImages: logoImage, handleFileChange: handleLogoFileChange } = useImagePreview()
+  const { previewImages: topBannerImage, handleFileChange: handleTopBannerFileChange } = useImagePreview()
+  const { previewImages: infoBanner, handleFileChange: handleInfoBanner } = useImagePreview()
   const info = useSelector(selectSellerShop)
+  console.log(info)
+
   const [isPending, setIsPending] = useState(false)
   const [selectedProvinceId, setSelectedProvinceId] = useState<string>('')
   const [selectedProvinceName, setSelectedProvinceName] = useState<string>('')
@@ -93,6 +99,18 @@ const SettingShop = () => {
       toast.error('Vui lòng chọn một hình ảnh cho logo')
       return
     }
+
+    if (data.topBanner instanceof FileList) {
+      if (data.topBanner.length > 0) {
+        formData.append('topBanner', data.topBanner[0])
+      }
+    }
+
+    if (data.infoBanner instanceof FileList) {
+      if (data.infoBanner.length > 0) {
+        formData.append('infoBanner', data.infoBanner[0])
+      }
+    }
     formData.append('description', data.description)
 
     try {
@@ -133,26 +151,28 @@ const SettingShop = () => {
 
   return (
     <section className="mx-4 my-2 text-sm">
-      <dialog className="modal" role="dialog" id="my_modal_8">
-        <div className="modal-box">
+      <dialog className="modal" id="my_modal_8">
+        <div className="modal-box  max-w-3xl">
           <h3 className="font-bold text-lg">Cập nhật thông tin shop</h3>
           <form onSubmit={handleSubmit(updateShopInfo)} encType="multipart/form-data">
-            <FormInput
-              prop="shopName"
-              type="text"
-              label="Tên shop(*)"
-              register={register}
-              placeholder="Gỗ xưa shop"
-              errorMessage={errors.shopName?.message}
-            />
-            <FormInput
-              prop="ownerName"
-              type="text"
-              label="Tên người đại diện(*)"
-              register={register}
-              placeholder="Nguyễn Văn A"
-              errorMessage={errors.ownerName?.message}
-            />
+            <div className="grid grid-cols-2 gap-2">
+              <FormInput
+                prop="shopName"
+                type="text"
+                label="Tên shop(*)"
+                register={register}
+                placeholder="Gỗ xưa shop"
+                errorMessage={errors.shopName?.message}
+              />
+              <FormInput
+                prop="ownerName"
+                type="text"
+                label="Tên người đại diện(*)"
+                register={register}
+                placeholder="Nguyễn Văn A"
+                errorMessage={errors.ownerName?.message}
+              />
+            </div>
             <label className="label" htmlFor="logo">
               <span className="label-text capitalize text-sm">Logo shop(*)</span>
             </label>
@@ -162,62 +182,107 @@ const SettingShop = () => {
               accept="image/*"
               className="input input-bordered text-sm"
               {...register('logo')}
-              onChange={handleFileChange}
+              onChange={handleLogoFileChange}
             />
             {errors.logo?.message && <p className="text-red-500 text-sm">{errors.logo.message}</p>}
-            {previewImages &&
-              previewImages.map((image, index) => (
+            {logoImage &&
+              logoImage.map((image, index) => (
                 <div key={`back-${index}`} className="mt-2">
                   <img src={image} alt={`Back Preview ${index}`} className="w-60 h-60" />
                 </div>
               ))}
 
+            <label className="label" htmlFor="topBanner">
+              <span
+                className="label-text capitalize text-sm tooltip tooltip-right"
+                data-tip="Chiều ngang: 1200px; Chiều dọc: 200px"
+              >
+                Ảnh bìa shop(*)
+              </span>
+            </label>
+            <input
+              id="topBanner"
+              type="file"
+              accept="image/*"
+              className="input input-bordered text-sm"
+              {...register('topBanner')}
+              onChange={handleTopBannerFileChange}
+            />
+            {errors.topBanner?.message && <p className="text-red-500 text-sm">{errors.topBanner.message}</p>}
+            {topBannerImage &&
+              topBannerImage.map((image, index) => (
+                <div key={`back-${index}`} className="mt-2">
+                  <img src={image} alt={`Back Preview ${index}`} />
+                </div>
+              ))}
+
+            <label className="label" htmlFor="infoBanner">
+              <span className="label-text capitalize text-sm ">Banner thông tin shop(*)</span>
+            </label>
+            <input
+              id="infoBanner"
+              type="file"
+              accept="image/*"
+              className="input input-bordered text-sm"
+              {...register('infoBanner')}
+              onChange={handleInfoBanner}
+            />
+            {errors.infoBanner?.message && <p className="text-red-500 text-sm">{errors.infoBanner.message}</p>}
+            {infoBanner &&
+              infoBanner.map((image, index) => (
+                <div key={`back-${index}`} className="mt-2">
+                  <img src={image} alt={`Back Preview ${index}`} />
+                </div>
+              ))}
+
             <div className="my-2 space-y-2">
               <p>Chọn địa chỉ</p>
-              <select
-                className="select select-bordered w-full max-w-xs"
-                value={selectedProvinceId}
-                onChange={(e) => handleProvinceChange(e.target.value, e.target.options[e.target.selectedIndex].text)}
-              >
-                <option value="">Chọn tỉnh</option>
-                {provinces.map((province: Location) => (
-                  <option key={province.id} value={province.id}>
-                    {province.name}
+              <div className="grid grid-cols-3 gap-2">
+                <select
+                  className="select select-bordered w-full max-w-xs"
+                  value={selectedProvinceId}
+                  onChange={(e) => handleProvinceChange(e.target.value, e.target.options[e.target.selectedIndex].text)}
+                >
+                  <option value="">Chọn tỉnh</option>
+                  {provinces.map((province: Location) => (
+                    <option key={province.id} value={province.id}>
+                      {province.name}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  className="select select-bordered w-full max-w-xs"
+                  value={selectedDistrictId}
+                  onChange={(e) => handleDistrictChange(e.target.value, e.target.options[e.target.selectedIndex].text)}
+                >
+                  <option disabled selected>
+                    Chọn quận, huyện
                   </option>
-                ))}
-              </select>
-              <select
-                className="select select-bordered w-full max-w-xs"
-                value={selectedDistrictId}
-                onChange={(e) => handleDistrictChange(e.target.value, e.target.options[e.target.selectedIndex].text)}
-              >
-                <option disabled selected>
-                  Chọn quận, huyện
-                </option>
-                {districtData &&
-                  districtData.map((district: Location) => (
-                    <option key={district.id} value={district.id}>
-                      {district.name}
-                    </option>
-                  ))}
-              </select>
-              <select
-                className="select select-bordered w-full max-w-xs"
-                value={selectedCommuneName}
-                onChange={(e) => (
-                  e.target.value, setSelectedCommuneName(e.target.options[e.target.selectedIndex].text)
-                )}
-              >
-                <option disabled selected>
-                  Chọn xã, phường
-                </option>
-                {communeData &&
-                  communeData.map((commune: Location) => (
-                    <option key={commune.id} value={commune.name}>
-                      {commune.name}
-                    </option>
-                  ))}
-              </select>
+                  {districtData &&
+                    districtData.map((district: Location) => (
+                      <option key={district.id} value={district.id}>
+                        {district.name}
+                      </option>
+                    ))}
+                </select>
+                <select
+                  className="select select-bordered w-full max-w-xs"
+                  value={selectedCommuneName}
+                  onChange={(e) => (
+                    e.target.value, setSelectedCommuneName(e.target.options[e.target.selectedIndex].text)
+                  )}
+                >
+                  <option disabled selected>
+                    Chọn xã, phường
+                  </option>
+                  {communeData &&
+                    communeData.map((commune: Location) => (
+                      <option key={commune.id} value={commune.name}>
+                        {commune.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
             </div>
             <FormInput
               prop="address"
@@ -239,9 +304,15 @@ const SettingShop = () => {
               <button type="submit" className="btn btn-primary text-white">
                 {isPending ? 'Đang xử lý' : 'Lưu'}
               </button>
-              <a href="#" className="btn">
+              <button
+                onClick={() => {
+                  const dialog = document.getElementById('my_modal_8') as HTMLDialogElement
+                  dialog.close()
+                }}
+                className="btn"
+              >
                 Hủy
-              </a>
+              </button>
             </div>
           </form>
         </div>
@@ -251,9 +322,15 @@ const SettingShop = () => {
         <div className="card-body ">
           <div className="flex justify-between items-center">
             <span className="font-bold">Thông tin shop</span>
-            <a href="#my_modal_8" className="btn btn-outline btn-primary">
+            <button
+              onClick={() => {
+                const dialog = document.getElementById('my_modal_8') as HTMLDialogElement
+                dialog.showModal()
+              }}
+              className="btn btn-outline btn-primary"
+            >
               Cập nhật thông tin
-            </a>
+            </button>
           </div>
           {info.shopData.shopInfo.address &&
           info.shopData.shopInfo.ownerName &&

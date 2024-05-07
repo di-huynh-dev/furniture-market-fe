@@ -76,25 +76,25 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
     <div key={id} className="card w-full hover:shadow-2xl ease-in-out duration-300 bg-white">
       <Link to={`/product/${id}`}>
         <figure className="px-2 pt-2 relative">
-          <img src={thumbnail} alt={name} className="rounded-xl lg:h-64 md:h-48 w-full object-cover" />
+          <img src={thumbnail} alt={name} className="rounded-xl lg:h-60 md:h-42 w-full object-cover" />
         </figure>
         <div className="flex">
           <button
             onClick={handleAddToWishlist}
-            className="absolute btn btn-circle bg-white top-[-20px] right-2 p-1 text-white tracking-wide group"
+            className="absolute btn btn-circle bg-white top-[-20px] right-0 p-1 text-white tracking-wide group"
           >
             <AiOutlineHeart className="w-[30px] h-[30px] text-info transition duration-300 group-hover:text-red-500" />
           </button>
           {featured && (
-            <span className="absolute top-2 left-2 badge badge-error text-white tracking-wide text-lg">HOT</span>
+            <span className="absolute top-2 left-2 badge badge-error text-white tracking-wide p-3">Nổi bật</span>
           )}
         </div>
         <div className="card-body p-4 md:p-4 lg:p-8">
-          <div className="min-h-[60px]">
-            <h2 className="card-title capitalize text-sm lg:text-lg">{name}</h2>
+          <div className="min-h-[40px]">
+            <h2 className="card-title capitalize text-sm lg:text-base">{name}</h2>
           </div>
           {onSale ? (
-            <div className="flex justify-between lg:text-lg md:text-sm text-sm">
+            <div className="flex justify-between lg:text-base md:text-sm text-sm">
               <span className=" text-left line-through text-gray-400">{formatPrice(price)}</span>
               <span className="text-secondary text-left font-bold">{formatPrice(salePrice)}</span>
             </div>

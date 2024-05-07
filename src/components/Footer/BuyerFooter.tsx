@@ -9,7 +9,7 @@ import { NavLink } from 'react-router-dom'
 
 const BuyerFooter = () => {
   return (
-    <footer className="footer footer-center py-10 bg-[#303036] text-primary-content">
+    <footer className="footer footer-center py-10 bg-neutral text-primary-content">
       <div className="text-white align-element">
         <img src={Logo} alt="" className="w-1/6" />
         <p className="md:text-md text-sm">

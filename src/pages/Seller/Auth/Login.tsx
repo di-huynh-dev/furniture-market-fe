@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useForm } from 'react-hook-form'
 import { LoginApiType } from '@/types/user.type'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import commonApi from '@/api/commonApi'
 import toast from 'react-hot-toast'
@@ -19,6 +19,10 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    document.title = 'Kênh người bán - Đăng nhập'
+  }, [])
 
   const validationSchema = yup.object({
     email: yup.string().email('Email không hợp lệ!').required('Không được để trống'),

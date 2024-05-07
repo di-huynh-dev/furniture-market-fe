@@ -46,7 +46,7 @@ const BuyerWallet = () => {
   }
   return (
     <div className="mx-4 my-2">
-      <div className="border-b-2 pb-5 lg:text-lg text-sm">
+      <div className="pb-5 lg:text-lg text-sm">
         <div className="grid md:grid-cols-2">
           <div>
             <div className="font-bold capitalize">Quản lý ví tiền của tôi</div>

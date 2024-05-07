@@ -17,8 +17,12 @@ import partner6 from '@/assets/images/partner/miizuki.jpg'
 import partner7 from '@/assets/images/partner/phudong.png'
 import partner8 from '@/assets/images/partner/vinhome.jpg'
 import { NavLink } from 'react-router-dom'
+import { useEffect } from 'react'
 
 const HomeLayout = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   const settings = {
     dots: true,
     infinite: true,
