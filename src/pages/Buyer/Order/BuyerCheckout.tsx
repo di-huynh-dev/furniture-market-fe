@@ -2,7 +2,7 @@
 import { Buyer_QueryKeys } from '@/constants/query-keys'
 import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 import { selectCart } from '@/redux/reducers/buyer/cartSlice'
-import { CartItem } from '@/types/cart.type'
+import { CartItemListType } from '@/types/cart.type'
 import { formatDate, formatPrice } from '@/utils/helpers'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
@@ -11,8 +11,9 @@ import { MdOutlineEditLocationAlt } from 'react-icons/md'
 import { useSelector } from 'react-redux'
 import { CiDiscount1 } from 'react-icons/ci'
 import { VoucherRespType } from '@/types/voucher.type'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { IoIosArrowForward } from 'react-icons/io'
 
 type DeliveryAddress = {
   id: string
@@ -23,8 +24,10 @@ type DeliveryAddress = {
 
 const BuyerCheckout = () => {
   const axiosPrivate = useAxiosBuyerPrivate()
+  const navigation = useNavigate()
   const cartItems = useSelector(selectCart)
 
+  const [paymentType, setPaymentType] = useState<string>('COD')
   const [selectedAddressId, setSelectedAddressId] = useState<string>('')
   const [shippingFees, setShippingFees] = useState<{ [key: string]: number }>({})
   const [voucherAppliedMessages, setVoucherAppliedMessages] = useState<{
@@ -36,6 +39,16 @@ const BuyerCheckout = () => {
   useEffect(() => {
     document.title = 'Fnest - Thanh toán'
   }, [])
+
+  const { data: addresses, isLoading: isLoadingAddress } = useQuery({
+    queryKey: [Buyer_QueryKeys.USER_ADDRESS],
+    queryFn: async () => {
+      const resp = await axiosPrivate.get('/buyer/delivery-address')
+
+      setSelectedAddressId(resp.data.data.defaultAddressId)
+      return resp.data.data
+    },
+  })
 
   const handleToggleVoucherSelection = (productId: string, voucherId: string) => {
     setSelectedVouchers((prevSelectedVouchers) => {
@@ -56,15 +69,6 @@ const BuyerCheckout = () => {
     })
   }
 
-  const { data: addresses, isLoading: isLoadingAddress } = useQuery({
-    queryKey: [Buyer_QueryKeys.USER_ADDRESS],
-    queryFn: async () => {
-      const resp = await axiosPrivate.get('/buyer/delivery-address')
-      setSelectedAddressId(resp.data.data.defaultAddressId)
-      return resp.data.data
-    },
-  })
-
   const getVoucherListByProductId = async (id: string) => {
     try {
       const resp = await axiosPrivate.get(`/buyer/voucher/by-product/${id}`)
@@ -84,6 +88,7 @@ const BuyerCheckout = () => {
           total: total,
           voucherIds: voucherIds,
         })
+
         if (resp.status === 200) {
           toast.success(resp.data.messages[0])
           setVoucherAppliedMessages((prevState) => ({
@@ -110,40 +115,47 @@ const BuyerCheckout = () => {
   }
 
   useEffect(() => {
-    if (!isLoadingAddress && addresses) {
-      for (const item of cartItems.cartItemList) {
-        calculateShippingFeeForProduct(item.id, item.cartQuantity, selectedAddressId)
-          .then((fee) => {
-            setShippingFees((prevState) => ({
-              ...prevState,
-              [item.id]: fee,
-            }))
-          })
-          .catch((error) => {
-            console.error('Error calculating shipping fee:', error)
-          })
+    const calculateShippingFees = async () => {
+      if (!isLoadingAddress && selectedAddressId !== '') {
+        const updatedShippingFees: { [key: string]: number } = {} // Kiểu dữ liệu cụ thể cho updatedShippingFees
+        try {
+          // Duyệt qua từng sản phẩm trong giỏ hàng và tính phí vận chuyển cho mỗi sản phẩm
+          for (const storeItem of cartItems.cartItemList) {
+            for (const item of storeItem.items) {
+              const fee = await calculateShippingFeeForProduct(item.id, item.cartQuantity, selectedAddressId)
+              updatedShippingFees[item.id] = fee // Cập nhật phí vận chuyển cho sản phẩm
+            }
+          }
+          setShippingFees(updatedShippingFees) // Cập nhật state với phí vận chuyển mới
+        } catch (error) {
+          console.error('Error calculating shipping fee:', error)
+        }
       }
     }
-  }, [isLoadingAddress, addresses, selectedAddressId])
+
+    calculateShippingFees() // Gọi hàm tính toán phí vận chuyển khi có sự thay đổi
+  }, [isLoadingAddress, selectedAddressId, cartItems])
 
   const calculateTotalPrice = () => {
     let totalPrice = 0
     let totalShippingFee = 0
     let totalDiscount = 0
 
-    // Tính tổng tiền hàng và tổng phí vận chuyển
-    for (const item of cartItems.cartItemList) {
-      const itemPrice = item.price * item.cartQuantity
-      totalPrice += itemPrice
-      totalShippingFee += shippingFees[item.id] || 0
+    // Tính tổng tiền hàng, tổng phí vận chuyển và tổng giảm giá từ voucher
+    for (const storeItem of cartItems.cartItemList) {
+      for (const item of storeItem.items) {
+        const itemPrice = item.price * item.cartQuantity
+        totalPrice += itemPrice
+        totalShippingFee += shippingFees[item.id] || 0
 
-      // Tính tổng voucher giảm giá (nếu có)
-      if (voucherAppliedMessages[item.id]) {
-        totalDiscount += voucherAppliedMessages[item.id].discount || 0
+        // Tính tổng giảm giá từ voucher đã áp dụng
+        if (voucherAppliedMessages[item.id]) {
+          totalDiscount += voucherAppliedMessages[item.id].discount || 0
+        }
       }
     }
 
-    // Tổng thanh toán = Tổng tiền hàng + Tổng phí vận chuyển - Tổng voucher giảm giá
+    // Tổng thanh toán = Tổng tiền hàng + Tổng phí vận chuyển - Tổng giảm giá từ voucher
     const totalPayment = totalPrice + totalShippingFee - totalDiscount
 
     return {
@@ -153,8 +165,44 @@ const BuyerCheckout = () => {
       totalPayment: totalPayment,
     }
   }
-
   const totalPriceInfo = calculateTotalPrice()
+
+  const handleCreateOrder = async () => {
+    try {
+      const orderList = cartItems.cartItemList.map((storeItem) => {
+        let totalShippingFeeForStore = 0
+
+        // Calculate total shipping fee for items in the store
+        storeItem.items.forEach((product) => {
+          totalShippingFeeForStore += shippingFees[product.id] || 0
+        })
+
+        return {
+          storeId: storeItem.storeInfo.id,
+          orderItemList: storeItem.items.map((product) => ({
+            productId: product.id,
+            quantity: product.cartQuantity,
+          })),
+          totalDiscount: totalPriceInfo.totalDiscount, // Assuming totalDiscount is for the entire order
+          shippingFee: totalShippingFeeForStore,
+          voucherIdList: selectedVouchers[storeItem.items[0].id] || [], // Assuming selectedVouchers contains voucherIds for each store
+        }
+      })
+
+      const formData = {
+        deliveryAddressId: selectedAddressId,
+        orderStatus: 'UNPAID',
+        paymentType: paymentType,
+        orderList: orderList,
+      }
+      const resp = await axiosPrivate.post('/buyer/order', formData)
+      if (resp.status === 200) {
+        toast.success(resp.data.messages[0])
+      }
+    } catch (error: any) {
+      toast.error(error.response.data.messages[0])
+    }
+  }
 
   if (isLoadingAddress) return <p>Loading...</p>
 
@@ -197,138 +245,177 @@ const BuyerCheckout = () => {
           <p>Địa chỉ nhận hàng</p>
         </div>
         <div className="">
-          {addresses?.deliveryAddresses.map((address: DeliveryAddress) => {
-            if (address.id === addresses.defaultAddressId) {
-              return (
-                <div className="grid grid-cols-6 gap-4 items-center">
-                  <p className="font-bold">
-                    {address.receiverName}, {address.receiverPhone}
-                  </p>
-                  <p className="col-span-4">{address.deliveryAddress}</p>
+          {selectedAddressId ? (
+            addresses.deliveryAddresses.map((address: DeliveryAddress) => {
+              if (address.id === addresses.defaultAddressId) {
+                return (
+                  <div className="grid grid-cols-6 gap-4 items-center">
+                    <p className="font-bold">
+                      {address.receiverName}, {address.receiverPhone}
+                    </p>
+                    <p className="col-span-4">{address.deliveryAddress}</p>
 
-                  <button
-                    className="flex gap-2 items-center cursor-pointer text-primary"
-                    onClick={() => {
-                      const dialog = document.getElementById('my_modal_2') as HTMLDialogElement
-                      dialog.showModal()
-                    }}
-                  >
-                    <MdOutlineEditLocationAlt />
-                    <p>Thay đổi</p>
-                  </button>
-                </div>
-              )
-            } else {
-              return null
-            }
-          })}
+                    <button
+                      className="flex gap-2 items-center cursor-pointer text-primary"
+                      onClick={() => {
+                        const dialog = document.getElementById('my_modal_2') as HTMLDialogElement
+                        dialog.showModal()
+                      }}
+                    >
+                      <MdOutlineEditLocationAlt />
+                      <p>Thay đổi</p>
+                    </button>
+                  </div>
+                )
+              } else {
+                return null
+              }
+            })
+          ) : (
+            <>
+              <button onClick={() => navigation('/buyer/account/address')} className="btn btn-primary text-white my-2">
+                Thêm địa chỉ giao hàng
+              </button>
+            </>
+          )}
         </div>
       </div>
 
-      <div className="align-element bg-base-100 shadow-xl my-2 p-4">
-        <p className="text-lg">Thông tin sản phẩm</p>
-        <div className="grid grid-cols-8 text-gray-500">
-          <div className="col-span-3">Sản phẩm</div>
-          <div className="col-span-2">Chất liệu</div>
-          <div>Đơn giá</div>
-          <div>Số lượng</div>
-          <div>Thành tiền</div>
+      <div className="align-element ">
+        <div className="bg-base-100 shadow-xl p-4">
+          <p className="text-lg">Thông tin sản phẩm</p>
+          <div className="grid grid-cols-8 text-gray-500 my-2">
+            <div className="col-span-3">Sản phẩm</div>
+            <div className="col-span-2">Chất liệu</div>
+            <div>Đơn giá</div>
+            <div>Số lượng</div>
+            <div>Thành tiền</div>
+          </div>
         </div>
 
-        {cartItems.cartItemList.map((item: CartItem) => (
-          <div>
-            <div className="grid grid-cols-8 my-2 gap-3">
-              <div className="col-span-3 flex gap-2">
-                <img src={item.thumbnail} alt={item.name} className="w-24 h-24 object-cover" />
-                <p>{item.name}</p>
-              </div>
-              <p className="col-span-2">{item.material}</p>
-              <p>{formatPrice(item.price)}</p>
-              <p>{item.cartQuantity}</p>
-              <p>{formatPrice(item.price * item.cartQuantity)}</p>
+        {cartItems.cartItemList.map((item: CartItemListType) => (
+          <div className="bg-base-100 shadow-xl mb-2 p-4">
+            <div className="border-b pb-2">
+              <button onClick={() => navigation(`/shop/${item.storeInfo.id}`)}>
+                <div className="flex gap-2 items-center ">
+                  <img src={item.storeInfo.logo} alt="Logo shop" className="w-12 h-12 object-cover rounded-full" />
+                  <p className="text-lg font-bold uppercase">{item.storeInfo.shopName}</p>
+                  <IoIosArrowForward />
+                </div>
+              </button>
             </div>
 
-            <div className="flex justify-end gap-2">
-              <div className="flex gap-2 items-center text-primary">
-                <CiDiscount1 />
-                <p>Voucher của shop</p>
-              </div>
-              <div className="flex gap-2 items-center p-4">
-                <div
-                  className="dropdown dropdown-hover dropdown-bottom dropdown-end"
-                  onClick={() => getVoucherListByProductId(item.id)}
-                >
-                  <div tabIndex={0} role="button" className="text-blue-500">
-                    Chọn voucher
+            {item.items.map((item) => (
+              <>
+                <div className="grid grid-cols-8 my-2 gap-3">
+                  <div className="col-span-3 flex gap-2">
+                    <img src={item.thumbnail} alt={item.name} className="w-24 h-24 object-cover" />
+                    <p>{item.name}</p>
                   </div>
-
-                  <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-96">
-                    {selectedVoucher.map((voucher: VoucherRespType) => (
-                      <div
-                        className={`border p-2 my-2 grid grid-cols-5 items-center gap-2 ${
-                          !voucher.usable ? 'opacity-50 cursor-not-allowed' : ''
-                        }`}
-                      >
-                        <Link to={`/shop/${item.storeInfo.id}`}>
-                          <img src={item.storeInfo.logo} alt="Logo shop" className="w-24 " />
-                        </Link>
-                        <div className="col-span-3">
-                          <p>Mã: {voucher.code}</p>
-                          <p>{voucher.name}</p>
-                          <p>Giảm: {formatPrice(voucher.maxDiscount)}</p>
-                          <p>Đơn tối thiểu: {formatPrice(voucher.minValue)}</p>
-                          <p className="text-sm text-gray-500">
-                            HSD: Từ {formatDate(voucher.startDate)} đến {formatDate(voucher.endDate)}
-                          </p>
-                        </div>
-
-                        <input
-                          type="checkbox"
-                          disabled={!voucher.usable}
-                          checked={selectedVouchers[item.id]?.includes(voucher.id)}
-                          onChange={() => handleToggleVoucherSelection(item.id, voucher.id)}
-                        />
-                      </div>
-                    ))}
-                    <button
-                      className="btn btn-primary text-white"
-                      onClick={() => applyVoucher(item.id, item.price * item.cartQuantity)}
+                  <p className="col-span-2">{item.material}</p>
+                  <p>{formatPrice(item.price)}</p>
+                  <p>x{item.cartQuantity}</p>
+                  <p>{formatPrice(item.price * item.cartQuantity)}</p>
+                </div>
+                <div className="flex justify-end gap-2">
+                  <div className="flex gap-2 items-center text-primary">
+                    <CiDiscount1 />
+                    <p>Voucher của shop</p>
+                  </div>
+                  <div className="flex gap-2 items-center p-4">
+                    <div
+                      className="dropdown dropdown-hover dropdown-bottom dropdown-end"
+                      onClick={() => getVoucherListByProductId(item.id)}
                     >
-                      Áp dụng
-                    </button>
-                  </ul>
-                </div>
-              </div>
-            </div>
+                      <div tabIndex={0} role="button" className="text-blue-500">
+                        Chọn voucher
+                      </div>
 
-            <div className="p-5 flex justify-end gap-2 border-dashed border-2 border-indigo-200">
-              <div>
-                {voucherAppliedMessages[item.id] && (
-                  <p>Giảm giá: {formatPrice(voucherAppliedMessages[item.id].discount)}</p>
-                )}
-                <p>Phí vận chuyển: {formatPrice(shippingFees[item.id]) || 'Calculating...'}</p>
-                <div className="flex gap-2 text-primary">
-                  Tổng tiền ({item.cartQuantity} sản phẩm):
-                  {voucherAppliedMessages[item.id] ? (
-                    <p>
-                      {formatPrice(
-                        item.price * item.cartQuantity +
-                          shippingFees[item.id] -
-                          voucherAppliedMessages[item.id].discount,
-                      )}
-                    </p>
-                  ) : (
-                    <p>{formatPrice(item.price * item.cartQuantity + shippingFees[item.id])}</p>
-                  )}
+                      <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-96">
+                        {selectedVoucher.map((voucher: VoucherRespType) => (
+                          <div
+                            className={`border p-2 my-2 grid grid-cols-5 items-center gap-2 ${
+                              !voucher.usable ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                          >
+                            <Link to={`/shop/${item.storeInfo.id}`}>
+                              <img src={item.storeInfo.logo} alt="Logo shop" className="w-24 " />
+                            </Link>
+                            <div className="col-span-3">
+                              <p>Mã: {voucher.code}</p>
+                              <p>{voucher.name}</p>
+                              <p>Giảm: {formatPrice(voucher.maxDiscount)}</p>
+                              <p>Đơn tối thiểu: {formatPrice(voucher.minValue)}</p>
+                              <p className="text-sm text-gray-500">
+                                HSD: Từ {formatDate(voucher.startDate)} đến {formatDate(voucher.endDate)}
+                              </p>
+                            </div>
+
+                            <input
+                              type="checkbox"
+                              disabled={!voucher.usable}
+                              checked={selectedVouchers[item.id]?.includes(voucher.id)}
+                              onChange={() => handleToggleVoucherSelection(item.id, voucher.id)}
+                            />
+                          </div>
+                        ))}
+                        {selectedVoucher.length !== 0 && (
+                          <button
+                            className="btn btn-primary text-white"
+                            onClick={() => applyVoucher(item.id, item.price * item.cartQuantity)}
+                          >
+                            Áp dụng
+                          </button>
+                        )}
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+
+                <div className="p-5 flex justify-end gap-2 border-dashed border-2 border-indigo-200">
+                  <div>
+                    {voucherAppliedMessages[item.id] && (
+                      <p>Giảm giá: {formatPrice(voucherAppliedMessages[item.id].discount)}</p>
+                    )}
+                    <p>Phí vận chuyển: {formatPrice(shippingFees[item.id]) || 'Calculating...'}</p>
+                    <div className="flex gap-2 text-primary">
+                      Tổng tiền ({item.cartQuantity} sản phẩm):
+                      {voucherAppliedMessages[item.id] ? (
+                        <p>
+                          {formatPrice(
+                            item.price * item.cartQuantity +
+                              shippingFees[item.id] -
+                              voucherAppliedMessages[item.id].discount,
+                          )}
+                        </p>
+                      ) : (
+                        <p>{formatPrice(item.price * item.cartQuantity + shippingFees[item.id])}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </>
+            ))}
           </div>
         ))}
       </div>
 
       <div className="align-element bg-base-100 shadow-xl my-2 p-4">
-        <p className="text-lg">Phương thức thanh toán</p>
+        <div className="flex items-center gap-2">
+          <p className="text-lg">Phương thức thanh toán</p>
+          <button
+            onClick={() => setPaymentType('COD')}
+            className={paymentType === 'COD' ? 'btn btn-primary text-white' : 'btn btn-outline btn-primary'}
+          >
+            Thanh toán khi nhận hàng
+          </button>
+          <button
+            onClick={() => setPaymentType('VIA_WALLET')}
+            className={paymentType === 'VIA_WALLET' ? 'btn btn-primary text-white' : 'btn btn-outline btn-primary'}
+          >
+            Số dư ví
+          </button>
+        </div>
         <div className="flex justify-end">
           <div>
             <div className="flex gap-2 my-4">
@@ -347,6 +434,9 @@ const BuyerCheckout = () => {
               <p>Tổng thanh toán</p>
               <p className="text-primary text-3xl font-semibold">{formatPrice(totalPriceInfo.totalPayment)}</p>
             </div>
+            <button onClick={() => handleCreateOrder()} className="btn btn-primary text-white w-full">
+              Đặt hàng
+            </button>
           </div>
         </div>
       </div>

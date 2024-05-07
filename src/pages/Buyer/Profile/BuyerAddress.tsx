@@ -283,7 +283,7 @@ const BuyerAddress = () => {
       </div>
       {addresses?.deliveryAddresses.length === 0 ? (
         <>
-          <p className="text-center text-error text-xl">Vui lòng thêm địa chỉ giao và nhận hàng!</p>
+          <p className="text-center text-error">Vui lòng thêm địa chỉ nhận hàng!</p>
         </>
       ) : (
         <div className="flex flex-col w-full">

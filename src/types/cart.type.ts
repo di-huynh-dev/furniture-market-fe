@@ -19,10 +19,18 @@ export type CartItem = {
   cartQuantity: number
 }
 export type CartType = {
-  cartItemList: CartItem[]
+  cartItemList: {
+    storeInfo: StoreInfo
+    items: CartItem[]
+  }[]
   cartTotalQuantity: number
   cartTotalAmount: number
   shipping: number
   discountCode: string
   discount: number
+}
+
+export type CartItemListType = {
+  storeInfo: StoreInfo
+  items: CartItem[]
 }

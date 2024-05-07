@@ -1,5 +1,5 @@
 import { RootState } from '@/redux/store'
-import { CartType } from '@/types/cart.type'
+import { CartItem, CartType } from '@/types/cart.type'
 import { createSlice } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify'
 
@@ -16,50 +16,70 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      if (action.payload) {
-        const cartQuantity = action.payload.quantity !== undefined ? action.payload.quantity : 1
-        const item = state.cartItemList.find((i) => i.id === action.payload.id)
+      const payload = action.payload
+      if (payload) {
+        const cartQuantity = payload.quantity !== undefined ? payload.quantity : 1
+        const item = state.cartItemList
+          .find((i) => i.storeInfo.id === payload.storeInfo.id)
+          ?.items.find((i) => i.id === payload.id)
 
         if (item) {
           item.cartQuantity += cartQuantity
           toast.info('Số lượng sản phẩm đã được cập nhật!')
         } else {
-          const tempProductItem = { ...action.payload, cartQuantity: cartQuantity }
-          state.cartItemList.push(tempProductItem)
+          const tempProductItem: CartItem = { ...payload, cartQuantity }
+
+          const storeCartItemsIndex = state.cartItemList.findIndex((item) => item.storeInfo.id === payload.storeInfo.id)
+          if (storeCartItemsIndex !== -1) {
+            state.cartItemList[storeCartItemsIndex].items.push(tempProductItem)
+          } else {
+            state.cartItemList.push({
+              storeInfo: payload.storeInfo,
+              items: [tempProductItem],
+            })
+          }
+
           toast.success('Sản phẩm đã được thêm vào giỏ hàng!')
         }
 
         localStorage.setItem('cartItems', JSON.stringify(state.cartItemList))
       }
     },
-    decreaseCart(state, action) {
-      const itemIndex = state.cartItemList.findIndex((item) => item.id === action.payload.id)
+    decreaseCart: (state, action) => {
+      const { productId, storeId } = action.payload
+      const storeIndex = state.cartItemList.findIndex((store) => store.storeInfo.id === storeId)
 
-      if (state.cartItemList[itemIndex].cartQuantity > 1) {
-        state.cartItemList = state.cartItemList.map((item) =>
-          item.id === action.payload.id ? { ...item, cartQuantity: item.cartQuantity - 1 } : item,
-        )
-        toast.info('Số lượng sản phẩm đã được cập nhật!')
-      } else if (state.cartItemList[itemIndex].cartQuantity === 1) {
-        const nextcartItemList = state.cartItemList.filter((item) => item.id !== action.payload.id)
-        state.cartItemList = nextcartItemList
-        toast.error('Sản phẩm đã được xóa!')
+      if (storeIndex !== -1) {
+        const itemIndex = state.cartItemList[storeIndex].items.findIndex((item) => item.id === productId)
+        if (itemIndex !== -1) {
+          const cartItem = state.cartItemList[storeIndex].items[itemIndex]
+          if (cartItem.cartQuantity > 1) {
+            cartItem.cartQuantity--
+            toast.info('Số lượng sản phẩm đã được cập nhật!')
+          } else {
+            state.cartItemList[storeIndex].items.splice(itemIndex, 1)
+            // Nếu danh sách sản phẩm của cửa hàng trống sau khi xóa, hãy xóa cửa hàng đó khỏi giỏ hàng
+            if (state.cartItemList[storeIndex].items.length === 0) {
+              state.cartItemList.splice(storeIndex, 1)
+            }
+            toast.error('Sản phẩm đã được xóa khỏi giỏ hàng!')
+          }
+          localStorage.setItem('cartItems', JSON.stringify(state.cartItemList))
+        }
       }
-
-      localStorage.setItem('cartItems', JSON.stringify(state.cartItemList))
     },
     getTotals: (state) => {
-      const { cartItemList } = state
-      const { total, quantity } = cartItemList.reduce(
-        (cartTotal, cartItem) => {
-          const { onSale, price, salePrice, cartQuantity } = cartItem
+      let total = 0
+      let quantity = 0
+
+      state.cartItemList.forEach((store) => {
+        store.items.forEach((item) => {
+          const { onSale, price, salePrice, cartQuantity } = item
           const itemTotal = onSale ? salePrice * cartQuantity : price * cartQuantity
-          cartTotal.total += itemTotal
-          cartTotal.quantity += cartQuantity
-          return cartTotal
-        },
-        { total: 0, quantity: 0 },
-      )
+          total += itemTotal
+          quantity += cartQuantity
+        })
+      })
 
       state.cartTotalQuantity = quantity
       state.cartTotalAmount = parseFloat(total.toFixed(2))
@@ -67,18 +87,27 @@ const cartSlice = createSlice({
       state.discountCode = ''
       state.discount = 0
     },
-    removeFromCart(state, action) {
-      state.cartItemList.map((cartItem) => {
-        if (cartItem.id === action.payload.id) {
-          const nextCartItems = state.cartItemList.filter((item) => item.id !== cartItem.id)
+    removeFromCart: (state, action) => {
+      const { productId, storeId } = action.payload
+      const storeIndex = state.cartItemList.findIndex((store) => store.storeInfo.id === storeId)
 
-          state.cartItemList = nextCartItems
-          toast.success('Xóa sản phẩm thành công')
+      if (storeIndex !== -1) {
+        state.cartItemList[storeIndex].items = state.cartItemList[storeIndex].items.filter(
+          (item) => item.id !== productId,
+        )
+
+        // Nếu danh sách sản phẩm của cửa hàng trống sau khi xóa, hãy xóa cửa hàng đó khỏi giỏ hàng
+        if (state.cartItemList[storeIndex].items.length === 0) {
+          state.cartItemList.splice(storeIndex, 1)
         }
+
+        toast.success('Xóa sản phẩm khỏi giỏ hàng thành công')
         localStorage.setItem('cartItems', JSON.stringify(state.cartItemList))
-        return state
-      })
+      } else {
+        toast.error('Không tìm thấy cửa hàng chứa sản phẩm này trong giỏ hàng')
+      }
     },
+
     clearCart(state) {
       state.cartItemList = []
       state.cartTotalQuantity = 0

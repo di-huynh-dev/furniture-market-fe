@@ -23,6 +23,7 @@ const BuyerProductDetail = () => {
     },
     enabled: !!id,
   })
+  console.log(product_detail)
 
   const handleImageClick = (imageUrl: string) => {
     setSelectedImage(imageUrl)

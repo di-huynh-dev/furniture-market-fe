@@ -9,7 +9,8 @@ const CartItemComponent: React.FC<{ item: CartItem }> = ({ item }) => {
   const dispatch = useDispatch()
 
   const handleDecrease = (item: CartItem) => {
-    dispatch(decreaseCart(item))
+    dispatch(decreaseCart({ productId: item.id, storeId: item.storeInfo.id }))
+    dispatch(getTotals())
   }
 
   const handleIncrease = (item: CartItem) => {
@@ -18,7 +19,7 @@ const CartItemComponent: React.FC<{ item: CartItem }> = ({ item }) => {
   }
 
   const removeItemFromTheCart = (item: CartItem) => {
-    dispatch(removeFromCart(item))
+    dispatch(removeFromCart({ productId: item.id, storeId: item.storeInfo.id }))
     dispatch(getTotals())
   }
 
@@ -35,7 +36,15 @@ const CartItemComponent: React.FC<{ item: CartItem }> = ({ item }) => {
             </div>
             <div className="mt-2 flex items-center gap-1 text-sm">
               <p className="font-bold">Kích thước:</p>
-              <p className="text-sm">{item.size}</p>
+
+              <p className="text-sm">
+                {item.width} cm x {item.height} cm x {item.length} cm
+              </p>
+            </div>
+            <div className="mt-2 flex items-center gap-1 text-sm">
+              <p className="font-bold">Trọng lượng:</p>
+
+              <p className="text-sm">{item.weight} gram</p>
             </div>
           </div>
           <div className="mt-2 flex lg:items-center space-x-2 flex-col-reverse">

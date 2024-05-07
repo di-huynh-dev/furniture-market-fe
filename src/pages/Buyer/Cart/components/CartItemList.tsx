@@ -4,8 +4,14 @@ import image from '@/assets/images/no-item.jpg'
 import CartItemComponent from './CartItemComponent'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
+import { IoIosArrowForward } from 'react-icons/io'
+import { useNavigate } from 'react-router-dom'
+import { CartType } from '@/types/cart.type'
+
 const CartItemList = () => {
-  const cart = useSelector(selectCart)
+  const cart: CartType = useSelector(selectCart)
+  const navigation = useNavigate()
+
   const dispatch = useDispatch()
   const handleDeleteAll = () => {
     dispatch(clearCart())
@@ -13,7 +19,7 @@ const CartItemList = () => {
     toast.success('Đã xóa tất cả sản phẩm!')
   }
   return (
-    <div className="card py-4 bg-base-100 shadow-sm mx-2 lg:px-10 px-4">
+    <div className="">
       {cart.cartItemList.length === 0 ? (
         <div className="flex flex-col items-center lg:text-xl text-sm py-10">
           <img src={image} alt="Giỏ hàng trống" className="w-1/2 h-1/2" />
@@ -23,7 +29,18 @@ const CartItemList = () => {
       ) : (
         <>
           {cart.cartItemList.map((item) => (
-            <CartItemComponent item={item} key={item.id} />
+            <div className="card py-4 bg-base-100 shadow-sm m-2 lg:px-10 px-4">
+              <button onClick={() => navigation(`/shop/${item.storeInfo.id}`)}>
+                <div className="flex gap-2 items-center mb-4">
+                  <img src={item.storeInfo.logo} alt="Logo shop" className="w-12 h-12 object-cover rounded-full" />
+                  <p className="text-lg font-bold uppercase">{item.storeInfo.shopName}</p>
+                  <IoIosArrowForward />
+                </div>
+              </button>
+              {item.items.map((item) => (
+                <CartItemComponent key={item.id} item={item} />
+              ))}
+            </div>
           ))}
           <div className="grid md:grid-cols-2 grid-cols-1 gap-2">
             <button className="btn btn-ghost btn-info">Khám phá ngay</button>

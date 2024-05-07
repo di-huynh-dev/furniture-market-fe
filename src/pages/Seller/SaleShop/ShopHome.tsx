@@ -41,7 +41,6 @@ const ShopHome = () => {
     },
     enabled: !!id,
   })
-  console.log(shop_profile)
 
   const handleFollow = async () => {
     try {
