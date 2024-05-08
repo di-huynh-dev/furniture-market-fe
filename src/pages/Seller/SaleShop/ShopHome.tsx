@@ -16,6 +16,8 @@ import { IoIosSend } from 'react-icons/io'
 import { FaFlag } from 'react-icons/fa'
 import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 import toast from 'react-hot-toast'
+import { selectAuth } from '@/redux/reducers/authSlice'
+import { useSelector } from 'react-redux'
 
 type CategoryType = {
   id: string
@@ -24,6 +26,7 @@ type CategoryType = {
 
 const ShopHome = () => {
   const { id } = useParams()
+  const user = useSelector(selectAuth)
   const axiosPrivate = useAxiosBuyerPrivate()
   const client = useQueryClient()
   const [initialLoad, setInitialLoad] = useState(true)
@@ -36,8 +39,13 @@ const ShopHome = () => {
   const { data: shop_profile, isLoading: shop_profile_loading } = useQuery({
     queryKey: [Buyer_QueryKeys.SHOP_PROFILE],
     queryFn: async () => {
-      const resp = await axiosClient.get(`/store/${id}`)
-      return resp.data.data
+      if (user.authData.accessToken) {
+        const resp = await axiosPrivate.get(`/store/${id}`)
+        return resp.data.data
+      } else {
+        const resp = await axiosClient.get(`/store/${id}`)
+        return resp.data.data
+      }
     },
     enabled: !!id,
   })

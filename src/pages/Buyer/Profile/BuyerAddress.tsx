@@ -309,8 +309,8 @@ const BuyerAddress = () => {
                   </button>
                 </div>
               </div>
-              <div className="grid grid-cols-2">
-                <div>
+              <div className="grid grid-cols-3">
+                <div className="col-span-2">
                   <span className="text-gray-500">{address.deliveryAddress}</span>
                 </div>
                 <div className="flex justify-end">

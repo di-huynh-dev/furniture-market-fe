@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 const CartTotal = () => {
   const cart = useSelector(selectCart)
   const user = useSelector(selectAuth)
+
   return (
     <div className="card bg-base-100 shadow-xl">
       <div className="card-body">
