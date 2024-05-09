@@ -11,6 +11,8 @@ import { CiCircleCheck } from 'react-icons/ci'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
+import { UserType } from '@/types/user.type'
+import { useNavigate } from 'react-router-dom'
 
 type FormData = {
   fullName: string
@@ -29,6 +31,7 @@ const BuyerProfile = () => {
   const axiosPrivate = useAxiosBuyerPrivate()
   const dispatch = useDispatch()
   const client = useQueryClient()
+  const navigation = useNavigate()
 
   const { data: userProfile, isLoading } = useQuery({
     queryKey: [Buyer_QueryKeys.USER_PROFILE],
@@ -37,6 +40,14 @@ const BuyerProfile = () => {
       return resp.data.data
     },
     enabled: !!user.authData.accessToken,
+  })
+
+  const { data: following, isLoading: isFollowingLoading } = useQuery({
+    queryKey: [Buyer_QueryKeys.FOLLOWING_PEOPLE],
+    queryFn: async () => {
+      const resp = await axiosPrivate.get('/user/connection/following-people')
+      return resp.data.data
+    },
   })
 
   const updateProfileMutation = useMutation({
@@ -131,7 +142,7 @@ const BuyerProfile = () => {
     resolver: yupResolver(schema),
   })
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading || isFollowingLoading) return <div>Loading...</div>
 
   return (
     <div className="mx-4 my-2">
@@ -287,6 +298,42 @@ const BuyerProfile = () => {
             <tr>
               <td>Họ và tên</td>
               <td>{userProfile.fullName}</td>
+              <td>
+                Đang theo dõi:{' '}
+                <button
+                  onClick={() => {
+                    const dialog = document.getElementById('my_modal_1') as HTMLDialogElement
+                    dialog.showModal()
+                  }}
+                  className="link text-primary"
+                >
+                  {following.length}
+                </button>
+                <dialog id="my_modal_1" className="modal">
+                  <div className="modal-box">
+                    <h3 className="font-bold text-lg text-center">Đang theo dõi</h3>
+                    {following.map((user: UserType) => (
+                      <div>
+                        <button onClick={() => navigation(`/shop/${user.id}`)}>
+                          <div className="flex gap-2 items-center">
+                            <img
+                              src={user.avatar}
+                              alt={user.fullName}
+                              className="w-10 h-10 object-cover rounded-full"
+                            />
+                            <p className="font-bold uppercase">{user.fullName}</p>
+                          </div>
+                        </button>
+                      </div>
+                    ))}
+                    <div className="modal-action">
+                      <form method="dialog">
+                        <button className="btn">Đóng</button>
+                      </form>
+                    </div>
+                  </div>
+                </dialog>
+              </td>
             </tr>
             <tr>
               <td>Email</td>

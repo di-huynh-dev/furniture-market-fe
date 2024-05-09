@@ -14,12 +14,14 @@ import {
   BuyerProductHome,
   BuyerProfile,
   BuyerPurchase,
+  BuyerSearch,
   BuyerSignup,
   BuyerVerify,
   BuyerVoucher,
   BuyerWallet,
   BuyerWhishlist,
   MallHome,
+  ReviewProduct,
 } from './pages/Buyer'
 import {
   AddProduct,
@@ -88,6 +90,10 @@ function App() {
               element: <BuyerOrderDetail />,
             },
             {
+              path: buyer_routes.review_product,
+              element: <ReviewProduct />,
+            },
+            {
               path: buyer_routes.address,
               element: <BuyerAddress />,
             },
@@ -116,6 +122,10 @@ function App() {
         {
           path: buyer_routes.cart,
           element: <BuyerCart />,
+        },
+        {
+          path: buyer_routes.search,
+          element: <BuyerSearch />,
         },
         {
           path: common_routes.vnpay_return,

@@ -26,7 +26,7 @@ const VnPayReturn = () => {
     try {
       const resp = await axiosPrivate.put('/user/wallet/charge', {
         vnpOtp: vnp_TxnRef,
-        amount: Number(vnpAmount),
+        amount: Number(vnpAmount) / 100,
       })
       if (resp.status === 200) {
         toast.success(resp.data.messages[0])

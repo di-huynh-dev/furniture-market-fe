@@ -9,7 +9,6 @@ const BuyerPurchase = () => {
   const [activeTab, setActiveTab] = useState('')
   const axiosPrivate = useAxiosBuyerPrivate()
   const [orderListByStatus, setOrderListByStatus] = useState<OrderItem[]>([])
-
   const client = useQueryClient()
 
   const { isLoading: isLoadingOrders } = useQuery({
@@ -58,16 +57,6 @@ const BuyerPurchase = () => {
         <div role="tablist" className="tabs tabs-lifted">
           <div className="flex">
             <div>
-              <div
-                role="tab"
-                onClick={() => handleTabClick('UNPAID')}
-                className={`tab ${activeTab === 'UNPAID' ? 'tab-active font-semibold text-primary ' : 'indicator'}`}
-              >
-                <p>Chờ thanh toán</p>
-                <span className={` ${activeTab === 'UNPAID' ? 'badge text-primary' : 'indicator-item badge'}`}>
-                  {activeTab === 'UNPAID' && orderListByStatus.length}
-                </span>
-              </div>
               <div
                 onClick={() => handleTabClick('TO_SHIP')}
                 role="tab"
@@ -139,7 +128,7 @@ const BuyerPurchase = () => {
       </div>
       {/* Content */}
       {orderListByStatus.map((order: OrderItem) => {
-        return <OrderItemComponent order={order} />
+        return <OrderItemComponent order={order} key={order.id} />
       })}
     </div>
   )

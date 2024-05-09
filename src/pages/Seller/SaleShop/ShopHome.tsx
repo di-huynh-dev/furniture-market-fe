@@ -36,6 +36,10 @@ const ShopHome = () => {
   const [sortByPrice, setSortByPrice] = useState('ASC')
   const [evaluate, setEvaluate] = useState(0)
 
+  useEffect(() => {
+    scrollTo(0, 0)
+  }, [])
+
   const { data: shop_profile, isLoading: shop_profile_loading } = useQuery({
     queryKey: [Buyer_QueryKeys.SHOP_PROFILE],
     queryFn: async () => {

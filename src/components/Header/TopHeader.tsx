@@ -87,7 +87,7 @@ const TopHeader = () => {
                         </Link>
                       </li>
                       <li>
-                        <a>Cài đặt</a>
+                        <Link to={'/buyer/account/purchase'}>Đơn mua</Link>
                       </li>
                       <li onClick={handleLogout}>
                         <a>Đăng xuất</a>

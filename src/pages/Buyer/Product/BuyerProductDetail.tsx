@@ -1,7 +1,7 @@
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import axiosClient from '@/libs/axios-client'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { AiOutlineHeart } from 'react-icons/ai'
 import { FaStar } from 'react-icons/fa'
@@ -18,6 +18,11 @@ const BuyerProductDetail = () => {
   const [activeTab, setActiveTab] = useState(0)
   const [reviews, setReviews] = useState([])
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    scrollTo(0, 0)
+    getReviewByStarsMutation.mutate(0)
+  }, [])
 
   const { data: product_detail, isLoading } = useQuery({
     queryKey: [Seller_QueryKeys.PRODUCT_DETAIL],

@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Buyer_QueryKeys } from '@/constants/query-keys'
 import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
-import { selectCart } from '@/redux/reducers/buyer/cartSlice'
+import { clearCart, getTotals, selectCart } from '@/redux/reducers/buyer/cartSlice'
 import { CartItemListType } from '@/types/cart.type'
 import { formatDate, formatPrice } from '@/utils/helpers'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { CiLocationOn } from 'react-icons/ci'
 import { MdOutlineEditLocationAlt } from 'react-icons/md'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { CiDiscount1 } from 'react-icons/ci'
 import { VoucherRespType } from '@/types/voucher.type'
 import { Link, useNavigate } from 'react-router-dom'
@@ -26,6 +26,7 @@ const BuyerCheckout = () => {
   const axiosPrivate = useAxiosBuyerPrivate()
   const navigation = useNavigate()
   const cartItems = useSelector(selectCart)
+  const dispatch = useDispatch()
 
   const [paymentType, setPaymentType] = useState<string>('COD')
   const [selectedAddressId, setSelectedAddressId] = useState<string>('')
@@ -198,6 +199,9 @@ const BuyerCheckout = () => {
       const resp = await axiosPrivate.post('/buyer/order', formData)
       if (resp.status === 200) {
         toast.success(resp.data.messages[0])
+        dispatch(clearCart())
+        dispatch(getTotals())
+        navigation('/buyer/account/purchase')
       }
     } catch (error: any) {
       toast.error(error.response.data.messages[0])
