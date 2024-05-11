@@ -70,19 +70,21 @@ const BuyerHeader = () => {
                   placeholder="Tìm kiếm sản phẩm..."
                   className="input input-bordered"
                 />
-                <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box">
-                  {productList?.map((product: ProductDetailType) => (
-                    <li className="w-full" key={product.id}>
-                      <div className="grid grid-cols-6 gap-2">
-                        <img src={product.images[0]} alt={product.name} className="w-20" />
-                        <div className="col-span-5">
-                          <a className="w-full">{product.name}</a>
+                {productList.length > 0 && (
+                  <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box">
+                    {productList?.map((product: ProductDetailType) => (
+                      <li className="w-full" key={product.id}>
+                        <div className="grid grid-cols-6 gap-2">
+                          <img src={product.images[0]} alt={product.name} className="w-20" />
+                          <div className="col-span-5">
+                            <a className="w-full">{product.name}</a>
+                          </div>
                         </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-                <button className="btn btn-square ml-2" onClick={() => navigate(`/search/${keyword}`)}>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <button className="ml-2" onClick={() => navigate(`/search/${keyword}`)}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6"

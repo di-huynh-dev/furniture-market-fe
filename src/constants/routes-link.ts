@@ -11,6 +11,7 @@ export const buyer_routes = {
   mall: '/mall',
   products: '/products',
   about: '/about',
+  chat_gpt: '/chat-gpt',
   product_detail: '/product/:id',
   whishlist: 'buyer/whishlist',
   profile: 'buyer/account/profile',

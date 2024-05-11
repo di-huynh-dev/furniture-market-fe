@@ -20,6 +20,7 @@ import {
   BuyerVoucher,
   BuyerWallet,
   BuyerWhishlist,
+  ChatGPT,
   MallHome,
   ReviewProduct,
 } from './pages/Buyer'
@@ -122,6 +123,10 @@ function App() {
         {
           path: buyer_routes.cart,
           element: <BuyerCart />,
+        },
+        {
+          path: buyer_routes.chat_gpt,
+          element: <ChatGPT />,
         },
         {
           path: buyer_routes.search,

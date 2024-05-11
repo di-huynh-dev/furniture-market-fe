@@ -40,8 +40,6 @@ const AddProduct = () => {
     },
   })
 
-  console.log(shopCategories)
-
   const { data: systemCategories, isLoading: isLoadingSystemCategories } = useQuery({
     queryKey: [Seller_QueryKeys.SYSTEM_CATEGORY],
     queryFn: async () => {
