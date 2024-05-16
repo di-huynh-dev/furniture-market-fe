@@ -10,7 +10,15 @@ const axiosClient = axios.create({
   paramsSerializer: (params: object) => queryString.stringify(params),
 })
 
-export const axiosPrivate = axios.create({
+export const axiosPrivateBuyer = axios.create({
+  baseURL: import.meta.env.VITE_REACT_APP_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  paramsSerializer: (params: object) => queryString.stringify(params),
+})
+
+export const axiosPrivateSeller = axios.create({
   baseURL: import.meta.env.VITE_REACT_APP_BASE_URL,
   headers: {
     'Content-Type': 'application/json',

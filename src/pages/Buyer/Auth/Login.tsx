@@ -32,7 +32,7 @@ const Login = () => {
       password: data.password,
     }
     try {
-      const resp = await commonApi.login(userLogin)
+      const resp = await commonApi.loginBuyer(userLogin)
       if (resp.status === 200) {
         setIsLoading(false)
         dispatch(addAuth(resp.data.data))

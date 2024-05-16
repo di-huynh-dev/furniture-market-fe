@@ -36,7 +36,7 @@ const Login = () => {
       password: data.password,
     }
     try {
-      const resp = await commonApi.login(userLogin)
+      const resp = await commonApi.loginSeller(userLogin)
 
       if (resp.status === 200 && resp.data.data.user.role === 'SELLER') {
         setIsLoading(false)

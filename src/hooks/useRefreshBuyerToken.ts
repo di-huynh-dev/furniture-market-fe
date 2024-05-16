@@ -7,7 +7,7 @@ const useRefreshBuyerToken = () => {
     try {
       const resp = await commonApi.refreshToken()
       if (resp.status === 200) {
-        localStorage.setItem('accessTokenBuyer', resp.data.data.accessToken)
+        // localStorage.setItem('accessTokenBuyer', resp.data.data.accessToken)
         store.dispatch(addAuth(resp.data.data))
         return resp.data.data.accessToken
       } else {

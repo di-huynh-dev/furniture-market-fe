@@ -1,4 +1,4 @@
-import { axiosPrivate } from '@/libs/axios-client'
+import { axiosPrivateSeller } from '@/libs/axios-client'
 import useRefreshToken from './useRefreshToken'
 import { useEffect } from 'react'
 import { store } from '@/redux/store'
@@ -8,7 +8,7 @@ const useAxiosPrivate = () => {
   const user = store.getState().sellerAuth.authData
 
   useEffect(() => {
-    const requestIntercept = axiosPrivate.interceptors.request.use(
+    const requestIntercept = axiosPrivateSeller.interceptors.request.use(
       (config) => {
         if (!config.headers['Authorization']) {
           config.headers['Authorization'] = `Bearer ${user?.accessToken}`
@@ -18,7 +18,7 @@ const useAxiosPrivate = () => {
       (error) => Promise.reject(error),
     )
 
-    const responseIntercept = axiosPrivate.interceptors.response.use(
+    const responseIntercept = axiosPrivateSeller.interceptors.response.use(
       (response) => response,
       async (error) => {
         const prevRequest = error?.config
@@ -26,18 +26,18 @@ const useAxiosPrivate = () => {
           prevRequest.sent = true
           const newAccessToken = await refresh()
           prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`
-          return axiosPrivate(prevRequest)
+          return axiosPrivateSeller(prevRequest)
         }
         return Promise.reject(error)
       },
     )
 
     return () => {
-      axiosPrivate.interceptors.request.eject(requestIntercept)
-      axiosPrivate.interceptors.response.eject(responseIntercept)
+      axiosPrivateSeller.interceptors.request.eject(requestIntercept)
+      axiosPrivateSeller.interceptors.response.eject(responseIntercept)
     }
   }, [user, refresh])
-  return axiosPrivate
+  return axiosPrivateSeller
 }
 
 export default useAxiosPrivate
