@@ -69,8 +69,8 @@ const DrawerSide = () => {
               </summary>
               <ul>
                 <li className="text-gray-500">
-                  <a>Kênh chat</a>
-                  <Link to={'marketing/discount'}>Quản lý Feedback</Link>
+                  <Link to={'chat'}>Kênh chat</Link>
+                  <Link to={'feedback'}>Quản lý Feedback</Link>
                 </li>
               </ul>
             </details>

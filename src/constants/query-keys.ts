@@ -13,6 +13,7 @@ export const Seller_QueryKeys = {
   SHOP_VOUCHER: 'SHOP_VOUCHER',
   GET_WALLET: 'GET_WALLET',
   ORDER_LIST: 'ORDER_LIST',
+  FEEDBACK_LIST: 'FEEDBACK_LIST',
 }
 
 export const Buyer_QueryKeys = {

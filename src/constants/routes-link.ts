@@ -55,6 +55,7 @@ export const seller_routes = {
   payment_account: 'income/payment-account',
   bank_list: 'income/bank-list',
   chat: 'chat',
+  feedback: 'feedback',
   shop: 'shop',
   shop_cagory: 'category',
   shop_address: 'shop/address',

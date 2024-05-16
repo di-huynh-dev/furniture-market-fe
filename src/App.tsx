@@ -33,6 +33,7 @@ import {
   CompletedOrder,
   DiscountManagement,
   FailedDeliveryOrder,
+  Feedback,
   ForgotPassword,
   IncomeManagement,
   MarketingManagement,
@@ -295,7 +296,10 @@ function App() {
           path: seller_routes.chat,
           element: <ChatCenter />,
         },
-
+        {
+          path: seller_routes.feedback,
+          element: <Feedback />,
+        },
         {
           path: seller_routes.shop,
           element: <ShopManagement />,
