@@ -12,6 +12,7 @@ export const Seller_QueryKeys = {
   SYSTEM_CATEGORY: 'SYSTEM_CATEGORY',
   SHOP_VOUCHER: 'SHOP_VOUCHER',
   GET_WALLET: 'GET_WALLET',
+  ORDER_LIST: 'ORDER_LIST',
 }
 
 export const Buyer_QueryKeys = {

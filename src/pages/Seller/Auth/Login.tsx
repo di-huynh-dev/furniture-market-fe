@@ -40,7 +40,7 @@ const Login = () => {
 
       if (resp.status === 200 && resp.data.data.user.role === 'SELLER') {
         setIsLoading(false)
-        localStorage.setItem('accessToken', resp.data.data.accessToken)
+        // localStorage.setItem('accessToken', resp.data.data.accessToken)
         dispatch(addAuth(resp.data.data))
         toast.success('Đăng nhập thành công')
         navigate('/seller/settings/profile')
