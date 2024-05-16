@@ -86,3 +86,12 @@ export type StoreInfo = {
   productAmount: number
   shopName: string
 }
+
+export type MarketingProductType = {
+  id: string
+  packet: string
+  keywords: string[]
+  productIds: string[]
+  startDate: string
+  endDate: string
+}

@@ -1,5 +1,11 @@
+import SystemCategoryList from './Components/SystemCategoryList'
+
 const BuyerProductHome = () => {
-  return <div>BuyerProductHome</div>
+  return (
+    <section className="align-element">
+      <SystemCategoryList />
+    </section>
+  )
 }
 
 export default BuyerProductHome

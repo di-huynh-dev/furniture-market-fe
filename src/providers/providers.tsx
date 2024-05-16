@@ -37,7 +37,7 @@ const Providers = ({ children }: PropsWithChildren) => {
             <p className="font-bold">Chat</p>
           </button>
           <StompSessionProvider url={SOCKET_REGISTER_URL}>
-            <ChatCenter showChat={showChat} toggleChat={toggleChat} />
+            {/* <ChatCenter showChat={showChat} toggleChat={toggleChat} /> */}
             {children}
           </StompSessionProvider>
         </PersistGate>

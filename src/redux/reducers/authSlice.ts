@@ -18,6 +18,7 @@ const initialState: AuthState = {
     role: '',
     emailConfirmed: false,
   },
+  refreshToken: '',
 }
 
 const authSlice = createSlice({
