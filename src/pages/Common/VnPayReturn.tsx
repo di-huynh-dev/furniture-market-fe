@@ -4,10 +4,15 @@ import { formatPrice } from '@/utils/helpers'
 import { useEffect } from 'react'
 import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 import { toast } from 'react-toastify'
+import useAxiosPrivate from '@/hooks/useAxiosPrivate'
+import { selectAuth } from '@/redux/reducers/authSlice'
+import { useSelector } from 'react-redux'
 
 const VnPayReturn = () => {
   const location = useLocation()
-  const axiosPrivate = useAxiosBuyerPrivate()
+  const axiosPrivateBuyer = useAxiosBuyerPrivate()
+  const axiosPrivateSeller = useAxiosPrivate()
+  const user = useSelector(selectAuth)
   const searchParams = new URLSearchParams(location.search)
   const vnpAmount = searchParams.get('vnp_Amount')
   const vnpBankCode = searchParams.get('vnp_BankCode')
@@ -24,12 +29,22 @@ const VnPayReturn = () => {
   }, [])
   const chargePayment = async () => {
     try {
-      const resp = await axiosPrivate.put('/user/wallet/charge', {
-        vnpOtp: vnp_TxnRef,
-        amount: Number(vnpAmount) / 100,
-      })
-      if (resp.status === 200) {
-        toast.success(resp.data.messages[0])
+      if (user && user.authData.user.role === 'BUYER') {
+        const resp = await axiosPrivateBuyer.put('/user/wallet/charge', {
+          vnpOtp: vnp_TxnRef,
+          amount: Number(vnpAmount) / 100,
+        })
+        if (resp.status === 200) {
+          toast.success(resp.data.messages[0])
+        }
+      } else {
+        const resp = await axiosPrivateSeller.put('/user/wallet/charge', {
+          vnpOtp: vnp_TxnRef,
+          amount: Number(vnpAmount) / 100,
+        })
+        if (resp.status === 200) {
+          toast.success(resp.data.messages[0])
+        }
       }
     } catch (error) {
       console.log(error)

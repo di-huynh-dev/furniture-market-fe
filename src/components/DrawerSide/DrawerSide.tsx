@@ -57,7 +57,6 @@ const DrawerSide = () => {
                 <li className="text-gray-500">
                   <Link to={'income'}>Doanh thu</Link>
                   <Link to={'income/payment-account'}>Số dư tài khoản</Link>
-                  <Link to={'income/bank-list'}>Tài khoản ngân hàng</Link>
                 </li>
               </ul>
             </details>

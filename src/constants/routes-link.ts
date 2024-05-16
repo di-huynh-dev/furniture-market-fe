@@ -33,6 +33,7 @@ export const seller_routes = {
   forgot_password: '/seller/forgot-password',
   confirm_email: '/seller/confirm-email',
   orders: 'orders',
+  vnpay_return: 'vnpay-return',
   orders_unpaid: 'unpaid',
   orders_toship: 'toship',
   orders_shipping: 'shipping',

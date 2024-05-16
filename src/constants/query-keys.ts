@@ -11,6 +11,7 @@ export const Seller_QueryKeys = {
   PRODUCT_DETAIL: 'PRODUCT_DETAIL',
   SYSTEM_CATEGORY: 'SYSTEM_CATEGORY',
   SHOP_VOUCHER: 'SHOP_VOUCHER',
+  GET_WALLET: 'GET_WALLET',
 }
 
 export const Buyer_QueryKeys = {

@@ -47,8 +47,6 @@ const MarketingManagement = () => {
     },
   })
 
-  console.log(marketingProducts)
-
   const handleAddMarketing = async () => {
     try {
       if (!packet || !keywords || !productIds) {
