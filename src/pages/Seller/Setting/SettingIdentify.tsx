@@ -101,7 +101,7 @@ const SettingIdentify = () => {
 
   return (
     <section className="my-2 text-sm">
-      <div className="modal" role="dialog" id="my_modal_8">
+      <dialog className="modal" id="my_modal_8">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Cập nhật thông tin shop</h3>
           <form onSubmit={handleSubmit(updateIdentifyInfo)} encType="multipart/form-data">
@@ -170,20 +170,32 @@ const SettingIdentify = () => {
               <button type="submit" className="btn btn-primary text-white">
                 {isLoading ? 'Đang xử lý... ' : 'Lưu'}
               </button>
-              <a href="#" className="btn">
+              <button
+                onClick={() => {
+                  const dialog = document.getElementById('my_modal_8') as HTMLDialogElement
+                  dialog.close()
+                }}
+                className="btn"
+              >
                 Hủy
-              </a>
+              </button>
             </div>
           </form>
         </div>
-      </div>
+      </dialog>
       <div className="card shadow-lg my-2 bg-white">
         <div className="card-body">
           <div className="flex justify-between items-center">
             <span className="font-bold">Thông tin định danh</span>
-            <a href="#my_modal_8" className="btn btn-outline btn-primary">
+            <button
+              onClick={() => {
+                const dialog = document.getElementById('my_modal_8') as HTMLDialogElement
+                dialog.showModal()
+              }}
+              className="btn btn-outline btn-primary"
+            >
               Cập nhật thông tin
-            </a>
+            </button>
           </div>
           {identifierInfo.shopData.shopInfo.identifier[0] ? (
             <div className="grid grid-cols-5 gap-4">

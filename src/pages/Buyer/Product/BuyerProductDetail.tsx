@@ -3,20 +3,28 @@ import axiosClient from '@/libs/axios-client'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { AiOutlineHeart } from 'react-icons/ai'
 import { FaStar } from 'react-icons/fa'
 import { formatDate, formatPrice } from '@/utils/helpers'
 import { ReviewType } from '@/types/review.type'
 import { useDispatch } from 'react-redux'
 import { addToCart, getTotals } from '@/redux/reducers/buyer/cartSlice'
+import { CiWarning } from 'react-icons/ci'
+import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
+import { useSelector } from 'react-redux'
+import { selectAuth } from '@/redux/reducers/authSlice'
+import { toast } from 'react-toastify'
 
 const BuyerProductDetail = () => {
   const { id } = useParams()
+  const axiosPrivate = useAxiosBuyerPrivate()
   const navigate = useNavigate()
   const [selectedImage, setSelectedImage] = useState('')
   const [selectedImageIndex, setSelectedImageIndex] = useState('')
   const [activeTab, setActiveTab] = useState(0)
   const [reviews, setReviews] = useState([])
+  const [reportReason, setReportReason] = useState('')
+  const [reportDescription, setReportDescription] = useState('')
+  const user = useSelector(selectAuth)
 
   const dispatch = useDispatch()
 
@@ -35,7 +43,34 @@ const BuyerProductDetail = () => {
     enabled: !!id,
   })
 
-  console.log(product_detail)
+  const handleReportProduct = async () => {
+    try {
+      if (!user.authData.accessToken) {
+        navigate('/buyer/login')
+        return
+      }
+      if (!reportReason || !reportDescription) {
+        toast.error('Vui lòng điền đầy đủ thông tin')
+        return
+      }
+      const resp = await axiosPrivate.post(`/common/report`, {
+        reason: reportReason,
+        description: reportDescription,
+        type: 'PRODUCT_REPORT',
+        reporterName: user.authData.user.email,
+        objectId: id,
+      })
+      if (resp.status === 200) {
+        setReportReason('')
+        setReportDescription('')
+        const dialog = document.getElementById('my_modal_3') as HTMLDialogElement
+        dialog.close()
+        toast.success(resp.data.messages[0])
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const getReviewByStarsMutation = useMutation({
     mutationFn: async (tabName: number) => {
@@ -75,6 +110,40 @@ const BuyerProductDetail = () => {
   return (
     <>
       <div className="grid lg:grid-cols-2 grid-col-1 gap-10 align-element bg-white p-5 mt-5 rounded-lg">
+        <dialog className="modal" id="my_modal_3">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Báo cáo sản phẩm vi phạm!</h3>
+            <select className="select select-primary w-full my-2" onChange={(e) => setReportReason(e.target.value)}>
+              <option disabled selected>
+                Chọn lý do
+              </option>
+              <option value="Sản phẩm bị cấm buôn bán">Sản phẩm bị cấm buôn bán(động vật hoang dã, 18+,...)</option>
+              <option value="Sản phẩm có dấu hiệu lừa đảo">Sản phẩm có dấu hiệu lừa đảo</option>
+              <option value="Hàng nhái, hàng giả, không đúng mô tả">Hàng nhái, hàng giả, không đúng mô tả</option>
+              <option value="Sản phẩm không rõ nguồn gốc, xuất xứ">Sản phẩm không rõ nguồn gốc, xuất xứ</option>
+              <option value="Sản phẩm có nội dung, hình ảnh phản cảm">Sản phẩm có nội dung, hình ảnh phản cảm</option>
+              <option value="Tên sản phẩm không phù hợp với hình ảnh">Tên sản phẩm không phù hợp với hình ảnh</option>
+            </select>
+            <textarea
+              placeholder="Mô tả báo cáo (10-50 kí tự)"
+              className="textarea textarea-bordered w-full mt-2 resize-vertical"
+              rows={3}
+              onChange={(e) => setReportDescription(e.target.value)}
+            ></textarea>
+            <div className="modal-action flex">
+              <button className="btn btn-primary text-white" onClick={handleReportProduct}>
+                Gửi
+              </button>
+              <button
+                className="btn"
+                onClick={() => (document.getElementById('my_modal_3') as HTMLDialogElement).close()}
+              >
+                Hủy
+              </button>
+            </div>
+          </div>
+        </dialog>
+
         <div>
           <img src={selectedImage} className="border-solid border-2 rounded-xl" />
           <div className="grid md:grid-cols-6 grid-cols-4 gap-1 mt-2 ">
@@ -96,7 +165,15 @@ const BuyerProductDetail = () => {
         <div>
           <div className="flex justify-between">
             <h2 className="lg:text-4xl md:text-2xl text-base font-bold">{product_detail.name}</h2>
-            <AiOutlineHeart className="w-[30px] h-[30px] text-primary transition-colors duration-300" />
+            <button
+              onClick={() => {
+                const dialog = document.getElementById('my_modal_3') as HTMLDialogElement
+                dialog.showModal()
+              }}
+            >
+              <CiWarning className="w-[30px] h-[30px] text-primary transition-colors duration-300" />
+              Tố cáo
+            </button>
           </div>
           <div className="flex justify-between p-2 lg:text-base text-sm">
             <div className="flex items-center">

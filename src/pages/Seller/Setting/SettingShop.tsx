@@ -37,7 +37,6 @@ const SettingShop = () => {
   const { previewImages: topBannerImage, handleFileChange: handleTopBannerFileChange } = useImagePreview()
   const { previewImages: infoBanner, handleFileChange: handleInfoBanner } = useImagePreview()
   const info = useSelector(selectSellerShop)
-  console.log(info)
 
   const [isPending, setIsPending] = useState(false)
   const [selectedProvinceId, setSelectedProvinceId] = useState<string>('')
@@ -152,7 +151,7 @@ const SettingShop = () => {
   return (
     <section className="mx-4 my-2 text-sm">
       <dialog className="modal" id="my_modal_8">
-        <div className="modal-box  max-w-3xl">
+        <div className="modal-box max-w-3xl">
           <h3 className="font-bold text-lg">Cập nhật thông tin shop</h3>
           <form onSubmit={handleSubmit(updateShopInfo)} encType="multipart/form-data">
             <div className="grid grid-cols-2 gap-2">

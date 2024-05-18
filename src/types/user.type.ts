@@ -27,7 +27,6 @@ export type RegisterType = {
   gender: string
 }
 export type RegisterSellerType = {
-  shopName: string
   ownerName: string
   birthday: string
   gender: string
@@ -41,7 +40,6 @@ export type RegisterSellerType = {
 }
 
 export type RegisterSellerApiType = {
-  shopName: string
   ownerName: string
   birthday: string
   gender: string

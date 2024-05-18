@@ -27,7 +27,6 @@ const Sigup = () => {
     setIsLoading(true)
 
     const userRegister = {
-      shopName: data.shopName,
       ownerName: data.ownerName,
       birthday: data.birthday,
       gender: data.gender,
@@ -59,7 +58,6 @@ const Sigup = () => {
     }
   }
   const validationSchema = yup.object({
-    shopName: yup.string().required('Không được để trống!'),
     ownerName: yup.string().required('Không được để trống'),
     birthday: yup.string().required('Không được để trống'),
     gender: yup.string().required('Không được để trống'),
@@ -120,24 +118,15 @@ const Sigup = () => {
           <h3 className="md:text-2xl lg:text-2xl pb-2 font-semibold text-center text-primary">
             Đăng ký tài khoản người bán
           </h3>
-          <div className="grid grid-cols-2 gap-4">
-            <FormInput
-              prop="email"
-              type="text"
-              label="Email(*)"
-              register={register}
-              placeholder="abc123@gmail.com"
-              errorMessage={errors.email?.message}
-            />
-            <FormInput
-              prop="shopName"
-              type="text"
-              label="Tên shop(*)"
-              register={register}
-              placeholder="Gỗ xưa shop"
-              errorMessage={errors.shopName?.message}
-            />
-          </div>
+
+          <FormInput
+            prop="email"
+            type="text"
+            label="Email(*)"
+            register={register}
+            placeholder="abc123@gmail.com"
+            errorMessage={errors.email?.message}
+          />
           <FormInput
             prop="ownerName"
             type="text"
