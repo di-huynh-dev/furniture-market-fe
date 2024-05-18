@@ -17,6 +17,7 @@ const BuyerProductDetail = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState('')
   const [activeTab, setActiveTab] = useState(0)
   const [reviews, setReviews] = useState([])
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const BuyerProductDetail = () => {
     },
     enabled: !!id,
   })
+
   console.log(product_detail)
 
   const getReviewByStarsMutation = useMutation({
@@ -70,10 +72,229 @@ const BuyerProductDetail = () => {
     return <div>Loading...</div>
   }
 
-  // Calculate the average rating
-  // const averageRating: number | string = product_detail.totalReviewPoint / product_detail.reviewAmount
+  return (
+    <>
+      <div className="grid lg:grid-cols-2 grid-col-1 gap-10 align-element bg-white p-5 mt-5 rounded-lg">
+        <div>
+          <img src={selectedImage} className="border-solid border-2 rounded-xl" />
+          <div className="grid md:grid-cols-6 grid-cols-4 gap-1 mt-2 ">
+            {product_detail.images.map((url: string) => {
+              return (
+                <img
+                  key={url}
+                  src={url}
+                  alt={product_detail.name}
+                  className={`rounded-xl object-fit h-[75px] border-solid border-2 ${
+                    selectedImageIndex === url ? 'border-info' : 'border-gray-300'
+                  }`}
+                  onClick={() => handleImageClick(url)}
+                />
+              )
+            })}
+          </div>
+        </div>
+        <div>
+          <div className="flex justify-between">
+            <h2 className="lg:text-4xl md:text-2xl text-base font-bold">{product_detail.name}</h2>
+            <AiOutlineHeart className="w-[30px] h-[30px] text-primary transition-colors duration-300" />
+          </div>
+          <div className="flex justify-between p-2 lg:text-base text-sm">
+            <div className="flex items-center">
+              {product_detail.totalReviewPoint} <FaStar className="text-yellow-500" />/ ({product_detail.reviewAmount}{' '}
+              đánh giá)
+            </div>
 
-  return <></>
+            <span>
+              <b>Đã bán: </b>
+              {product_detail.sold}
+            </span>
+          </div>
+          {product_detail.onSale ? (
+            <div className="lg:text-lg text-base">
+              <span className="text-primary font-bold pr-4">{formatPrice(product_detail.salePrice)}</span>
+              <span className="line-through">{formatPrice(product_detail.price)}</span>
+            </div>
+          ) : (
+            <div className="lg:text-lg text-base">
+              <span className="text-primary text-2xl font-bold pr-4">{formatPrice(product_detail.price)}</span>
+            </div>
+          )}
+          <div className="lg:text-base text-sm">
+            <div className="pb-2 border-b-2">
+              <span className="text-sm tex-base-300">SKU: {product_detail.id}</span>
+            </div>
+            <p className="py-2">
+              <b>Chất liệu: </b>
+              {product_detail.material}
+            </p>
+            <p className="py-2">
+              <b>Kích thước: </b>
+              {product_detail.length}cm dài x {product_detail.width}cm rộng x {product_detail.height}cm cao
+            </p>
+            <p className="py-2">
+              <b>Số lượng còn lại: </b>
+              {product_detail.inStock}
+            </p>
+            {product_detail.storeCategories[0] && (
+              <p className="py-2">
+                <b>Danh mục: </b>
+                {product_detail.storeCategories.map((category: string) => category).join(', ')}
+              </p>
+            )}
+            <p className="py-2 leading-loose">
+              <b>Mô tả: </b>
+              {product_detail.description}
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
+            <button className="btn btn-ghost bg-primary text-white" onClick={() => handleAddToCart()}>
+              Thêm vào giỏ hàng
+            </button>
+            <button className="btn btn-ghost bg-accent text-white" onClick={() => handleAddToWishList()}>
+              Thêm vào wishlist
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-2 align-element ">
+        {/* Shop info */}
+        <div className="my-5 bg-white  p-10  gap-4 max-h-[300px] rounded-lg">
+          <div className="flex items-center gap-2">
+            <img src={product_detail.storeInfo.logo} alt="" className="rounded-full w-40 h-40 object-cover" />
+            <div className="space-y-2">
+              <p className="text-lg font-bold">{product_detail.storeInfo.shopName}</p>
+              <p className="text-sm text-gray-500">{product_detail.storeInfo.address}</p>
+              <div className="flex items-center gap-2">
+                <button
+                  className="btn btn-sm btn-primary text-white"
+                  onClick={() => navigate(`/shop/${product_detail.storeInfo.id}`)}
+                >
+                  Xem shop
+                </button>
+                <button className="btn btn-sm btn-outline">Chat</button>
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-3">
+            <div className="flex gap-2">
+              <p>Tổng số sản phẩm: </p>
+              <p className="text-primary">{product_detail.storeInfo.productAmount}</p>
+            </div>
+            <div className="flex gap-2">
+              <p>Số lượng đánh giá: </p>
+              <p className="text-primary">{product_detail.storeInfo.numReview}</p>
+            </div>
+
+            <div className="flex gap-2">
+              <p>Điểm đánh giá: </p>
+              <div className="text-primary flex gap-2">
+                <p>
+                  {product_detail.storeInfo.avgReviewStar !== 'NaN' ? product_detail.storeInfo.avgReviewStar : '...'}
+                </p>{' '}
+                <FaStar className="text-yellow-500" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Reviews */}
+        <div className="my-5 bg-white p-10 gap-4 rounded-lg">
+          <p className="font-semibold">Đánh giá nhận xét về sản phẩm ( {product_detail.reviewAmount} lượt đánh giá )</p>
+          <div className="flex items-center">
+            <p className="text-4xl font-bold">
+              {product_detail.totalReviewPoint && product_detail.reviewAmount !== 'NaN'
+                ? product_detail.totalReviewPoint / product_detail.reviewAmount
+                : '...'}
+              /
+            </p>
+            <p className="text-3xl text-red-500">5</p>
+          </div>
+          <p className="italic text-sm">
+            Đây là thông tin người mua đánh giá shop bán sản phẩm này có đúng mô tả không.
+          </p>
+
+          <div className="my-2">
+            <div role="tablist" className="tabs tabs-bordered">
+              <button
+                onClick={() => handleTabClick(0)}
+                role="tab"
+                className={`tab ${activeTab === 0 ? 'tab-active' : ''}`}
+              >
+                Tất cả
+              </button>
+              <button
+                onClick={() => handleTabClick(1)}
+                role="tab"
+                className={`tab ${activeTab === 1 ? 'tab-active' : ''}`}
+              >
+                1 sao
+              </button>
+              <button
+                onClick={() => handleTabClick(2)}
+                role="tab"
+                className={`tab ${activeTab === 2 ? 'tab-active' : ''}`}
+              >
+                2 sao
+              </button>
+              <button
+                onClick={() => handleTabClick(3)}
+                role="tab"
+                className={`tab ${activeTab === 3 ? 'tab-active' : ''}`}
+              >
+                3 sao
+              </button>
+              <button
+                onClick={() => handleTabClick(4)}
+                role="tab"
+                className={`tab ${activeTab === 4 ? 'tab-active' : ''}`}
+              >
+                4 sao
+              </button>
+              <button
+                onClick={() => handleTabClick(5)}
+                role="tab"
+                className={`tab ${activeTab === 5 ? 'tab-active' : ''}`}
+              >
+                5 sao
+              </button>
+            </div>
+
+            <div className="my-2">
+              {reviews.length === 0 && <p className="text-center text-error">Chưa có đánh giá nào liên quan</p>}
+              {reviews?.map((review: ReviewType) => (
+                <>
+                  <div className="grid grid-cols-8 my-2">
+                    <div className="col-span-1">
+                      <img src={review.reviewer?.avatar} alt="" className="h-12 w-12 rounded-full object-cover" />
+                    </div>
+                    <div className="col-span-7">
+                      <div>
+                        <div className="flex items-center justify-between">
+                          <p className="font-bold">{review.reviewer?.fullName}</p>
+                          <div className="flex items-center">
+                            <p>{review.star}</p> <FaStar className="text-yellow-500" />
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-500 italic">{formatDate(review.createdAt)}</p>
+                      </div>
+                      <p className="mt-2">{review.content}</p>
+                      {review.reply && (
+                        <div className="bg-gray-100 p-2 my-2">
+                          <p>Phản hồi của người bán</p>
+                          <p>{review.reply}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="divider"></div>
+                </>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
 }
 
 export default BuyerProductDetail

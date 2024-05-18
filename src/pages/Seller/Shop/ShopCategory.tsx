@@ -2,6 +2,7 @@
 import { LoadingComponent } from '@/components'
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
+import { ProductDetailType } from '@/types/product.type'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import DataTable, { TableColumn } from 'react-data-table-component'
@@ -33,34 +34,20 @@ const ShopCategory = () => {
       }
     },
   })
-  const columns: TableColumn<DataRow>[] = [
-    {
-      name: 'Mã danh mục ',
-      selector: (row) => row.id,
+
+  const { data: productsOfCategory, isLoading: isLoadingProducts } = useQuery({
+    queryKey: [Seller_QueryKeys.PRODUCT_OF_CATEGORY],
+    queryFn: async () => {
+      try {
+        const resp = await axiosPrivate.get(`/seller/product/store-category?categoryName=${categoryName}`)
+        if (resp.status === 200) {
+          return resp.data.data
+        }
+      } catch (error: any) {
+        toast.error(error.response.data.messages[0])
+      }
     },
-    {
-      name: 'Tên danh mục',
-      selector: (row) => row.name,
-      sortable: true,
-    },
-    {
-      name: 'Thao tác',
-      cell: (row) => (
-        <div className="flex gap-2 text-blue-500">
-          <button onClick={() => handleUpdate(row.id)}>Chỉnh sửa</button>
-          <button
-            onClick={() => {
-              setSelectedRow(row.id)
-              const dialog = document.getElementById('my_modal_2') as HTMLDialogElement
-              dialog.showModal()
-            }}
-          >
-            Xóa
-          </button>
-        </div>
-      ),
-    },
-  ]
+  })
 
   const handleUpdate = (id: string) => {
     setIsUpdate(true)
@@ -119,10 +106,93 @@ const ShopCategory = () => {
     },
   })
 
-  if (isLoading) return <LoadingComponent />
+  const productsColumns: TableColumn<ProductDetailType>[] = [
+    {
+      name: 'Mã sản phẩm',
+      cell: (row) => row.id,
+    },
+    {
+      name: 'Thumbnail',
+      cell: (row) => <img src={row.thumbnail} alt={row.name} className="w-[100px]" />,
+    },
+    {
+      name: 'Tên sản phẩm',
+      cell: (row) => row.name,
+      sortable: true,
+    },
+
+    {
+      name: 'Thao tác',
+      cell: (row) => (
+        <div className="flex gap-2 text-blue-500">
+          <button onClick={() => handleUpdate(row.id)}>Chỉnh sửa</button>
+        </div>
+      ),
+    },
+  ]
+
+  const columns: TableColumn<DataRow>[] = [
+    {
+      name: 'Mã danh mục ',
+      selector: (row) => row.id,
+    },
+    {
+      name: 'Tên danh mục',
+      selector: (row) => row.name,
+      sortable: true,
+    },
+    {
+      name: 'Thao tác',
+      cell: (row) => (
+        <div className="flex gap-2 text-blue-500">
+          <button
+            onClick={() => {
+              setCategoryName(row.name)
+              client.invalidateQueries({
+                queryKey: [Seller_QueryKeys.PRODUCT_OF_CATEGORY],
+              })
+              const dialog = document.getElementById('my_modal_3') as HTMLDialogElement
+              dialog.showModal()
+            }}
+          >
+            Xem sản phẩm
+          </button>
+          <button onClick={() => handleUpdate(row.id)}>Chỉnh sửa</button>
+          <button
+            onClick={() => {
+              setSelectedRow(row.id)
+              const dialog = document.getElementById('my_modal_2') as HTMLDialogElement
+              dialog.showModal()
+            }}
+          >
+            Xóa
+          </button>
+        </div>
+      ),
+    },
+  ]
 
   return (
     <section className="mx-4 my-2 text-sm">
+      <dialog id="my_modal_3" className="modal">
+        <div className="modal-box  max-w-5xl">
+          <h3 className="font-bold text-lg">Danh sách sản phẩm thuộc danh mục {categoryName}</h3>
+          <DataTable
+            columns={productsColumns}
+            data={productsOfCategory}
+            pagination
+            progressPending={isLoadingProducts}
+            progressComponent={<LoadingComponent />}
+          />
+          <div className="modal-action">
+            <form method="dialog">
+              <div className="flex gap-2">
+                <button className="btn">Close</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </dialog>
       <dialog id="my_modal_2" className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Xác nhận</h3>

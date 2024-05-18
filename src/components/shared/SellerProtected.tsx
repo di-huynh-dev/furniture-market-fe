@@ -1,16 +1,19 @@
 import { selectSellerAuth } from '@/redux/reducers/seller/sellerAuthSlice'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
+import SellerHeader from '../Header/SellerHeader'
+import DrawerSide from '../DrawerSide/DrawerSide'
 
-interface ProtectedProps {
-  children: React.ReactNode
-}
-
-const Protected = ({ children }: ProtectedProps) => {
+const Protected = () => {
   const user = useSelector(selectSellerAuth)
 
   if (user.authData.user.role !== 'SELLER') return <Navigate to="/seller/login" />
-  return <>{children}</>
+  return (
+    <div className="bg-gray-100">
+      <SellerHeader />
+      <DrawerSide />
+    </div>
+  )
 }
 
 export default Protected

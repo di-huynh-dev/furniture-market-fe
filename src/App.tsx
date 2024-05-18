@@ -198,12 +198,9 @@ function App() {
     },
     {
       path: seller_routes.seller,
-      element: (
-        <SellerProtected>
-          <SellerHome />
-        </SellerProtected>
-      ),
+      element: <SellerProtected />,
       children: [
+        { index: true, element: <SellerHome /> },
         {
           path: seller_routes.orders,
           element: <OrdersManagement />,

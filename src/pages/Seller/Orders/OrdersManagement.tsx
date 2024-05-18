@@ -85,7 +85,7 @@ const OrdersManagement = () => {
           }`}
           onClick={() => handleTabClick('COMPLETED')}
         >
-          Đã nhận
+          Đã hoàn thành
         </div>
         <div
           role="tab"

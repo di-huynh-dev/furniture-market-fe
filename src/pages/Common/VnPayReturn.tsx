@@ -64,7 +64,7 @@ const VnPayReturn = () => {
           <p className="font-bold text-lg text-red-500">Thanh toán thất bại</p>
         )}
         <p>Mã giao dịch: {vnp_TransactionNo}</p>
-        <p>Số tiền giao dịch: {formatPrice(Number(vnpAmount))}</p>
+        <p>Số tiền giao dịch: {formatPrice(Number(vnpAmount) / 100)}</p>
         <p>Ngân hàng: {vnpBankCode}</p>
       </div>
       <div className="flex gap-2 justify-center my-4">

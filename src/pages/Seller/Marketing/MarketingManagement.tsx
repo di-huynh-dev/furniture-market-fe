@@ -3,7 +3,7 @@ import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import banner from '@/assets/images/marketing.jpg'
 import { useState } from 'react'
 import { Seller_QueryKeys } from '@/constants/query-keys'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import { MarketingProductType, ProductDetailType } from '@/types/product.type'
@@ -12,6 +12,7 @@ import { formatDate } from '@/utils/helpers'
 
 const MarketingManagement = () => {
   const axiosPrivate = useAxiosPrivate()
+  const client = useQueryClient()
   const [productIds, setProductIds] = useState<string[]>([])
   const [isShowProductList, setIsShowProductList] = useState(false)
   const [isShowKeywordList, setIsShowKeywordList] = useState(false)
@@ -59,6 +60,9 @@ const MarketingManagement = () => {
         productIds,
       })
       if (resp.status === 200) {
+        client.invalidateQueries({
+          queryKey: [Seller_QueryKeys.SHOP_MARKETING_PRODUCT],
+        })
         toast.success(resp.data.messages[0])
         setIsShowProductList(false)
         setIsShowKeywordList(false)

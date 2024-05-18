@@ -6,11 +6,11 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { ConfirmModal } from '..'
 import toast from 'react-hot-toast'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const SellerHeader = () => {
   const user = useSelector(selectSellerAuth)
-
+  const navigation = useNavigate()
   const dispatch = useDispatch()
 
   const showModal = () => {
@@ -28,9 +28,9 @@ const SellerHeader = () => {
     <header className="shadow-md bg-base-100 text-base-content sticky top-0 z-30 flex h-24 w-full justify-center bg-opacity-90 backdrop-blur transition-shadow duration-100 [transform:translate3d(0,0,0)]">
       <ConfirmModal content="Bạn có muốn đăng xuất" onClick={handleLogout} />
       <div className="navbar bg-base-100">
-        <div className="flex-none">
+        <button onClick={() => navigation('/seller')} tabIndex={0} className="flex-none">
           <img src={Logo} alt="" className="w-24 h-24 object-cover" />
-        </div>
+        </button>
         <div className="flex-1">
           <p className="text-xl font-bold text-neutral">Fnest Kênh người bán</p>
         </div>

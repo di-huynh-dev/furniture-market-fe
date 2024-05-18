@@ -59,9 +59,9 @@ const Feedback = () => {
   const columns: TableColumn<FeedbackType>[] = [
     {
       name: 'Thông Tin Sản phẩm',
-      selector: (row) => row.productInfo.name,
+      cell: (row) => row.productInfo.name,
     },
-    { name: 'Nội dung đánh giá', selector: (row) => row.content },
+    { name: 'Nội dung đánh giá', cell: (row) => row.content },
     { name: 'Điểm', selector: (row) => row.star },
 
     { name: 'Người đánh giá', cell: (row) => row.reviewer.email },
