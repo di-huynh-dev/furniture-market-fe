@@ -16,6 +16,7 @@ import Stomp, { Client, Message } from 'stompjs'
 import { ChatItem } from '@/types/chat.type'
 import { useForm } from 'react-hook-form'
 import { CiCamera } from 'react-icons/ci'
+import { useNavigate } from 'react-router-dom'
 
 interface ChatCenterProps {
   showChat: boolean
@@ -29,13 +30,22 @@ type FormData = {
 const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat }) => {
   const axiosPrivate = useAxiosBuyerPrivate()
   const user = useSelector(selectAuth)
-
+  const navigate = useNavigate()
   const [client, setClient] = useState<Client | null>(null)
   const [receiverId, setReceiverId] = useState<string | null>(null)
   const [messages, setMessages] = useState<ChatItem[]>([])
+  console.log(messages)
+
   const [imgView, setImgView] = useState<File | null>(null)
   const [image, setImage] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!user.authData?.user?.id && showChat) {
+      navigate('/buyer/login')
+      toggleChat()
+    }
+  }, [user.authData?.user?.id, showChat, navigate, toggleChat])
 
   const { data: userSentMessages, isLoading: isLoadingUserSentMessages } = useQuery({
     queryKey: [Buyer_QueryKeys.LIST_USER_SENT_MESSAGE],
@@ -47,8 +57,8 @@ const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat }) => {
   })
 
   useEffect(() => {
-    if (showChat) {
-      handleChooseReceiver(userSentMessages[0].id)
+    if (showChat && user.authData.user.id) {
+      handleChooseReceiver(userSentMessages[0]?.id)
       const socket = new SockJS(SOCKET_REGISTER_URL)
       const stompClient = Stomp.over(socket)
 
@@ -61,16 +71,22 @@ const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat }) => {
         })
         setClient(stompClient)
       })
-    }
 
-    return () => {
-      if (client) {
-        client.disconnect(() => {
-          console.log('Disconnected from chat center')
-        })
+      return () => {
+        if (client) {
+          client.disconnect(() => {
+            console.log('Disconnected from chat center')
+          })
+        }
       }
     }
-  }, [showChat, user.authData.user.id])
+  }, [showChat, user.authData.user.id, receiverId, userSentMessages])
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [messages])
 
   const updateMessages = (message: ChatItem) => {
     const isMessageExist = messages.some((msg: ChatItem) => msg.randomHash === message.randomHash)
@@ -106,7 +122,7 @@ const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat }) => {
       const newMessage: ChatItem = {
         senderId: user.authData.user.id,
         receiverId: receiverId,
-        message,
+        message: message,
         createdAt: new Date().toISOString(),
         type: 'MESSAGE',
         randomHash: Math.random().toString(),
@@ -148,11 +164,6 @@ const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat }) => {
     handleSendMessage(data.message)
   })
 
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [messages])
   if (isLoadingUserSentMessages) return <div>Loading...</div>
 
   return (

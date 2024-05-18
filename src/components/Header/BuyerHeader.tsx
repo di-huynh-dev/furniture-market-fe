@@ -49,9 +49,6 @@ const BuyerHeader = () => {
                 <NavLink to="/products">Sản phẩm</NavLink>
               </li>
               <li>
-                <NavLink to="/mall">Fnest mall</NavLink>
-              </li>
-              <li>
                 <NavLink to="/about">Về chúng tôi</NavLink>
               </li>
             </ul>

@@ -1,11 +1,12 @@
 import { Buyer_QueryKeys } from '@/constants/query-keys'
 import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
-import { formatPrice } from '@/utils/helpers'
+import { formatDate, formatPrice } from '@/utils/helpers'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import vnpay from '@/assets/images/vnpay.png'
 import { FaCompressArrowsAlt, FaExpandArrowsAlt } from 'react-icons/fa'
 import toast from 'react-hot-toast'
+import { TransactionType } from '@/types/transaction.type'
 
 const BuyerWallet = () => {
   const axiosPrivate = useAxiosBuyerPrivate()
@@ -20,6 +21,15 @@ const BuyerWallet = () => {
       const resp = await axiosPrivate.get('/user/wallet')
       return resp.data.data
     },
+  })
+
+  const { data: history, isLoading: loadingHistory } = useQuery({
+    queryKey: [Buyer_QueryKeys.GET_HISTORY_TRANSACTION],
+    queryFn: async () => {
+      const resp = await axiosPrivate.get('/user/transaction-history')
+      return resp.data.data
+    },
+    enabled: !!wallet,
   })
 
   const handleCreatePayment = async () => {
@@ -41,7 +51,7 @@ const BuyerWallet = () => {
     }
   }
 
-  if (loadingWallet) {
+  if (loadingWallet || loadingHistory) {
     return <div>Loading...</div>
   }
   return (
@@ -72,15 +82,6 @@ const BuyerWallet = () => {
           }`}
         >
           Lịch sử giao dịch
-        </a>
-        <a
-          role="tab"
-          onClick={() => setActiveTab('account-list')}
-          className={`tab ${
-            activeTab === 'account-list' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
-          }`}
-        >
-          Danh sách tài khoản
         </a>
       </div>
 
@@ -150,6 +151,37 @@ const BuyerWallet = () => {
             </div>
           </dialog>
         </div>
+      )}
+
+      {activeTab === 'historic' && (
+        <>
+          <div className="mt-5">
+            <table className="table table-zebra">
+              <thead>
+                <tr>
+                  <th>Mã giao dịch</th>
+                  <th>Người giao dịch</th>
+                  <th>Loại</th>
+                  <th>Số tiền</th>
+                  <th>Ngày</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {history.map((item: TransactionType) => (
+                  <tr key={item.id}>
+                    <td>{item.id}</td>
+                    <td>{item.ownerName}</td>
+                    <td>{item.type}</td>
+                    <td>{formatPrice(item.value)}</td>
+                    <td>{formatDate(item.createdAt)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {history.length === 0 && <p className="text-center">Chưa có giao dịch nào</p>}
+        </>
       )}
     </div>
   )

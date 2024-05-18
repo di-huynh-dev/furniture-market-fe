@@ -29,7 +29,6 @@ import {
   BankList,
   BannedProduct,
   CancelledOrder,
-  ChatCenter,
   CompletedOrder,
   DiscountManagement,
   FailedDeliveryOrder,
@@ -59,6 +58,7 @@ import {
   UnpaidOrder,
   UpdateProduct,
 } from './pages/Seller'
+
 import { buyer_routes, common_routes, seller_routes } from './constants/routes-link'
 import { BuyerProtected, SellerProtected } from './components'
 import Error from './pages/Error/Error'
@@ -139,7 +139,11 @@ function App() {
         },
         {
           path: buyer_routes.checkout,
-          element: <BuyerCheckout />,
+          element: (
+            <BuyerProtected>
+              <BuyerCheckout />
+            </BuyerProtected>
+          ),
         },
         {
           path: buyer_routes.products,
@@ -151,7 +155,11 @@ function App() {
         },
         {
           path: buyer_routes.whishlist,
-          element: <BuyerWhishlist />,
+          element: (
+            <BuyerProtected>
+              <BuyerWhishlist />
+            </BuyerProtected>
+          ),
         },
         {
           path: buyer_routes.login,
@@ -290,10 +298,6 @@ function App() {
           element: <BankList />,
         },
         {
-          path: seller_routes.chat,
-          element: <ChatCenter />,
-        },
-        {
           path: seller_routes.feedback,
           element: <Feedback />,
         },
@@ -304,7 +308,11 @@ function App() {
       ],
     },
   ])
-  return <RouterProvider router={router} />
+  return (
+    <>
+      <RouterProvider router={router} />
+    </>
+  )
 }
 
 export default App

@@ -1,5 +1,4 @@
 import { ChatItem } from '@/types/chat.type'
-import { formatDate } from '@/utils/helpers'
 
 const MyMessageItem = ({ item }: { item: ChatItem }) => {
   return (
@@ -14,7 +13,7 @@ const MyMessageItem = ({ item }: { item: ChatItem }) => {
         )}
 
         <div className="chat-header">
-          <time className="text-xs opacity-50">{formatDate(item.createdAt)}</time>
+          <time className="text-xs opacity-50">{item.createdAt}</time>
         </div>
         <div className="chat-bubble">{item.message}</div>
         <p></p>

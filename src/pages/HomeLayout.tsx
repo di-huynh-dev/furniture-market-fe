@@ -44,6 +44,7 @@ const HomeLayout = () => {
     autoplaySpeed: 2000,
     cssEase: 'linear',
   }
+
   return (
     <>
       <div className="slider-container">

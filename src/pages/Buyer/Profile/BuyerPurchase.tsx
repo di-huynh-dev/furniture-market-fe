@@ -130,6 +130,8 @@ const BuyerPurchase = () => {
       {orderListByStatus.map((order: OrderItem) => {
         return <OrderItemComponent order={order} key={order.id} />
       })}
+
+      {orderListByStatus.length === 0 && <div className="text-center">Bạn chưa có đơn hàng nào</div>}
     </div>
   )
 }

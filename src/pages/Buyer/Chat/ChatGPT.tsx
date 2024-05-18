@@ -1,5 +1,6 @@
 import { SOCKET_USER_TOPIC_PREFIX_URL } from '@/libs/socker-client'
 import { useState } from 'react'
+import { messages } from 'react-stomp-hooks/dist/mock/client'
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
 
@@ -20,7 +21,7 @@ const ChatGPT = () => {
     console.log('Connected: ' + frame)
     // Subscribe vào kênh tin nhắn của người dùng
     stompClient.subscribe(
-      `${SOCKET_USER_TOPIC_PREFIX_URL}/${'dc9a638f-fc1d-4de1-9308-63b5e1aa8ed8'}`,
+      `${SOCKET_USER_TOPIC_PREFIX_URL}/${'45db986a-89a7-48c1-beb3-82f34d647a95'}`,
       function (message) {
         console.log(message)
         setLastMessage(message.body)
@@ -32,8 +33,8 @@ const ChatGPT = () => {
   // Gửi tin nhắn mới
   const sendMessage = () => {
     const newMessage = {
-      senderId: 'dc9a638f-fc1d-4de1-9308-63b5e1aa8ed8',
-      receiverId: 'eab55d5e-8b07-424e-88b9-534739185e33',
+      senderId: '0842fae9-376e-4cbb-87a9-9047ad5cdeaf',
+      receiverId: '45db986a-89a7-48c1-beb3-82f34d647a95',
       message: inputMessage,
       createdAt: new Date().toISOString(), // Sử dụng thời gian hiện tại
       type: 'MESSAGE',
