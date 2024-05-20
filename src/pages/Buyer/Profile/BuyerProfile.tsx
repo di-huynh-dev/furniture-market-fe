@@ -74,6 +74,8 @@ const BuyerProfile = () => {
     },
     onSuccess: (resp) => {
       dispatch(removeAuth())
+      const dialog = document.getElementById('change_password') as HTMLDialogElement
+      dialog.close()
       toast.success(resp.data.messages[0])
     },
     onError: (error) => {

@@ -8,6 +8,7 @@ import {
   BuyerCheckout,
   BuyerLogin,
   BuyerNotificationsOrder,
+  BuyerNotificationsSystem,
   BuyerOrderDetail,
   BuyerPassword,
   BuyerProductDetail,
@@ -112,6 +113,10 @@ function App() {
             {
               path: buyer_routes.notifications_order,
               element: <BuyerNotificationsOrder />,
+            },
+            {
+              path: buyer_routes.notifications_account,
+              element: <BuyerNotificationsSystem />,
             },
           ],
         },

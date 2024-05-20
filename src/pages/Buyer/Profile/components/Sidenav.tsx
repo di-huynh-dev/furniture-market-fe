@@ -63,11 +63,11 @@ const Sidenav = () => {
               </li>
               <li className="py-1 flex items-center">
                 <BsCheck className="text-green" />
-                <NavLink to="/buyer/account/address">Khuyến mãi</NavLink>
+                <NavLink to="/buyer/account/notifications/voucher">Khuyến mãi</NavLink>
               </li>
               <li className="py-1 flex items-center">
                 <BsCheck className="text-green" />
-                <NavLink to="/buyer/account/notifications/system">Hệ thống</NavLink>
+                <NavLink to="/buyer/account/notifications/account">Hệ thống</NavLink>
               </li>
             </ul>
           </div>

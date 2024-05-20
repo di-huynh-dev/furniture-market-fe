@@ -23,6 +23,8 @@ export const buyer_routes = {
   verify: 'verify-email',
   voucher: 'vouchers',
   notifications_order: 'notifications/order',
+  notifications_voucher: 'notifications/voucher',
+  notifications_account: 'notifications/account',
   change_password: 'change-password',
 }
 

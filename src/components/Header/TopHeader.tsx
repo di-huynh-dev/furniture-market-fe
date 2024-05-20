@@ -9,6 +9,10 @@ import { removeAuth, selectAuth } from '@/redux/reducers/authSlice'
 import { useDispatch } from 'react-redux'
 import toast from 'react-hot-toast'
 import { selectCart } from '@/redux/reducers/buyer/cartSlice'
+import image from '@/assets/images/signin-notify.jpg'
+import { StompSessionProvider } from 'react-stomp-hooks'
+import { SOCKET_REGISTER_URL } from '@/libs/socker-client'
+import HeaderNotify from '@/pages/Buyer/Notify/HeaderNotify'
 
 const TopHeader = () => {
   const user = useSelector(selectAuth)
@@ -50,10 +54,36 @@ const TopHeader = () => {
         <nav className="flex justify-between">
           <ul className="flex space-x-4 items-center">
             <li>
-              <NavLink to="discounts" className="text-gray-600 hover:text-black flex  items-center">
-                <FaRegBell className="mr-1" />
-                Thông báo
-              </NavLink>
+              {user.authData.accessToken ? (
+                <StompSessionProvider url={SOCKET_REGISTER_URL}>
+                  <HeaderNotify />
+                </StompSessionProvider>
+              ) : (
+                <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
+                  <div
+                    tabIndex={0}
+                    role="button"
+                    className="drawer-button text-gray-600 hover:text-black flex  items-center"
+                  >
+                    <FaRegBell className="mr-1" />
+                    Thông báo
+                  </div>
+                  <ul tabIndex={0} className="dropdown-content z-[100] p-3 shadow bg-base-100 rounded-box w-64">
+                    <>
+                      <img src={image} className="w-18" alt="" />
+                      <p className="text-gray-500 text-center">Đăng nhập để xem thông báo</p>
+                      <div className="flex gap-2 justify-between items-center">
+                        <button className="btn w-1/2">
+                          <Link to={'/buyer/login'}>Đăng nhập</Link>
+                        </button>
+                        <button className="btn w-1/2">
+                          <Link to={'/buyer/signup'}>Đăng ký</Link>
+                        </button>
+                      </div>
+                    </>
+                  </ul>
+                </div>
+              )}
             </li>
             <li>
               <NavLink to="buyer/cart" className="text-gray-600 hover:text-black flex  items-center">
