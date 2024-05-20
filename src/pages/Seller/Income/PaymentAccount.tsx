@@ -1,6 +1,6 @@
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { FaCompressArrowsAlt, FaExpandArrowsAlt } from 'react-icons/fa'
 import { toast } from 'react-toastify'
@@ -11,6 +11,7 @@ import { TransactionType } from '@/types/transaction.type'
 const PaymentAccount = () => {
   const axiosPrivate = useAxiosPrivate()
   const [amount, setAmount] = useState(0)
+  const client = useQueryClient()
   const [bankCode, setBankCode] = useState('')
   const [activeTab, setActiveTab] = useState('')
 
@@ -48,6 +49,19 @@ const PaymentAccount = () => {
         window.open(resp.data.data, '_blank')
       } else {
         toast.error('Lỗi')
+      }
+    } catch (error) {
+      toast.error('Lỗi')
+    }
+  }
+
+  const handleCreatWithdraw = async () => {
+    try {
+      const resp = await axiosPrivate.put(`/user/wallet/withdraw`, { amount })
+      if (resp.status === 200) {
+        client.invalidateQueries({ queryKey: [Seller_QueryKeys.GET_WALLET] })
+        setAmount(0)
+        toast.success(resp.data.messages[0])
       }
     } catch (error) {
       toast.error('Lỗi')
@@ -108,7 +122,13 @@ const PaymentAccount = () => {
                 <FaCompressArrowsAlt className="w-6 h-6" />
                 Nạp tiền vào ví qua VN Pay
               </button>
-              <button className="btn btn-error text-white">
+              <button
+                onClick={() => {
+                  const dialog = document.getElementById('my_modal_3') as HTMLDialogElement
+                  dialog.showModal()
+                }}
+                className="btn btn-error text-white"
+              >
                 <FaExpandArrowsAlt className="w-6 h-6" />
                 Tạo yêu cầu Rút tiền
               </button>
@@ -147,6 +167,33 @@ const PaymentAccount = () => {
                     <div className="flex gap-2">
                       <button onClick={() => handleCreatePayment()} className="btn btn-success text-white">
                         Tạo giao dịch
+                      </button>
+                      <button className="btn btn-error text-white">Đóng</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </dialog>
+            <dialog id="my_modal_3" className="modal modal-bottom sm:modal-middle">
+              <div className="modal-box">
+                <h3 className="font-bold text-lg">Thông tin rút tiền</h3>
+                <label className="form-control w-full max-w-xs my-2">
+                  <div className="label">
+                    <span className="label-text">Nhập số tiền rút</span>
+                  </div>
+                  <input
+                    type="number"
+                    placeholder="VNĐ"
+                    className="input input-bordered w-full max-w-xs"
+                    onChange={(e) => setAmount(Number(e.target.value))}
+                  />
+                </label>
+
+                <div className="modal-action">
+                  <form method="dialog">
+                    <div className="flex gap-2">
+                      <button onClick={() => handleCreatWithdraw()} className="btn btn-success text-white">
+                        Gửi yêu cầu
                       </button>
                       <button className="btn btn-error text-white">Đóng</button>
                     </div>

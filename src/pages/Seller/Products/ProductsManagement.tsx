@@ -10,6 +10,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { BsToggleOn, BsToggleOff } from 'react-icons/bs'
 import { formatPrice } from '@/utils/helpers'
 import { CiEdit, CiTrash, CiLock } from 'react-icons/ci'
+import { LoadingComponent } from '@/components'
 
 const ProductsManagement = () => {
   const axiosPrivate = useAxiosPrivate()
@@ -236,6 +237,7 @@ const ProductsManagement = () => {
               data={products?.data.data}
               pagination
               progressPending={isLoading}
+              progressComponent={<LoadingComponent />}
               expandableRowsComponent={ExpandedComponent}
               expandableRows
               pointerOnHover

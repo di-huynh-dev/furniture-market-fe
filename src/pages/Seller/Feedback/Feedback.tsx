@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { LoadingComponent } from '@/components'
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { FeedbackType } from '@/types/review.type'
@@ -141,7 +142,14 @@ const Feedback = () => {
           </div>
 
           <div className="m-4">
-            <DataTable columns={columns} data={feedbacks} pagination progressPending={isLoading} />;
+            <DataTable
+              columns={columns}
+              data={feedbacks}
+              pagination
+              progressPending={isLoading}
+              progressComponent={<LoadingComponent />}
+            />
+            ;
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ import { Seller_QueryKeys } from '@/constants/query-keys'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import { formatPrice } from '@/utils/helpers'
 import Papa from 'papaparse'
+import { LoadingComponent } from '@/components'
 
 const OrdersManagement = () => {
   const [activeTab, setActiveTab] = useState('')
@@ -54,7 +55,7 @@ const OrdersManagement = () => {
   }
 
   if (isLoadingOrders) {
-    return <div>Loading...</div>
+    return <LoadingComponent />
   }
 
   const filteredOrders = filterOrdersByStatus(activeTab)
@@ -150,6 +151,8 @@ const OrdersManagement = () => {
               }
               columns={columns}
               data={filteredOrders}
+              progressPending={isLoadingOrders}
+              progressComponent={<LoadingComponent />}
               pagination
             />
             ;

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FormInput } from '@/components'
+import { FormInput, LoadingComponent } from '@/components'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -148,7 +148,7 @@ const AddProduct = () => {
   })
 
   if (isLoadingCategories || isLoadingSystemCategories) {
-    return <div>Loading...</div>
+    return <LoadingComponent />
   }
 
   return (

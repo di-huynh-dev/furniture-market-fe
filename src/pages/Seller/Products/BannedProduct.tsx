@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { LoadingComponent } from '@/components'
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import useImagePreview from '@/hooks/useImagePreview'
@@ -15,7 +16,7 @@ const BannedProduct = () => {
   const { previewImages, handleFileChange } = useImagePreview()
   const [description, setDescription] = useState('')
 
-  const { data: bannedProducts, isLoading } = useQuery({
+  const { data: bannedProducts, isLoading: isLoadingBannedProducts } = useQuery({
     queryKey: [Seller_QueryKeys.REPORTED_PRODUCTS],
     queryFn: async () => {
       try {
@@ -28,7 +29,6 @@ const BannedProduct = () => {
       }
     },
   })
-  console.log(bannedProducts)
 
   const handleExplainReport = async () => {
     try {
@@ -192,7 +192,8 @@ const BannedProduct = () => {
             title="Danh sách sản phẩm vi phạm"
             columns={columns}
             data={bannedProducts}
-            progressPending={isLoading}
+            progressPending={isLoadingBannedProducts}
+            progressComponent={<LoadingComponent />}
             pagination
             expandableRowsComponent={ExpandedComponent}
             expandableRows
