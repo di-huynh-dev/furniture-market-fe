@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import { formatPrice } from '@/utils/helpers'
+import Papa from 'papaparse'
 
 const OrdersManagement = () => {
   const [activeTab, setActiveTab] = useState('')
@@ -26,6 +27,30 @@ const OrdersManagement = () => {
   const filterOrdersByStatus = (status: string) => {
     if (!status) return orderListByStatus
     return orderListByStatus.filter((order) => order.status === status)
+  }
+
+  const exportToCSV = () => {
+    const filteredOrders = filterOrdersByStatus(activeTab)
+    const csvData = filteredOrders.map((order) => ({
+      'Mã đơn': order.id,
+      'Danh sách sản phẩm': order.responses
+        .map((item: ResponseItem) => `ID: ${item.productId} - ${item.productName}`)
+        .join(', '),
+      'Trạng thái đơn': order.status,
+      'Tổng tiền': formatPrice(order.total),
+    }))
+
+    const csv = Papa.unparse(csvData)
+    const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+
+    link.setAttribute('href', url)
+    link.setAttribute('download', 'orders.csv')
+    link.style.visibility = 'hidden'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   }
 
   if (isLoadingOrders) {
@@ -51,68 +76,87 @@ const OrdersManagement = () => {
   ]
 
   return (
-    <div className="shadow-lg m-2 bg-white">
-      <div role="tablist" className="tabs tabs-lifted">
-        <div
-          role="tab"
-          onClick={() => handleTabClick('')}
-          className={`tab ${activeTab === '' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''}`}
-        >
-          Tất cả
-        </div>
-        <div
-          role="tab"
-          className={`tab ${
-            activeTab === 'TO_SHIP' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
-          }`}
-          onClick={() => handleTabClick('TO_SHIP')}
-        >
-          Chờ vận chuyển
-        </div>
-        <div
-          role="tab"
-          className={`tab ${
-            activeTab === 'SHIPPING' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
-          }`}
-          onClick={() => handleTabClick('SHIPPING')}
-        >
-          Đang giao
-        </div>
-        <div
-          role="tab"
-          className={`tab ${
-            activeTab === 'COMPLETED' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
-          }`}
-          onClick={() => handleTabClick('COMPLETED')}
-        >
-          Đã hoàn thành
-        </div>
-        <div
-          role="tab"
-          onClick={() => handleTabClick('CANCELLED')}
-          className={`tab ${
-            activeTab === 'CANCELLED' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
-          }`}
-        >
-          {' '}
-          Đã hủy
-        </div>
+    <section className="mx-4 my-2 text-sm">
+      <div className="card shadow-lg m-2 bg-white">
+        <div className="card-body">
+          <div role="tablist" className="tabs tabs-lifted">
+            <div
+              role="tab"
+              onClick={() => handleTabClick('')}
+              className={`tab ${
+                activeTab === '' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
+              }`}
+            >
+              Tất cả
+            </div>
+            <div
+              role="tab"
+              className={`tab ${
+                activeTab === 'TO_SHIP' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
+              }`}
+              onClick={() => handleTabClick('TO_SHIP')}
+            >
+              Chờ vận chuyển
+            </div>
+            <div
+              role="tab"
+              className={`tab ${
+                activeTab === 'SHIPPING' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
+              }`}
+              onClick={() => handleTabClick('SHIPPING')}
+            >
+              Đang giao
+            </div>
+            <div
+              role="tab"
+              className={`tab ${
+                activeTab === 'COMPLETED' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
+              }`}
+              onClick={() => handleTabClick('COMPLETED')}
+            >
+              Đã hoàn thành
+            </div>
+            <div
+              role="tab"
+              onClick={() => handleTabClick('CANCELLED')}
+              className={`tab ${
+                activeTab === 'CANCELLED' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
+              }`}
+            >
+              {' '}
+              Đã hủy
+            </div>
 
-        <div
-          role="tab"
-          onClick={() => handleTabClick('FAILED_DELIVERY')}
-          className={`tab ${
-            activeTab === 'FAILED_DELIVERY' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
-          }`}
-        >
-          Thất bại
+            <div
+              role="tab"
+              onClick={() => handleTabClick('FAILED_DELIVERY')}
+              className={`tab ${
+                activeTab === 'FAILED_DELIVERY' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
+              }`}
+            >
+              Thất bại
+            </div>
+          </div>
+
+          <div className="m-4">
+            <DataTable
+              title={
+                <div className="flex justify-between">
+                  <p>Danh sách đơn hàng</p>
+                  <button onClick={exportToCSV} className="mb-4 btn btn-outline btn-sm ">
+                    Xuất báo cáo
+                  </button>
+                </div>
+              }
+              columns={columns}
+              data={filteredOrders}
+              pagination
+            />
+            ;
+          </div>
         </div>
       </div>
-
-      <div className="m-4">
-        <DataTable columns={columns} data={filteredOrders} pagination />;
-      </div>
-    </div>
+    </section>
   )
 }
 

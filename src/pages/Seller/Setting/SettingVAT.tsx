@@ -52,7 +52,7 @@ const SettingVAT = () => {
     resolver: yupResolver(validationSchema),
   })
   return (
-    <section className="mx-4 my-2 text-sm">
+    <section className=" my-2 text-sm">
       <dialog className="modal" id="my_modal_8">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Cập nhật thông tin shop</h3>
@@ -101,7 +101,7 @@ const SettingVAT = () => {
                 const dialog = document.getElementById('my_modal_8') as HTMLDialogElement
                 dialog.showModal()
               }}
-              className="btn btn-outline btn-primary"
+              className="btn btn-outline btn-sm btn-primary"
             >
               Cập nhật thông tin
             </button>

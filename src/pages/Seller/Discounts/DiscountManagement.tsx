@@ -546,6 +546,7 @@ const DiscountManagement = () => {
           <span className="font-bold text-xl">Danh sách voucher của shop</span>
           <div>
             <DataTable
+              title="Danh sách voucher của shop"
               expandableRowsComponent={ExpandedComponent}
               expandableRows
               progressPending={isLoadingVouchers}

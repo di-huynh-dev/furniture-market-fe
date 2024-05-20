@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LoadingComponent } from '@/components'
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { FeedbackType } from '@/types/review.type'
@@ -11,13 +10,14 @@ import { toast } from 'react-toastify'
 
 const Feedback = () => {
   const axiosPrivate = useAxiosPrivate()
-  const [status, setStatus] = useState('FALSE')
+
   const [selectedFeedback, setSelectedFeedback] = useState('')
   const [content, setContent] = useState('')
+  const [status, setStatus] = useState<'TRUE' | 'FALSE'>('FALSE')
   const client = useQueryClient()
 
   const { data: feedbacks, isLoading } = useQuery({
-    queryKey: [Seller_QueryKeys.FEEDBACK_LIST],
+    queryKey: [Seller_QueryKeys.FEEDBACK_LIST, status],
     queryFn: async () => {
       try {
         const resp = await axiosPrivate.get(`/seller/store/review-by-reply?isReply=${status}&currentPage=0&pageSize=12`)
@@ -28,9 +28,8 @@ const Feedback = () => {
         toast.error(error.response.data.messages[0])
       }
     },
+    enabled: !!status,
   })
-
-  console.log(feedbacks)
 
   const handleReplyFeedback = async () => {
     try {
@@ -53,8 +52,6 @@ const Feedback = () => {
       toast.error(error.response.data.messages[0])
     }
   }
-
-  if (isLoading) return <LoadingComponent />
 
   const columns: TableColumn<FeedbackType>[] = [
     {
@@ -124,7 +121,7 @@ const Feedback = () => {
               onClick={() => {
                 setStatus('FALSE')
                 client.invalidateQueries({
-                  queryKey: [Seller_QueryKeys.FEEDBACK_LIST],
+                  queryKey: [Seller_QueryKeys.FEEDBACK_LIST, 'FALSE'],
                 })
               }}
             >
@@ -135,7 +132,7 @@ const Feedback = () => {
               onClick={() => {
                 setStatus('TRUE')
                 client.invalidateQueries({
-                  queryKey: [Seller_QueryKeys.FEEDBACK_LIST],
+                  queryKey: [Seller_QueryKeys.FEEDBACK_LIST, 'TRUE'],
                 })
               }}
             >
@@ -144,7 +141,7 @@ const Feedback = () => {
           </div>
 
           <div className="m-4">
-            <DataTable columns={columns} data={feedbacks} pagination />;
+            <DataTable columns={columns} data={feedbacks} pagination progressPending={isLoading} />;
           </div>
         </div>
       </div>

@@ -34,7 +34,6 @@ const PaymentAccount = () => {
     },
     enabled: !!wallet,
   })
-  console.log(history)
 
   const handleCreatePayment = async () => {
     if (!amount || !bankCode) {

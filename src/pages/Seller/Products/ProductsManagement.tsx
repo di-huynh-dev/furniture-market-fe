@@ -8,7 +8,6 @@ import DataTable, { TableColumn } from 'react-data-table-component'
 import toast from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
 import { BsToggleOn, BsToggleOff } from 'react-icons/bs'
-import { FaFileExport } from 'react-icons/fa'
 import { formatPrice } from '@/utils/helpers'
 import { CiEdit, CiTrash, CiLock } from 'react-icons/ci'
 
@@ -199,39 +198,41 @@ const ProductsManagement = () => {
       </dialog>
       <div className="card shadow-lg my-2 bg-white">
         <div className="card-body">
-          <div className="flex justify-between items-center">
-            <div>
-              <label className="input input-bordered flex items-center gap-2">
-                <input type="text" className="grow" placeholder="Tìm kiếm theo tên" />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  className="w-4 h-4 opacity-70"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </label>
-            </div>
-            <div className="flex gap-2">
-              <button onClick={() => navigate('/seller/products/new')} className="btn btn-success text-white">
-                + Thêm sản phẩm mới
-              </button>
-
-              <button onClick={() => navigate('/seller/products/new')} className="btn btn-success text-white">
-                <FaFileExport />
-                Xuất file
-              </button>
-            </div>
-          </div>
           <div>
             <DataTable
               columns={columns}
-              title="Danh sách sản phẩm của shop"
+              title={
+                <div className="flex justify-between items-center gap-2">
+                  <p>Danh sách sản phẩm của shop</p>
+                  <div className="flex gap-2">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <label className="input input-bordered flex items-center gap-2">
+                          <input type="text" className="grow" placeholder="Tìm kiếm theo tên" />
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 16 16"
+                            fill="currentColor"
+                            className="w-4 h-4 opacity-70"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => navigate('/seller/products/new')}
+                    className="btn btn-sm btn-outline btn-primary"
+                  >
+                    + Thêm sản phẩm mới
+                  </button>
+                </div>
+              }
               data={products?.data.data}
               pagination
               progressPending={isLoading}

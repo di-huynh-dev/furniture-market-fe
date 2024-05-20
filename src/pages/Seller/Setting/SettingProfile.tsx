@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LoadingComponent } from '@/components'
 import { useProfile } from '@/hooks/useProfile'
 import { removeAuth, selectSellerAuth, updateProfile } from '@/redux/reducers/seller/sellerAuthSlice'
@@ -59,8 +60,8 @@ const SettingProfile = () => {
       dispatch(removeAuth())
       toast.success(resp.data.messages[0])
     },
-    onError: (error) => {
-      console.log(error)
+    onError: (error: any) => {
+      toast.error(error.response.data.messages[0])
     },
   })
 
@@ -133,7 +134,7 @@ const SettingProfile = () => {
     return <div>Error: {error.message}</div>
   }
   return (
-    <section className=" my-2 text-sm">
+    <section className="my-2 text-sm">
       <div className="modal" role="dialog" id="my_modal_8">
         <div className="modal-box">
           <h3 className="font-bold text-lg text-center">Thay đổi thông tin cá nhân</h3>

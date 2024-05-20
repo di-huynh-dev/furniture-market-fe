@@ -257,22 +257,23 @@ const ShopCategory = () => {
 
       <div className="card shadow-lg my-2 bg-white">
         <div className="card-body">
-          <div className="flex justify-between items-center">
-            <span className="font-bold text-xl">Danh mục hàng của shop</span>
-            <button
-              onClick={() => {
-                setIsUpdate(false)
-                const dialog = document.getElementById('my_modal_1') as HTMLDialogElement
-                dialog.showModal()
-              }}
-              className="btn btn-outline btn-primary"
-            >
-              + Thêm danh mục
-            </button>
-          </div>
-
           <div>
             <DataTable
+              title={
+                <div className="flex justify-between items-center">
+                  <span className="text-2xl">Danh mục hàng của shop</span>
+                  <button
+                    onClick={() => {
+                      setIsUpdate(false)
+                      const dialog = document.getElementById('my_modal_1') as HTMLDialogElement
+                      dialog.showModal()
+                    }}
+                    className="btn btn-outline btn-primary btn-sm"
+                  >
+                    + Thêm danh mục
+                  </button>
+                </div>
+              }
               columns={columns}
               data={shopCategories?.data}
               pagination

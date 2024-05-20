@@ -27,7 +27,7 @@ const DrawerSide = () => {
                   <Link to={'category'}>Danh mục hàng</Link>
                   <Link to={'/seller/products'}>Tất cả</Link>
                   <Link to={'products/new'}>Thêm sản phẩm</Link>
-                  <Link to={'products/banned'}>Sản phẩm vi phạm</Link>
+                  <Link to={'products/banned'}>Báo cáo vi phạm</Link>
                 </li>
               </ul>
             </details>
@@ -69,8 +69,8 @@ const DrawerSide = () => {
               </summary>
               <ul>
                 <li className="text-gray-500">
-                  <Link to={'chat'}>Kênh chat</Link>
-                  <Link to={'feedback'}>Quản lý Feedback</Link>
+                  <Link to={'chat'}>Quản lý Chat</Link>
+                  <Link to={'feedback'}>Quản lý Đánh giá</Link>
                 </li>
               </ul>
             </details>

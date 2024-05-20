@@ -192,7 +192,7 @@ const SettingIdentify = () => {
                 const dialog = document.getElementById('my_modal_8') as HTMLDialogElement
                 dialog.showModal()
               }}
-              className="btn btn-outline btn-primary"
+              className="btn btn-outline btn-sm btn-primary"
             >
               Cập nhật thông tin
             </button>

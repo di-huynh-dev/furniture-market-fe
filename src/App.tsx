@@ -26,19 +26,14 @@ import {
 } from './pages/Buyer'
 import {
   AddProduct,
-  BankList,
   BannedProduct,
-  CancelledOrder,
-  CompletedOrder,
   DiscountManagement,
-  FailedDeliveryOrder,
   Feedback,
   ForgotPassword,
   IncomeManagement,
   MarketingManagement,
   OrdersManagement,
   PaymentAccount,
-  ProductBrand,
   ProductsManagement,
   ReturnOrder,
   SellerHome,
@@ -49,13 +44,10 @@ import {
   SettingProfile,
   SettingShop,
   SettingVAT,
-  ShippingOrder,
   ShopCategory,
   ShopError,
   ShopHome,
   ShopManagement,
-  ToshipOrder,
-  UnpaidOrder,
   UpdateProduct,
 } from './pages/Seller'
 
@@ -214,32 +206,8 @@ function App() {
           element: <OrdersManagement />,
           children: [
             {
-              path: seller_routes.orders_unpaid,
-              element: <UnpaidOrder />,
-            },
-            {
-              path: seller_routes.orders_toship,
-              element: <ToshipOrder />,
-            },
-            {
-              path: seller_routes.orders_shipping,
-              element: <ShippingOrder />,
-            },
-            {
-              path: seller_routes.orders_compelted,
-              element: <CompletedOrder />,
-            },
-            {
-              path: seller_routes.orders_cacelled,
-              element: <CancelledOrder />,
-            },
-            {
               path: seller_routes.orders_return,
               element: <ReturnOrder />,
-            },
-            {
-              path: seller_routes.orders_failed_delivery,
-              element: <FailedDeliveryOrder />,
             },
           ],
         },
@@ -274,10 +242,6 @@ function App() {
           element: <BannedProduct />,
         },
         {
-          path: seller_routes.product_brand,
-          element: <ProductBrand />,
-        },
-        {
           path: seller_routes.marketing,
           element: <MarketingManagement />,
         },
@@ -292,10 +256,6 @@ function App() {
         {
           path: seller_routes.payment_account,
           element: <PaymentAccount />,
-        },
-        {
-          path: seller_routes.bank_list,
-          element: <BankList />,
         },
         {
           path: seller_routes.feedback,
