@@ -19,6 +19,7 @@ const BuyerPurchase = () => {
       return resp.data.data.content
     },
   })
+  console.log(orderListByStatus)
 
   const getOrderListByStatusMutation = useMutation({
     mutationFn: async (status: string) => {

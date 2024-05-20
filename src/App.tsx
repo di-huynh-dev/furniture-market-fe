@@ -27,11 +27,13 @@ import {
 import {
   AddProduct,
   BannedProduct,
+  ChatCenter,
   DiscountManagement,
   Feedback,
   ForgotPassword,
   IncomeManagement,
   MarketingManagement,
+  NotifyManagement,
   OrdersManagement,
   PaymentAccount,
   ProductsManagement,
@@ -238,6 +240,10 @@ function App() {
           element: <UpdateProduct />,
         },
         {
+          path: seller_routes.chat,
+          element: <ChatCenter />,
+        },
+        {
           path: seller_routes.product_banned,
           element: <BannedProduct />,
         },
@@ -264,6 +270,10 @@ function App() {
         {
           path: seller_routes.shop,
           element: <ShopManagement />,
+        },
+        {
+          path: seller_routes.notify,
+          element: <NotifyManagement />,
         },
       ],
     },

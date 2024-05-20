@@ -66,6 +66,7 @@ export const seller_routes = {
   setting_identify: 'identify',
   setting_shop_rating: 'settings/shop/rating',
   setting_category: 'settings/shop/category',
+  notify: 'notify',
 }
 
 export const common_routes = {

@@ -14,6 +14,7 @@ import useImagePreview from '@/hooks/useImagePreview'
 import { useState } from 'react'
 import useLocation from '@/hooks/useLocation'
 import axiosClient from '@/libs/axios-client'
+import { selectSellerAuth } from '@/redux/reducers/seller/sellerAuthSlice'
 
 type FormData = {
   shopName: string
@@ -37,6 +38,7 @@ const SettingShop = () => {
   const { previewImages: topBannerImage, handleFileChange: handleTopBannerFileChange } = useImagePreview()
   const { previewImages: infoBanner, handleFileChange: handleInfoBanner } = useImagePreview()
   const info = useSelector(selectSellerShop)
+  const user = useSelector(selectSellerAuth)
 
   const [isPending, setIsPending] = useState(false)
   const [selectedProvinceId, setSelectedProvinceId] = useState<string>('')
@@ -321,15 +323,25 @@ const SettingShop = () => {
         <div className="card-body ">
           <div className="flex justify-between items-center">
             <span className="font-bold">Thông tin shop</span>
-            <button
-              onClick={() => {
-                const dialog = document.getElementById('my_modal_8') as HTMLDialogElement
-                dialog.showModal()
-              }}
-              className="btn btn-outline btn-sm btn-primary"
-            >
-              Cập nhật thông tin
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  window.open(`http://localhost:5173/shop/${user.authData.user.id}`, '_blank')
+                }}
+                className="btn btn-outline btn-sm btn-primary"
+              >
+                Xem cửa hàng của bạn
+              </button>
+              <button
+                onClick={() => {
+                  const dialog = document.getElementById('my_modal_8') as HTMLDialogElement
+                  dialog.showModal()
+                }}
+                className="btn btn-outline btn-sm btn-primary"
+              >
+                Cập nhật thông tin
+              </button>
+            </div>
           </div>
           {info.shopData.shopInfo.address &&
           info.shopData.shopInfo.ownerName &&

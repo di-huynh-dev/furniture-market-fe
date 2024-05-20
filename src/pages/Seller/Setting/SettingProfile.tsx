@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { LoadingComponent } from '@/components'
 import { useProfile } from '@/hooks/useProfile'
-import { removeAuth, selectSellerAuth, updateProfile } from '@/redux/reducers/seller/sellerAuthSlice'
+import { selectSellerAuth, updateProfile } from '@/redux/reducers/seller/sellerAuthSlice'
 import { formatDate } from '@/utils/helpers'
 import { CiCircleCheck } from 'react-icons/ci'
 import { useSelector } from 'react-redux'
@@ -57,7 +57,6 @@ const SettingProfile = () => {
       return resp
     },
     onSuccess: (resp) => {
-      dispatch(removeAuth())
       toast.success(resp.data.messages[0])
     },
     onError: (error: any) => {

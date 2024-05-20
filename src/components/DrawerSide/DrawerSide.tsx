@@ -99,6 +99,9 @@ const DrawerSide = () => {
                 <li className="text-gray-500">
                   <Link to={'settings/profile'}>Hồ sơ</Link>
                 </li>
+                <li className="text-gray-500">
+                  <Link to={'notify'}>Thông báo</Link>
+                </li>
               </ul>
             </details>
           </li>

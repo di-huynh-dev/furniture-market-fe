@@ -43,7 +43,7 @@ const Login = () => {
         // localStorage.setItem('accessToken', resp.data.data.accessToken)
         dispatch(addAuth(resp.data.data))
         toast.success('Đăng nhập thành công')
-        navigate('/seller/settings/profile')
+        navigate('/seller')
       } else {
         setIsLoading(false)
         toast.error('Tài khoản không tồn tại!')

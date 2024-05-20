@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import login from '@/assets/images/login.jpg'
 import { FcGoogle } from 'react-icons/fc'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useForm } from 'react-hook-form'
@@ -47,6 +47,12 @@ const Login = () => {
       toast.error(error.response.data.messages[0])
     }
   }
+
+  //Login by google
+  // const [searchParams, setSearchParams] = useSearchParams()
+  // const token = searchParams.get('token')
+  // console.log('token', token)
+
   const {
     register,
     handleSubmit,
@@ -94,7 +100,7 @@ const Login = () => {
           </Link>
         </p>
         <div className="divider">OR</div>
-        <Link to="https://fnest-store.api.codeforlife.blog/oauth2/authorization/google">
+        <Link to="http://localhost:8080/oauth2/authorization/google">
           <div className="btn btn-ghost flex justify-center w-full items-center text-center">
             <FcGoogle className="w-12 h-12 text-primary" />
             <p className="hidden md:block lg:block"> Đăng nhập bằng Google</p>

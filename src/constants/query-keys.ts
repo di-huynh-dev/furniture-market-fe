@@ -18,6 +18,7 @@ export const Seller_QueryKeys = {
   ORDER_LIST: 'ORDER_LIST',
   FEEDBACK_LIST: 'FEEDBACK_LIST',
   REPORTED_PRODUCTS: 'REPORTED_PRODUCTS',
+  USER_NOTIFICATION: 'USER_NOTIFICATION',
 }
 
 export const Buyer_QueryKeys = {

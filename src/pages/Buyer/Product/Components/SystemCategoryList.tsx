@@ -6,12 +6,15 @@ import Slider from 'react-slick'
 
 const SystemCategoryList = () => {
   const settings = {
-    dots: true,
     infinite: false,
     speed: 500,
     slidesToShow: 7,
     slidesToScroll: 4,
     initialSlide: 0,
+    autoplay: true,
+    autoplaySpeed: 4000,
+    cssEase: 'linear',
+    waitForAnimate: false,
     responsive: [
       {
         breakpoint: 1024,
