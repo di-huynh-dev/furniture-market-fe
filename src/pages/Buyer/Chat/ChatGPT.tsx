@@ -21,20 +21,20 @@ const ChatGPT = () => {
     console.log('Connected: ' + frame)
     // Subscribe vào kênh tin nhắn của người dùng
     stompClient.subscribe(
-      `${SOCKET_USER_TOPIC_PREFIX_URL}/${'45db986a-89a7-48c1-beb3-82f34d647a95'}`,
+      `${SOCKET_USER_TOPIC_PREFIX_URL}/${'c54aa696-8e96-4003-89c7-25dd389ec57c'}`,
       function (message) {
         console.log(message)
         setLastMessage(message.body)
       },
     )
   })
-  // senderId: 'dc9a638f-fc1d-4de1-9308-63b5e1aa8ed8',
-  // receiverId: 'eab55d5e-8b07-424e-88b9-534739185e33',
+  // senderId: '866c5d82-1b9d-47f1-91ee-fe965dcd6cd2',
+  // receiverId: 'f80eac3b-8e67-4c9c-996f-238edaed6564',
   // Gửi tin nhắn mới
   const sendMessage = () => {
     const newMessage = {
-      senderId: '0842fae9-376e-4cbb-87a9-9047ad5cdeaf',
-      receiverId: '45db986a-89a7-48c1-beb3-82f34d647a95',
+      senderId: 'c54aa696-8e96-4003-89c7-25dd389ec57c',
+      receiverId: 'da16e519-ca2d-43ba-a674-f8e29e654b4d',
       message: inputMessage,
       createdAt: new Date().toISOString(), // Sử dụng thời gian hiện tại
       type: 'MESSAGE',

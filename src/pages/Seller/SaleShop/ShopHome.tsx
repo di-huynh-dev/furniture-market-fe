@@ -3,7 +3,7 @@
 import { LoadingComponent } from '@/components'
 import { Buyer_QueryKeys } from '@/constants/query-keys'
 import axiosClient from '@/libs/axios-client'
-import { BuyerProductCard } from '@/pages/Buyer'
+import { BuyerProductCard, ChatCenter } from '@/pages/Buyer'
 import { ProductDetailType } from '@/types/product.type'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
@@ -18,6 +18,9 @@ import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 import toast from 'react-hot-toast'
 import { selectAuth } from '@/redux/reducers/authSlice'
 import { useSelector } from 'react-redux'
+import useToggleChat from '@/hooks/useToggleChat'
+import { StompSessionProvider } from 'react-stomp-hooks'
+import { SOCKET_REGISTER_URL } from '@/libs/socker-client'
 
 type CategoryType = {
   id: string
@@ -28,6 +31,8 @@ const ShopHome = () => {
   const { id } = useParams()
   const user = useSelector(selectAuth)
   const axiosPrivate = useAxiosBuyerPrivate()
+  const { showChat, toggleChat } = useToggleChat()
+  const [receiver, setReceiver] = useState({ id: id || '', name: '' })
   const client = useQueryClient()
   const [initialLoad, setInitialLoad] = useState(true)
   const [categoryName, setCategoryName] = useState('')
@@ -111,10 +116,24 @@ const ShopHome = () => {
     { icon: CiStar, label: 'Điểm đánh giá', value: shop_profile?.avgReviewStar },
   ]
 
+  const handleSentMessage = () => {
+    if (user.authData.accessToken) {
+      setReceiver({ id: id || '', name: shop_profile?.name || '' })
+      toggleChat()
+    } else {
+      toast.error('Vui lòng đăng nhập để gửi tin nhắn!')
+    }
+  }
+
   if (shop_profile_loading || shop_categories_loading) return <LoadingComponent />
 
   return (
     <>
+      {user.authData?.user?.id && (
+        <StompSessionProvider url={SOCKET_REGISTER_URL}>
+          <ChatCenter showChat={showChat} toggleChat={toggleChat} receiver={receiver} />
+        </StompSessionProvider>
+      )}
       <div className=" bg-white shadow-md">
         <div className="align-element">
           {shop_profile.topBanner && (
@@ -139,7 +158,7 @@ const ShopHome = () => {
                         <BsThreeDotsVertical />
                       </div>
                       <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                        <li>
+                        <li onClick={handleSentMessage}>
                           <a>
                             <IoIosSend />
                             Gửi tin nhắn

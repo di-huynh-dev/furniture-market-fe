@@ -1,5 +1,4 @@
 import { BuyerFooter, BuyerHeader, TopHeader } from '@/components'
-import { useState } from 'react'
 import { BsChatRightQuote } from 'react-icons/bs'
 import { Outlet } from 'react-router-dom'
 import { ChatCenter } from '../Buyer'
@@ -7,13 +6,11 @@ import { StompSessionProvider } from 'react-stomp-hooks'
 import { SOCKET_REGISTER_URL } from '@/libs/socker-client'
 import { useSelector } from 'react-redux'
 import { selectAuth } from '@/redux/reducers/authSlice'
+import useToggleChat from '@/hooks/useToggleChat'
 
 const Landing = () => {
-  const [showChat, setShowChat] = useState(false)
   const user = useSelector(selectAuth)
-  const toggleChat = () => {
-    setShowChat(!showChat)
-  }
+  const { showChat, toggleChat } = useToggleChat()
 
   return (
     <div className="bg-[#EDECEF]">

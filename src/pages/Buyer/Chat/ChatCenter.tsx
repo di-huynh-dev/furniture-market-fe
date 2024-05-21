@@ -1,14 +1,10 @@
 import { IoIosSend } from 'react-icons/io'
 import { FaRegWindowClose } from 'react-icons/fa'
-import UserItemList from './components/UserItemList'
 import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 import { Buyer_QueryKeys } from '@/constants/query-keys'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { selectAuth } from '@/redux/reducers/authSlice'
 import { useSelector } from 'react-redux'
-import { UserType } from '@/types/user.type'
-import MessageItem from './components/MessageItem'
-import MyMessageItem from './components/MyMessageItem'
 import { SOCKET_REGISTER_URL, SOCKET_USER_TOPIC_PREFIX_URL } from '@/libs/socker-client'
 import SockJS from 'sockjs-client'
 import { useEffect, useRef, useState } from 'react'
@@ -16,36 +12,31 @@ import Stomp, { Client, Message } from 'stompjs'
 import { ChatItem } from '@/types/chat.type'
 import { useForm } from 'react-hook-form'
 import { CiCamera } from 'react-icons/ci'
-import { useNavigate } from 'react-router-dom'
+import Sidebar from './components/Sidebar'
+import ChatContent from './components/ChatContent'
+import { UserType } from '@/types/user.type'
 
 interface ChatCenterProps {
   showChat: boolean
   toggleChat: () => void
+  receiver: { id: string; name: string }
 }
 
 type FormData = {
   message: string
 }
 
-const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat }) => {
+const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat, receiver }) => {
   const axiosPrivate = useAxiosBuyerPrivate()
   const user = useSelector(selectAuth)
-  const navigate = useNavigate()
   const [client, setClient] = useState<Client | null>(null)
-  const [receiverId, setReceiverId] = useState<string | null>(null)
+  const [receiverId, setReceiverId] = useState<string | null>(receiver?.id || '')
+  const [receiverName, setReceiverName] = useState<string | null>(receiver?.name || '')
   const [messages, setMessages] = useState<ChatItem[]>([])
   console.log(messages)
 
-  const [imgView, setImgView] = useState<File | null>(null)
-  const [image, setImage] = useState('')
-  const messagesEndRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!user.authData?.user?.id && showChat) {
-      navigate('/buyer/login')
-      toggleChat()
-    }
-  }, [user.authData?.user?.id, showChat, navigate, toggleChat])
+  // const [imgView, setImgView] = useState<File | null>(null)
+  // const [image, setImage] = useState('')
 
   const { data: userSentMessages, isLoading: isLoadingUserSentMessages } = useQuery({
     queryKey: [Buyer_QueryKeys.LIST_USER_SENT_MESSAGE],
@@ -58,7 +49,6 @@ const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat }) => {
 
   useEffect(() => {
     if (showChat && user.authData.user.id) {
-      handleChooseReceiver(userSentMessages[0]?.id)
       const socket = new SockJS(SOCKET_REGISTER_URL)
       const stompClient = Stomp.over(socket)
 
@@ -83,10 +73,10 @@ const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat }) => {
   }, [showChat, user.authData.user.id, receiverId, userSentMessages])
 
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    if (receiverId) {
+      listMessagesOfReceiverMutation.mutate(receiverId)
     }
-  }, [messages])
+  }, [receiverId])
 
   const updateMessages = (message: ChatItem) => {
     const isMessageExist = messages.some((msg: ChatItem) => msg.randomHash === message.randomHash)
@@ -95,28 +85,28 @@ const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat }) => {
     }
   }
 
-  const handleUploadFile = async (file: File) => {
-    const formData = new FormData()
-    formData.append('image', file)
-    try {
-      const resp = await axiosPrivate.post('/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      if (resp.status === 200) {
-        setImage(resp.data.data['image-url'])
-        setImgView(null)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const handleUploadFile = async (file: File) => {
+  //   const formData = new FormData()
+  //   formData.append('image', file)
+  //   try {
+  //     const resp = await axiosPrivate.post('/upload', formData, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //     })
+  //     if (resp.status === 200) {
+  //       setImage(resp.data.data['image-url'])
+  //       setImgView(null)
+  //     }
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
   const handleSendMessage = (message: string) => {
-    if (imgView) {
-      handleUploadFile(imgView)
-    }
+    // if (imgView) {
+    //   handleUploadFile(imgView)
+    // }
 
     if (client && receiverId) {
       const newMessage: ChatItem = {
@@ -126,11 +116,10 @@ const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat }) => {
         createdAt: new Date().toISOString(),
         type: 'MESSAGE',
         randomHash: Math.random().toString(),
-        image: image || '',
       }
-      listMessagesOfReceiverMutation.mutate(receiverId)
       client.send(`/ws/secured/messenger`, {}, JSON.stringify(newMessage))
-      setImage('')
+      listMessagesOfReceiverMutation.mutate(receiverId)
+
       reset()
     }
   }
@@ -138,25 +127,17 @@ const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat }) => {
   const listMessagesOfReceiverMutation = useMutation({
     mutationFn: async (receiverId: string) => {
       const resp = await axiosPrivate.post(`/common/message/list-message?opponentId=${receiverId}`)
-      return resp
+      return resp.data.data
     },
-    onSuccess: (resp) => {
-      setMessages(resp.data.data)
+    onSuccess: (messages) => {
+      setMessages(messages)
     },
   })
 
-  const handleChooseReceiver = (receiverId: string) => {
-    setReceiverId(receiverId)
-    listMessagesOfReceiverMutation.mutate(receiverId)
+  const handleChooseReceiver = (user: UserType) => {
+    setReceiverId(user.id)
+    setReceiverName(user.fullName)
   }
-
-  const filteredMessages = messages.map((message: ChatItem, index) => {
-    if (message.senderId === user.authData.user.id) {
-      return <MyMessageItem key={index} item={message} />
-    } else {
-      return <MessageItem key={index} item={message} />
-    }
-  })
 
   const { register, handleSubmit, reset } = useForm<FormData>()
 
@@ -180,32 +161,15 @@ const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat }) => {
           </div>
           <div className="">
             <div className="grid grid-cols-10 gap-4">
-              <div
-                className="col-span-3 overflow-y-auto h-[450px] border-r"
-                style={{ scrollbarWidth: 'thin', scrollbarColor: '#CBD5E0 #E5E7EB' }}
-              >
-                <p>Đến từ:</p>
-                <ul className="">
-                  {userSentMessages?.map((item: UserType) => (
-                    <li
-                      key={item.id}
-                      onClick={() => handleChooseReceiver(item.id)}
-                      className={`${
-                        receiverId === item.id ? 'bg-neutral-200' : ''
-                      } rounded-xl p-1 my-2 hover:bg-neutral-200`}
-                    >
-                      <UserItemList item={item} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <Sidebar receiverId={receiverId} handleChooseReceiver={handleChooseReceiver} />
               <div
                 className="col-span-7 overflow-y-auto h-[380px]"
                 style={{ scrollbarWidth: 'thin', scrollbarColor: '#CBD5E0 #E5E7EB' }}
               >
                 <div>
-                  <div className="row-span-4">{filteredMessages}</div>
-                  <div ref={messagesEndRef} />
+                  <p>Người nhận: {receiverName}</p>
+                  <ChatContent messages={messages} />
+
                   <div className="bottom-0 fixed w-[430px]">
                     <form onSubmit={onSubmit}>
                       <div className="w-full flex mb-2 items-center">
@@ -215,7 +179,7 @@ const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat }) => {
                           placeholder="Nhập nội dung tin nhắn"
                           className="input input-bordered input-neutral w-full"
                         />
-                        <label className="form-control">
+                        {/* <label className="form-control">
                           <input
                             type="file"
                             id="fileInput"
@@ -234,7 +198,7 @@ const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat }) => {
                           <label htmlFor="fileInput" className="cursor-pointer">
                             <CiCamera className="w-6 h-6 mx-2" />
                           </label>
-                        </label>
+                        </label> */}
                         <button type="submit" className="btn btn-primary text-white">
                           <IoIosSend />
                           Gửi

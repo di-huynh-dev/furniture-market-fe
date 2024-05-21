@@ -15,8 +15,7 @@ const MyMessageItem = ({ item }: { item: ChatItem }) => {
         <div className="chat-header">
           <time className="text-xs opacity-50">{item.createdAt}</time>
         </div>
-        <div className="chat-bubble">{item.message}</div>
-        <p></p>
+        <div className="chat-bubble">{item.content || item.message}</div>
         <div className="chat-footer opacity-50">{item.read ? 'Seen' : ''}</div>
       </div>
     </div>

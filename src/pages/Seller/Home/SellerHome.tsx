@@ -15,9 +15,12 @@ const SellerHome = () => {
   const currentDate = new Date()
   const currentYear = currentDate.getFullYear()
   const currentMonth = currentDate.getMonth() + 1
-
   const [month, setMonth] = useState(currentMonth)
   const [year, setYear] = useState(currentYear)
+
+  useEffect(() => {
+    document.title = 'Fnest - Kênh người bán'
+  }, [])
 
   const {
     data: statistics,
@@ -30,10 +33,6 @@ const SellerHome = () => {
       return resp.data.data
     },
   })
-
-  useEffect(() => {
-    document.title = 'Fnest - Kênh người bán'
-  }, [])
 
   const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setMonth(parseInt(event.target.value))
