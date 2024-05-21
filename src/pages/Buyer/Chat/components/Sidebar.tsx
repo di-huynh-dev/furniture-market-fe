@@ -9,7 +9,7 @@ import { UserType } from '@/types/user.type'
 
 interface SidebarProps {
   receiverId: string | null
-  handleChooseReceiver: (id: string) => void
+  handleChooseReceiver: (user: UserType) => void
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ receiverId, handleChooseReceiver }) => {

@@ -5,13 +5,14 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useForm } from 'react-hook-form'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { LoginApiType } from '@/types/user.type'
 import { FormInput, LoadingButton } from '@/components'
 import commonApi from '@/api/commonApi'
 import { useDispatch } from 'react-redux'
-import { addAuth } from '@/redux/reducers/authSlice'
+import { addAuth, setToken, updateProfile } from '@/redux/reducers/authSlice'
 import toast from 'react-hot-toast'
+import axiosClient from '@/libs/axios-client'
 
 export type FormData = LoginApiType
 
@@ -49,9 +50,32 @@ const Login = () => {
   }
 
   //Login by google
-  // const [searchParams, setSearchParams] = useSearchParams()
-  // const token = searchParams.get('token')
-  // console.log('token', token)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const token = searchParams.get('token')
+
+  useEffect(() => {
+    if (token) {
+      dispatch(setToken(token))
+      setIsLoading(true)
+      const getUserProfile = async () => {
+        try {
+          const resp = await axiosClient.get('/user', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          dispatch(updateProfile(resp.data.data))
+          setIsLoading(false)
+          toast.success('Đăng nhập thành công!')
+          navigate('/')
+        } catch (error: any) {
+          toast.error(error.response.data.messages[0])
+          setIsLoading(false)
+        }
+      }
+      getUserProfile()
+    }
+  }, [token])
 
   const {
     register,
