@@ -74,6 +74,9 @@ const Login = () => {
         }
       }
       getUserProfile()
+    } else {
+      setIsLoading(false)
+      navigate('/buyer/login')
     }
   }, [token])
 

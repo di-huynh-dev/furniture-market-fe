@@ -1,7 +1,7 @@
 import { selectAuth } from '@/redux/reducers/authSlice'
 import { useState } from 'react'
 import { BiSolidBellRing, BiUser } from 'react-icons/bi'
-import { BsCashStack, BsCheck } from 'react-icons/bs'
+import { BsCheck } from 'react-icons/bs'
 import { PiNewspaperClippingThin } from 'react-icons/pi'
 import { useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
@@ -72,10 +72,6 @@ const Sidenav = () => {
             </ul>
           </div>
         </div>
-        <NavLink to="/buyer/account/vouchers" className="flex items-center space-x-2 pb-2">
-          <BsCashStack className="text-primary" />
-          <span>Voucher</span>
-        </NavLink>
       </div>
     </div>
   )

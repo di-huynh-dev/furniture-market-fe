@@ -19,7 +19,6 @@ const BuyerPurchase = () => {
       return resp.data.data.content
     },
   })
-  console.log(orderListByStatus)
 
   const getOrderListByStatusMutation = useMutation({
     mutationFn: async (status: string) => {
@@ -132,7 +131,11 @@ const BuyerPurchase = () => {
         return <OrderItemComponent order={order} key={order.id} />
       })}
 
-      {orderListByStatus.length === 0 && <div className="text-center">Bạn chưa có đơn hàng nào</div>}
+      {orderListByStatus.length === 0 && (
+        <div className="text-center my-2 italic text-gray-500">
+          Bạn chưa có đơn hàng nào. Hãy mua sắm thoải mái bạn nhé!
+        </div>
+      )}
     </div>
   )
 }

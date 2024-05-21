@@ -226,7 +226,9 @@ const BuyerWallet = () => {
               </tbody>
             </table>
           </div>
-          {history.length === 0 && <p className="text-center">Chưa có giao dịch nào</p>}
+          {history.length === 0 && (
+            <p className="text-center my-2 italic text-gray-500">Tài khoản của bạn chưa có giao dịch nào</p>
+          )}
         </>
       )}
     </div>

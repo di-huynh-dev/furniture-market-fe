@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { FormInput } from '@/components'
+import { FormInput, LoadingComponent } from '@/components'
 import { Buyer_QueryKeys } from '@/constants/query-keys'
 import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -93,8 +94,6 @@ const BuyerAddress = () => {
           toast.success(resp.data.messages[0])
           queryClient.invalidateQueries({ queryKey: [Buyer_QueryKeys.USER_ADDRESS] })
           resetForm()
-        } else {
-          toast.error('Lỗi')
         }
       } else {
         const resp = await axiosPrivate.put(`/buyer/delivery-address/${addressId}`, {
@@ -107,12 +106,10 @@ const BuyerAddress = () => {
           toast.success(resp.data.messages[0])
           queryClient.invalidateQueries({ queryKey: [Buyer_QueryKeys.USER_ADDRESS] })
           reset()
-        } else {
-          toast.error('Lỗi')
         }
       }
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      toast.error(error.response.data.messages[0])
     }
   }
   const resetForm = () => {
@@ -134,8 +131,8 @@ const BuyerAddress = () => {
         toast.success(resp.data.messages[0])
         queryClient.invalidateQueries({ queryKey: [Buyer_QueryKeys.USER_ADDRESS] })
       }
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      toast.error(error.response.data.messages[0])
     }
   }
 
@@ -148,8 +145,8 @@ const BuyerAddress = () => {
       toast.success(resp.data.messages[0])
       queryClient.invalidateQueries({ queryKey: [Buyer_QueryKeys.USER_ADDRESS] })
     },
-    onError: (error) => {
-      console.log(error)
+    onError: (error: any) => {
+      toast.error(error.response.data.messages[0])
     },
   })
 
@@ -168,7 +165,7 @@ const BuyerAddress = () => {
     resolver: yupResolver(validationSchema),
   })
 
-  if (isLoadingProvince || isLoadingAddress) return <>Loading</>
+  if (isLoadingProvince || isLoadingAddress) return <LoadingComponent />
 
   return (
     <div className="mx-4 my-2">
@@ -263,7 +260,7 @@ const BuyerAddress = () => {
       </dialog>
 
       <div className="border-b-2 pb-5 lg:text-lg text-sm">
-        <div className="grid md:grid-cols-2">
+        <div className="grid md:grid-cols-2 items-center">
           <div>
             <div className="font-bold capitalize">Địa chỉ của tôi</div>
             <div className="text-gray-500 text-sm">Thông tin về địa chỉ nhận hàng và trả hàng</div>
@@ -274,7 +271,7 @@ const BuyerAddress = () => {
                 const dialog = document.getElementById('my_modal_8') as HTMLDialogElement
                 dialog.showModal()
               }}
-              className="btn text-white btn-primary  btn-sm lg:btn-md"
+              className="btn text-white btn-primary btn-sm "
             >
               <BiPlus /> Thêm địa chỉ mới
             </button>
@@ -283,7 +280,7 @@ const BuyerAddress = () => {
       </div>
       {addresses?.deliveryAddresses.length === 0 ? (
         <>
-          <p className="text-center text-error">Vui lòng thêm địa chỉ nhận hàng!</p>
+          <p className="text-center my-2 italic text-gray-500">Bạn chưa thêm địa chỉ nhận hàng!</p>
         </>
       ) : (
         <div className="flex flex-col w-full">

@@ -13,8 +13,6 @@ const ProductList = () => {
   const searchMutation = useMutation({
     mutationFn: async () => {
       const resp = await axiosClient.get(`/product/search-filter?currentPage=${currentPage}&pageSize=${pageSize}`)
-      console.log(resp.data.data)
-
       return resp
     },
     onSuccess: (resp) => {

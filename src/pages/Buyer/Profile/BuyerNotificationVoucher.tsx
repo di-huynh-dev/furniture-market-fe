@@ -6,7 +6,7 @@ import { Notification } from '@/types/notify.type'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
-const BuyerNotificationsOrder = () => {
+const BuyerNotificationsVoucher = () => {
   const axiosPrivate = useAxiosBuyerPrivate()
   const [dataNotifications, setDataNotifications] = useState<Notification[]>([])
   const [currentPage, setCurrentPage] = useState<number>(0)
@@ -16,7 +16,7 @@ const BuyerNotificationsOrder = () => {
   const getNotificationMutation = useMutation({
     mutationFn: async () => {
       const response = await axiosPrivate.get(
-        `/user/announce?type=ORDER&currentPage=${currentPage}&pageSize=${pageSize}`,
+        `/user/announce?type=VOUCHER&currentPage=${currentPage}&pageSize=${pageSize}`,
       )
       return response
     },
@@ -41,7 +41,7 @@ const BuyerNotificationsOrder = () => {
       <div className="border-b-2 pb-5 lg:text-lg text-sm">
         <div className="flex items-center justify-between">
           <div>
-            <div className="font-bold capitalize">Thông báo đơn hàng của tôi</div>
+            <div className="font-bold capitalize">Thông báo voucher dành cho bạn</div>
           </div>
           <div className="flex gap-2 items-center">
             <div className="text-sm">
@@ -66,11 +66,11 @@ const BuyerNotificationsOrder = () => {
       {dataNotifications &&
         dataNotifications.map((item: Notification) => (
           <div key={item.id}>
-            <Notify title={'Đơn hàng'} content={item.content[1]} time={item.createdAt} navigation={item.content[0]} />
+            <Notify title={'Khuyến mãi'} content={item.content[1]} time={item.createdAt} navigation={item.content[0]} />
           </div>
         ))}
     </div>
   )
 }
 
-export default BuyerNotificationsOrder
+export default BuyerNotificationsVoucher
