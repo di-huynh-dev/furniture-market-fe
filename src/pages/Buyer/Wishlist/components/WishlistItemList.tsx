@@ -38,10 +38,10 @@ const WishlistItemList = () => {
 
   if (isLoading) return <p>Loading...</p>
   return (
-    <div className="card py-4 bg-base-100 shadow-sm mx-2 lg:px-10 px-4">
+    <div className="">
       {userWishlist?.length === 0 ? (
         <div className="flex flex-col items-center lg:text-xl text-sm py-10">
-          <img src={image} alt="Giỏ hàng trống" className="w-1/2 h-1/2" />
+          <img src={image} alt="Giỏ hàng trống" className="w-1/4 h-1/4" />
           <p className="font-bold">Không có sản phẩm yêu thích nào!</p>
           <p>Hãy tiếp tục mua sắm thoải mái bạn nhé!</p>
         </div>

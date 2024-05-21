@@ -12,6 +12,7 @@ const useRefreshToken = () => {
         return resp.data.data.accessToken
       } else {
         store.dispatch(removeAuth())
+        await commonApi.logout()
       }
     } catch (error) {
       store.dispatch(removeAuth())

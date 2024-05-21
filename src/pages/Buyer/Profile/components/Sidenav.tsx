@@ -25,7 +25,7 @@ const Sidenav = () => {
           </div>
         </label>
       </Link>
-      <div className="my-5 ">
+      <div className="my-5">
         <div className="flex items-center space-x-2 py-2" onClick={() => setIsListVisible(!isListVisible)}>
           <BiUser className="text-primary" />
           <span>Tài khoản của tôi</span>
@@ -46,7 +46,7 @@ const Sidenav = () => {
             </li>
           </ul>
         </div>
-        <NavLink to="/buyer/account/purchase" className="flex items-center space-x-2 pb-2">
+        <NavLink to="/buyer/account/purchase" className="flex items-center space-x-2 py-2">
           <PiNewspaperClippingThin className="text-primary" />
           <span>Đơn mua</span>
         </NavLink>

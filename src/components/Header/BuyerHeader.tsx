@@ -43,13 +43,19 @@ const BuyerHeader = () => {
           <div className="lg:navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal px-1 text-lg">
               <li>
-                <NavLink to="/">Trang chủ</NavLink>
+                <NavLink to="/" className="btn btn-ghost capitalize">
+                  Trang chủ
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/products">Sản phẩm</NavLink>
+                <NavLink to="/products" className="btn btn-ghost capitalize">
+                  Sản phẩm
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/about">Về chúng tôi</NavLink>
+                <NavLink to="/about" className="btn btn-ghost capitalize">
+                  Về chúng tôi
+                </NavLink>
               </li>
             </ul>
           </div>

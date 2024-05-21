@@ -11,7 +11,7 @@ const BuyerCart = () => {
       <div className="text-sm breadcrumbs">
         <ul>
           <li>
-            <a>Home</a>
+            <a href="/">Trang chủ</a>
           </li>
           <li>
             <a>Giỏ hàng</a>

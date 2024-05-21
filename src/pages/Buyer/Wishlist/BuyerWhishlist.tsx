@@ -7,7 +7,7 @@ const BuyerWhishlist = () => {
         <div className="text-sm breadcrumbs">
           <ul>
             <li>
-              <a>Home</a>
+              <a>Trang chủ</a>
             </li>
             <li>
               <a>Sản phẩm yêu thích</a>

@@ -13,6 +13,7 @@ import image from '@/assets/images/signin-notify.jpg'
 import { StompSessionProvider } from 'react-stomp-hooks'
 import { SOCKET_REGISTER_URL } from '@/libs/socker-client'
 import HeaderNotify from '@/pages/Buyer/Notify/HeaderNotify'
+import commonApi from '@/api/commonApi'
 
 const TopHeader = () => {
   const user = useSelector(selectAuth)
@@ -20,6 +21,7 @@ const TopHeader = () => {
   const dispatch = useDispatch()
   const handleLogout = async () => {
     dispatch(removeAuth())
+    await commonApi.logout()
     toast.success('Đăng xuất thành công!')
   }
 

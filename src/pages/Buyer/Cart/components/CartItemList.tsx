@@ -22,7 +22,7 @@ const CartItemList = () => {
     <div className="">
       {cart.cartItemList.length === 0 ? (
         <div className="flex flex-col items-center lg:text-xl text-sm py-10">
-          <img src={image} alt="Giỏ hàng trống" className="w-1/2 h-1/2" />
+          <img src={image} alt="Giỏ hàng trống" className="w-1/3 h-1/3" />
           <p className="font-bold">Giỏ hàng trống!</p>
           <p>Hãy tiếp tục mua sắm thoải mái bạn nhé!</p>
         </div>
