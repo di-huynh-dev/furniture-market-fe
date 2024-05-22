@@ -1,6 +1,12 @@
 import axios from 'axios'
 import queryString from 'query-string'
 
+export const axiosCommon = axios.create({
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+
 const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_REACT_APP_BASE_URL,
   headers: {

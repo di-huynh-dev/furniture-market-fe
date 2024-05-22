@@ -50,7 +50,7 @@ const SellerHeader = () => {
     queryFn: async () => {
       const response = await axiosPrivate.get('/user/announce?type=ACCOUNT')
       if (response.status === 200) {
-        setNotifications(response.data.data)
+        setNotifications(response.data.data.content)
       }
       return response.data.data
     },

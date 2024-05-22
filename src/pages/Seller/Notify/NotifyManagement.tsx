@@ -15,7 +15,7 @@ const NotifyManagement = () => {
     queryKey: [Seller_QueryKeys.USER_NOTIFICATION],
     queryFn: async () => {
       const response = await axiosPrivate.get('/user/announce?type=ACCOUNT')
-      return response.data.data
+      return response.data.data.content
     },
   })
   console.log(notifications)
