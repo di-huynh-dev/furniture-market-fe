@@ -97,8 +97,8 @@ const HeaderNotify = () => {
           ) : (
             <>
               <div className="badge badge-secondary text-white ml-2 badge-sm">
-                {notificationsAccount.filter((notification: Notification) => !notification.seen).length +
-                  notificationsAccount.filter((notification: Notification) => !notification.seen).length}
+                {notificationsAccount.filter(({ seen }) => !seen).length +
+                  notificationsOrder.filter(({ seen }) => !seen).length}
               </div>
             </>
           )}
@@ -129,15 +129,15 @@ const HeaderNotify = () => {
                       {notificationsAccount.slice(0, 5).map((notification: Notification, index: number) => (
                         <div
                           key={index}
-                          className={`mb-2 border-b grid grid-cols-10 items-center gap-2 ${
-                            notification.seen ? 'opacity-70' : ''
+                          className={`mb-2 px-3 rounded-lg text-xs border-b grid grid-cols-10 items-center gap-2 ${
+                            notification.seen ? '' : 'bg-gray-100'
                           }`}
                           onClick={() => handleMarkAsRead(notification.id)}
                         >
                           <img src={accountImage} alt="" className="w-16 object-cover col-span-1" />
                           <div className="col-span-9">
                             <p>{notification.content[1]}</p>
-                            <p className="text-gray-500 italic italic">({notification.createdAt})</p>
+                            <p className="text-gray-500 italic">({notification.createdAt})</p>
                           </div>
                         </div>
                       ))}
@@ -155,10 +155,13 @@ const HeaderNotify = () => {
                       {notificationsOrder.slice(0, 5).map((notification: Notification, index: number) => (
                         <div
                           key={index}
-                          className={`mb-2 border-b grid grid-cols-10 items-center gap-2 ${
-                            notification.seen ? 'opacity-70' : ''
+                          className={`mb-2 px-3 rounded-lg text-xs border-b grid grid-cols-10 items-center gap-2 ${
+                            notification.seen ? '' : 'bg-gray-100'
                           }`}
-                          onClick={() => handleMarkAsRead(notification.id)}
+                          onClick={() => {
+                            handleMarkAsRead(notification.id)
+                            navigation(`/buyer/account/purchase/order/${notification.content[0]}`)
+                          }}
                         >
                           <img src={orderImage} alt="" className="w-16 object-cover col-span-1" />
                           <div className="col-span-9">
