@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import authApi from '@/api/buyer/buyerAuthApi'
 import { LoadingButton } from '@/components'
 import { useState } from 'react'
@@ -15,15 +16,16 @@ const ForgotPassword = () => {
     try {
       const otpResp = await authApi.sendOtp(email, 'RESET_PASSWORD')
       if (otpResp.status === 200) {
-        localStorage.setItem('registeredEmail', email)
+        localStorage.setItem('registeredSellerEmail', email)
         toast.success(otpResp.data.messages[0])
-        navigate('/seller/confirm-email')
+        navigate('/seller/confirm-password')
         setIsLoading(false)
       } else {
         setIsLoading(false)
       }
-    } catch (error) {
+    } catch (error: any) {
       setIsLoading(false)
+      toast.error(error.response.data.messages[0])
     }
   }
   return (

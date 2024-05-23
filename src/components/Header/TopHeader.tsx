@@ -21,8 +21,8 @@ const TopHeader = () => {
   const dispatch = useDispatch()
   const handleLogout = async () => {
     dispatch(removeAuth())
+    toast.success('Đăng xuất tài khoản thành công!')
     await commonApi.logout()
-    toast.success('Đăng xuất thành công!')
   }
 
   return (
@@ -75,10 +75,10 @@ const TopHeader = () => {
                       <img src={image} className="w-18" alt="" />
                       <p className="text-gray-500 text-center">Đăng nhập để xem thông báo</p>
                       <div className="flex gap-2 justify-between items-center">
-                        <button className="btn w-1/2">
+                        <button className="btn w-1/2 btn-sm">
                           <Link to={'/buyer/login'}>Đăng nhập</Link>
                         </button>
-                        <button className="btn w-1/2">
+                        <button className="btn w-1/2 btn-sm">
                           <Link to={'/buyer/signup'}>Đăng ký</Link>
                         </button>
                       </div>

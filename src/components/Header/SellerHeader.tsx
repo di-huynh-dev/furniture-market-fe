@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Logo from '@/assets/Logo/logo-color.svg'
 import { CiBellOn } from 'react-icons/ci'
-import { CgMenuGridO } from 'react-icons/cg'
 import { removeAuth, selectSellerAuth } from '@/redux/reducers/seller/sellerAuthSlice'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
@@ -15,6 +14,7 @@ import type { Notification } from '@/types/notify.type'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
+import accountImage from '@/assets/images/account-setting.jpg'
 
 const SellerHeader = () => {
   const user = useSelector(selectSellerAuth)
@@ -100,21 +100,6 @@ const SellerHeader = () => {
           <p className="text-xl font-bold text-neutral">Fnest Kênh người bán</p>
         </div>
         <div className="flex-none">
-          <div className="hidden flex-none lg:block">
-            <div className="dropdown dropdown-hover  dropdown-bottom dropdown-end">
-              <div tabIndex={0} role="button" className="btn btn-ghost drawer-button font-normal">
-                <CgMenuGridO className="w-8 h-8" />
-              </div>
-              <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                <li>
-                  <a>Item 1</a>
-                </li>
-                <li>
-                  <a>Item 2</a>
-                </li>
-              </ul>
-            </div>
-          </div>
           <div className="hidden flex-none items-center lg:block">
             <div className="dropdown dropdown-hover dropdown-bottom dropdown-end mx-5">
               <div tabIndex={0} role="button" className="indicator drawer-button font-normal">
@@ -125,7 +110,7 @@ const SellerHeader = () => {
                   </div>
                 )}
               </div>
-              <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-96">
+              <ul tabIndex={0} className="dropdown-content z-[1]  p-2 shadow bg-base-100 rounded-box w-96">
                 <>
                   <div className="flex justify-between items-center border-b p-2 text-xs">
                     <p className="text-primary ">Thông báo đã nhận gần đây</p>
@@ -141,24 +126,37 @@ const SellerHeader = () => {
                       ) : (
                         <>
                           <p className="text-gray-500">Thông báo tài khoản</p>
-                          {notifications.map((notification, index) => (
-                            <li
+                          {notifications.slice(0, 10).map((notification, index) => (
+                            <div
                               key={index}
-                              className={notification.seen ? 'opacity-70' : ''}
+                              className={`mb-2 px-3 rounded-lg text-xs border-b grid grid-cols-10 items-center gap-2 ${
+                                notification.seen ? '' : 'bg-gray-100'
+                              }`}
                               onClick={() => handleMarkAsRead(notification.id)}
                             >
-                              <p>
-                                {notification.content[1]} ({notification.createdAt})
-                              </p>
-                            </li>
+                              <img src={accountImage} alt="" className="w-16 object-cover col-span-1" />
+                              <div className="col-span-9">
+                                <p>{notification.content[1]}</p>
+                                <p className="text-gray-500 italic">({notification.createdAt})</p>
+                              </div>
+                            </div>
                           ))}
+                          {notifications.length > 5 && (
+                            <div className="text-center">
+                              <button onClick={() => navigation('/seller/notify')} className="text-primary link">
+                                Xem thêm
+                              </button>
+                            </div>
+                          )}
                         </>
                       )}
                     </div>
                   </div>
-                  <button onClick={() => navigation('/seller/notify')} className="text-gray-500 link">
-                    Xem tất cả
-                  </button>
+                  <div className="text-center">
+                    <button onClick={() => navigation('/seller/notify')} className="text-gray-500 link">
+                      Xem tất cả
+                    </button>
+                  </div>
                 </>
               </ul>
             </div>
@@ -180,12 +178,9 @@ const SellerHeader = () => {
               <li>
                 <Link to="/seller/settings/profile" className="justify-between">
                   Trang cá nhân
-                  <span className="badge">New</span>
                 </Link>
               </li>
-              <li>
-                <a>Cài đặt</a>
-              </li>
+
               <li onClick={showModal}>
                 <a>Đăng xuất</a>
               </li>

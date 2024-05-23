@@ -59,6 +59,7 @@ import Error from './pages/Error/Error'
 import HomeLayout from './pages/HomeLayout'
 import ConfirmEmail from './pages/Common/ConfirmEmail'
 import VnPayReturn from './pages/Common/VnPayReturn'
+import ConfirmResetPassword from './pages/Common/ConfirmResetPassword'
 
 function App() {
   const router = createBrowserRouter([
@@ -197,6 +198,10 @@ function App() {
     {
       path: seller_routes.confirm_email,
       element: <ConfirmEmail />,
+    },
+    {
+      path: seller_routes.confirm_reset_password,
+      element: <ConfirmResetPassword />,
     },
     {
       path: seller_routes.seller,

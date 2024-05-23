@@ -123,7 +123,7 @@ const ChatCenter = () => {
       <div className="card shadow-lg bg-white">
         <div className="card-body h-[700px]">
           <div>
-            <div className="grid grid-cols-10 gap-4">
+            <div className="grid grid-cols-10">
               <Sidebar receiverId={receiverId} handleChooseReceiver={handleChooseReceiver} />
               <div
                 className="col-span-8 overflow-y-auto max-h-[600px]"

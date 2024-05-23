@@ -1,24 +1,42 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LoadingComponent } from '@/components'
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { Notification } from '@/types/notify.type'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import image from '@/assets/images/account-setting.jpg'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
+import { useEffect, useState } from 'react'
+import Notify from '@/pages/Buyer/Profile/components/Notify'
 
 const NotifyManagement = () => {
   const axiosPrivate = useAxiosPrivate()
   const queryClient = useQueryClient()
+  const [dataNotifications, setDataNotifications] = useState<Notification[]>([])
+  const [currentPage, setCurrentPage] = useState<number>(0)
+  const [pageSize, setPageSize] = useState<number>(5)
+  const [totalPages, setTotalPages] = useState<number>(0)
 
-  const { data: notifications, isLoading } = useQuery({
-    queryKey: [Seller_QueryKeys.USER_NOTIFICATION],
-    queryFn: async () => {
-      const response = await axiosPrivate.get('/user/announce?type=ACCOUNT')
-      return response.data.data.content
+  const getNotificationMutation = useMutation({
+    mutationFn: async () => {
+      const response = await axiosPrivate.get(
+        `/user/announce?type=ACCOUNT&currentPage=${currentPage}&pageSize=${pageSize}`,
+      )
+      return response
+    },
+    onSuccess: (response) => {
+      const data = response.data.data || {}
+      setPageSize(data.pageSize)
+      setCurrentPage(data.currentPage)
+      setTotalPages(data.totalPages)
+      setDataNotifications(data.content || [])
+    },
+    onError: (error: any) => {
+      toast.error(error.response.data.messages[0])
     },
   })
-  console.log(notifications)
+
+  useEffect(() => {
+    getNotificationMutation.mutate()
+  }, [currentPage, pageSize])
 
   const handleMarkAllAsRead = async () => {
     try {
@@ -31,36 +49,50 @@ const NotifyManagement = () => {
     }
   }
 
-  if (isLoading) return <LoadingComponent />
-
   return (
     <section className="mx-4 my-2 text-sm">
-      <div className="card shadow-lg my-2 bg-white">
+      <div className="card shadow-lg bg-white">
         <div className="card-body">
-          <div className="flex items-center justify-between border-b">
-            <p className="text-xl">Thông báo của bạn</p>
-            <button onClick={handleMarkAllAsRead} className="link text-primary">
-              Đánh dấu tất cả đã đọc
-            </button>
-          </div>
-
-          <div>
-            {notifications.map((item: Notification) => (
-              <div
-                className={`grid grid-cols-12 my-2 gap-2 items-center p-2 rounded-lg ${
-                  !item.seen ? 'bg-gray-200' : ''
-                }`}
-              >
-                <div className="col-span-1">
-                  <img src={image} alt="" className="w-16 h-16 object-cover" />
+          <div className="border-b-2 pb-5 lg:text-lg text-sm">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="font-bold capitalize">Thông báo tài khoản của tôi</div>
+                <button className="btn btn-sm" onClick={handleMarkAllAsRead}>
+                  Đánh dấu tất cả đã đọc
+                </button>
+              </div>
+              <div className="flex gap-2 items-center">
+                <div className="text-sm">
+                  Trang {currentPage + 1}/{totalPages}
                 </div>
-                <div className="col-span-9">
-                  <p className="">{item.content[1]}</p>
-                  <p className="italic text-gray-500">{item.createdAt}</p>
+                <div className="join">
+                  {Array.from({ length: totalPages }, (_, i) => i).map((page) => (
+                    <button
+                      onClick={() => setCurrentPage(page)}
+                      key={page}
+                      className={`join-item btn-xs ${
+                        page === currentPage ? 'btn btn-active btn-primary text-white' : 'btn'
+                      }`}
+                    >
+                      {page + 1}
+                    </button>
+                  ))}
                 </div>
               </div>
-            ))}
+            </div>
           </div>
+          {/* {!data.content && <p className="text-xl">Không có thông báo nào</p>} */}
+          {dataNotifications &&
+            dataNotifications.map((item: Notification) => (
+              <div key={item.id}>
+                <Notify
+                  title={'Hệ thống'}
+                  content={item.content[1]}
+                  time={item.createdAt}
+                  navigation={item.content[0]}
+                />
+              </div>
+            ))}
         </div>
       </div>
     </section>

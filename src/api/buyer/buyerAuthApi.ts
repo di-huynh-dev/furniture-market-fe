@@ -31,6 +31,18 @@ const authApi = {
       },
     )
   },
+  confirmResetPassword(email: string, otpCode: string) {
+    return axiosClient.patch<ApiResponse<RegisterData>>(
+      '/auth/restore-password',
+      { email, otpCode },
+      {
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      },
+    )
+  },
 }
 
 export default authApi

@@ -112,13 +112,7 @@ const Login = () => {
               Quên mật khẩu?
             </Link>
           </p>
-          <div className="divider">OR</div>
-          <Link to="https://fnest-store.api.codeforlife.blog/oauth2/authorization/google">
-            <div className="btn btn-ghost flex justify-center w-full items-center text-center">
-              <FcGoogle className="w-12 h-12 text-primary" />
-              <p className="hidden md:block lg:block"> Đăng nhập bằng Google</p>
-            </div>
-          </Link>
+
           <div className="flex items-center justify-center text-center my-4 text-sm">
             <p> Bạn muốn trở thành người bán?</p>
             <Link to="/seller/signup" className="ml-2 link link-hover link-primary">

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
-const ConfirmEmail: React.FC = () => {
+const ConfirmResetPassword: React.FC = () => {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [otp, setOtp] = useState(['', '', '', '', '', ''])
@@ -56,7 +56,7 @@ const ConfirmEmail: React.FC = () => {
     setIsLoading(true)
     try {
       const otpStr = otp.join('')
-      const resp = await authApi.confirmEmail(email, otpStr)
+      const resp = await authApi.confirmResetPassword(email, otpStr)
 
       setIsLoading(false)
       if (resp.status === 200) {
@@ -143,4 +143,4 @@ const ConfirmEmail: React.FC = () => {
   )
 }
 
-export default ConfirmEmail
+export default ConfirmResetPassword

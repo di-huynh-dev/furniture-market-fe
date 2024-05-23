@@ -13,7 +13,7 @@ const Providers = ({ children }: PropsWithChildren) => {
     <QueryClientProvider client={queryCLient}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <div className="fixed bottom-20 animate-bounce right-5 flex items-center gap-2 bg-white p-2 rounded-full text-primary">
+          <div className="fixed bottom-40 animate-bounce right-10 flex items-center gap-2 bg-white p-2 rounded-full text-primary z-[101]">
             <LuArrowUpToLine
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="cursor-pointer w-6 h-6 "

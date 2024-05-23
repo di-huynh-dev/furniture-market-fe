@@ -53,7 +53,7 @@ const BuyerProductDetail = () => {
         toast.error('Vui lòng điền đầy đủ thông tin')
         return
       }
-      const resp = await axiosPrivate.post(`/common/report`, {
+      const resp = await axiosPrivate.post(`/user/report`, {
         reason: reportReason,
         description: reportDescription,
         type: 'PRODUCT_REPORT',

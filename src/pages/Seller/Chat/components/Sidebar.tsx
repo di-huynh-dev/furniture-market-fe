@@ -30,7 +30,7 @@ const Sidebar: React.FC<SidebarProps> = ({ receiverId, handleChooseReceiver }) =
 
   return (
     <div
-      className="col-span-2 overflow-y-auto border-r max-h-[600px]"
+      className="col-span-2 overflow-y-auto border-r max-h-[600px] "
       style={{ scrollbarWidth: 'thin', scrollbarColor: '#CBD5E0 #E5E7EB' }}
     >
       <p>Đến từ:</p>

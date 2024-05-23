@@ -8,8 +8,8 @@ const AboutHome = () => {
   }, [])
   return (
     <section className="align-element">
-      <div className="my-4 bg-white p-4">
-        <img src={banner} alt="" className="w-full object-fit h-[380px]" />
+      <div className="my-2 bg-white p-4">
+        <img src={banner} alt="" className="w-full object-fit " />
         <div className="mx-40 my-10">
           <h2 className="text-3xl">Lịch sử hình thành</h2>
           <p>

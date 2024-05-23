@@ -23,8 +23,8 @@ const HomeLayout = () => {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
   const settings = {
-    dots: true,
     infinite: true,
     slidesToShow: 1,
     fade: true,
@@ -35,7 +35,6 @@ const HomeLayout = () => {
   }
 
   const settings_partner = {
-    dots: true,
     infinite: true,
     slidesToShow: 4,
     slidesToScroll: 2,
