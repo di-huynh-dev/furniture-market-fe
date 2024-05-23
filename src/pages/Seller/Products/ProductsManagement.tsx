@@ -82,7 +82,7 @@ const ProductsManagement = () => {
     {
       name: 'Thao tác',
       cell: (row) => (
-        <div className="flex gap-2 text-blue-500">
+        <div className="lg:flex gap-2 text-blue-500">
           <Link to={`/seller/products/update/${row.id}`}>
             <button>Chỉnh sửa</button>
           </Link>
@@ -198,17 +198,17 @@ const ProductsManagement = () => {
         </div>
       </dialog>
       <div className="card shadow-lg my-2 bg-white">
-        <div className="card-body">
+        <div className="lg:card-body">
           <div>
             <DataTable
               columns={columns}
               title={
-                <div className="flex justify-between items-center gap-2">
-                  <p>Danh sách sản phẩm của shop</p>
-                  <div className="flex gap-2">
+                <div className="lg:flex justify-between items-center gap-2">
+                  <p className="lg:text-xl text-base">Danh sách sản phẩm của shop</p>
+                  <div className="flex gap-2 my-2 lg:my-0">
                     <div className="flex justify-between items-center">
                       <div>
-                        <label className="input input-bordered flex items-center gap-2">
+                        <label className="input input-bordered lg:input input-sm flex items-center gap-2">
                           <input type="text" className="grow" placeholder="Tìm kiếm theo tên" />
                           <svg
                             xmlns="http://www.w3.org/2000/svg"

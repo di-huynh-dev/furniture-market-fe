@@ -320,8 +320,8 @@ const SettingShop = () => {
       </dialog>
 
       <div className="card shadow-lg my-2 bg-white">
-        <div className="card-body ">
-          <div className="flex justify-between items-center">
+        <div className="md:card-body">
+          <div className="md:flex justify-between items-center">
             <span className="font-bold">Thông tin shop</span>
             <div className="flex gap-2">
               <button
@@ -347,7 +347,7 @@ const SettingShop = () => {
           info.shopData.shopInfo.ownerName &&
           info.shopData.shopInfo.shopName &&
           info.shopData.shopInfo.description ? (
-            <div className="grid grid-cols-5 gap-4">
+            <div className="md:grid grid-cols-5 gap-4 p-4 md:p-0">
               <div className="col-span-2 space-y-5">
                 <div className="grid grid-cols-2 gap-2">
                   <p>Tên shop</p>

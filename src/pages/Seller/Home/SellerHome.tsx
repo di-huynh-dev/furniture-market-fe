@@ -49,7 +49,7 @@ const SellerHome = () => {
   const getMonthOptions = () => {
     return Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
       <option key={m} value={m}>
-        {m}
+        Tháng {m}
       </option>
     ))
   }
@@ -57,7 +57,7 @@ const SellerHome = () => {
   const getYearOptions = () => {
     return Array.from({ length: 2 }, (_, i) => currentYear - i).map((y) => (
       <option key={y} value={y}>
-        {y}
+        Năm {y}
       </option>
     ))
   }
@@ -86,46 +86,54 @@ const SellerHome = () => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-2">
-          <div className="card shadow-lg items-center gap-2 grid grid-cols-2 my-2 bg-white p-10">
+        <div className="grid lg:grid-cols-4 grid-cols-2 gap-2">
+          <div className="card shadow-lg items-center gap-2 grid grid-cols-2  bg-white px-6 py-4">
             <div>
               <p className="font-bold">
                 Doanh thu tháng {month}/{year}
               </p>
-              <p className="text-2xl">{formatPrice(statistics?.income)}</p>
+              <p className="md:text-2xl text-lg">{formatPrice(statistics?.income)}</p>
             </div>
-            <FaMoneyBillTrendUp className="w-20 h-20 text-yellow-500" />
+            <div className="flex justify-end">
+              <FaMoneyBillTrendUp className="md:h-20 w-16 h-16 text-yellow-500" />
+            </div>
           </div>
-          <div className="card shadow-lg items-center gap-2 grid grid-cols-2 my-2 bg-white p-10">
+          <div className="card shadow-lg items-center gap-2 grid grid-cols-2  bg-white px-6 py-4">
             <div>
               <p className="font-bold">Tổng số đơn hàng</p>
-              <p className="text-2xl">{statistics?.numOfOrderByMonth}</p>
+              <p className="md:text-2xl text-lg">{statistics?.numOfOrderByMonth}</p>
             </div>
-            <RiBillFill className="w-20 h-20 text-red-500" />
+            <div className="flex justify-end">
+              <RiBillFill className="md:h-20 w-16 h-16 text-red-500" />
+            </div>
           </div>
-          <div className="card shadow-lg items-center gap-2 grid grid-cols-2 my-2 bg-white p-10">
+          <div className="card shadow-lg items-center gap-2 grid grid-cols-2  bg-white px-6 py-4">
             <div>
               <p className="font-bold">Tổng sản phẩm bán được</p>
-              <p className="text-2xl">{statistics?.soldProduct}</p>
+              <p className="md:text-2xl text-lg">{statistics?.soldProduct}</p>
             </div>
-            <MdTableRestaurant className="w-20 h-20 text-blue-500" />
+            <div className="flex justify-end">
+              <MdTableRestaurant className="md:h-20 w-16 h-16 text-blue-500" />
+            </div>
           </div>
-          <div className="card shadow-lg items-center gap-2 grid grid-cols-2 my-2 bg-white p-10">
+          <div className="card shadow-lg items-center gap-2 grid grid-cols-2  bg-white px-6 py-4">
             <div>
               <p className="font-bold">Sản phẩm bán chạy</p>
               <p className="">{statistics?.productOfTheMonth?.name}</p>
             </div>
-            <img
-              src={statistics?.productOfTheMonth?.thumbnail}
-              alt={statistics?.productOfTheMonth?.name}
-              className="w-[100px]"
-            />
+            <div className="flex justify-end">
+              <img
+                src={statistics?.productOfTheMonth?.thumbnail}
+                alt={statistics?.productOfTheMonth?.name}
+                className="w-[100px]"
+              />
+            </div>
           </div>
         </div>
         <div className="rounded-md border w-full py-4 justify-center bg-white my-2">
           <IncomeLineChart data={statistics} />
         </div>
-        <div className="flex items-center gap-2 rounded-md border w-full py-4 justify-center bg-white my-2">
+        <div className="lg:flex lg:items-center justify-center gap-2 rounded-md border w-full py-4  bg-white my-2">
           <OrderBarChart data={statistics} />
           <SoldPieChart data={statistics} />
         </div>

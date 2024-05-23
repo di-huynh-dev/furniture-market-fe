@@ -157,9 +157,9 @@ const AddProduct = () => {
         <div className="card-body">
           <form onSubmit={handleSubmit(handleAddProduct)} encType="multipart/form-data">
             <span className="font-bold text-xl">Thêm sản phẩm mới</span>
-            <div className="">
-              <div className=" ">1. Hình ảnh sản phẩm</div>
-              <div className="grid grid-cols-3 gap-2">
+            <div>
+              <div className="">1. Hình ảnh sản phẩm</div>
+              <div className="lg:grid lg:grid-cols-3 gap-4">
                 <div className="col-span-1">
                   <label className="label" htmlFor="logo">
                     <span className="label-text capitalize text-sm">Thumbnail(*)</span>
@@ -194,7 +194,7 @@ const AddProduct = () => {
                     multiple
                   />
                   {errors.images?.message && <p className="text-red-500 text-sm">{errors.images.message}</p>}
-                  <div className="grid grid-cols-4 gap-2">
+                  <div className="lg:grid lg:grid-cols-4 md:grid-cols-2 gap-2">
                     {images &&
                       images.map((image, index) => (
                         <div key={`back-${index}`} className="mt-2 flex">
@@ -236,7 +236,7 @@ const AddProduct = () => {
               </div>
               <div>
                 <span>3. Thông tin bán hàng</span>
-                <div className="px-10 grid grid-cols-3 gap-4">
+                <div className="px-10 md:grid md:grid-cols-3 gap-4">
                   <FormInput
                     label="Số lượng trong kho (*)"
                     prop="inStock"
@@ -265,7 +265,7 @@ const AddProduct = () => {
               </div>
               <div>
                 <span>4. Thuộc</span>
-                <div className="mx-10 grid grid-cols-4 gap-4">
+                <div className="mx-10 grid lg:grid-cols-4 md:grid-cols-3 gap-4">
                   <select
                     onChange={(e) => setSelectedCategory(e.target.value)}
                     className="select select-bordered w-full max-w-xs"
@@ -317,7 +317,7 @@ const AddProduct = () => {
               </div>
               <div>
                 <span>5. Thông tin vận chuyển</span>
-                <div className="mx-10 grid grid-cols-4 gap-4">
+                <div className="mx-10 md:grid grid-cols-4 gap-4">
                   <FormInput
                     label="Chiều dài(*)"
                     prop="length"

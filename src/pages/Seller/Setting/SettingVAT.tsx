@@ -93,7 +93,7 @@ const SettingVAT = () => {
         </div>
       </dialog>
       <div className="card shadow-lg my-2 bg-white">
-        <div className="card-body">
+        <div className="md:card-body">
           <div className="flex justify-between items-center">
             <span className="font-bold">Thông tin thuế</span>
             <button
@@ -107,7 +107,7 @@ const SettingVAT = () => {
             </button>
           </div>
           {taxInfo.shopData.shopInfo.tax[0] ? (
-            <div className="grid grid-cols-5 gap-4">
+            <div className="md:grid grid-cols-5 gap-4 p-4 md:p-0">
               <div className="col-span-2 space-y-5">
                 <div className="grid grid-cols-2 gap-2">
                   <p>Loại hình thuế</p>

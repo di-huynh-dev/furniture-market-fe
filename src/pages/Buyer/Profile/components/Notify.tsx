@@ -8,12 +8,12 @@ const Notify = ({ title, content, time, navigation }: NotifyProps) => {
 
   return (
     <div className="grid grid-cols-6 gap-2 mb-2 my-2 border-b">
-      <div className="flex items-center justify-center">
+      <div className=" flex items-center justify-center">
         <figure>
           <img src={title === 'Đơn hàng' ? orderImage : accountImage} alt="Thông báo" className="h-20 w-20" />
         </figure>
       </div>
-      <div className="col-span-4">
+      <div className="md:col-span-4 col-span-5">
         <div>
           <p>{title}</p>
           <div className="text-sm text-gray-500">

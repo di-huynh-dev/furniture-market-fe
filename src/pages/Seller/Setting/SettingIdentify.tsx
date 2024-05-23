@@ -198,7 +198,7 @@ const SettingIdentify = () => {
             </button>
           </div>
           {identifierInfo.shopData.shopInfo.identifier[0] ? (
-            <div className="grid grid-cols-5 gap-4">
+            <div className="lg:grid grid-cols-5 gap-4">
               <div className="col-span-2 space-y-5">
                 <div className="grid grid-cols-2 gap-2">
                   <p>Hình thức định danh</p>

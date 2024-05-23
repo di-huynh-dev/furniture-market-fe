@@ -7,15 +7,11 @@ const DrawerSide = () => {
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
         <Outlet />
-
-        <label htmlFor="my-drawer-2" className="btn btn-primary drawer-button lg:hidden">
-          Open drawer
-        </label>
       </div>
 
-      <div className="drawer-side">
+      <div className="drawer-side mt-24 lg:my-0">
         <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-        <ul className="menu bg-white w-56 rounded-box">
+        <ul className="menu bg-white w-56 rounded-box h-screen">
           <li>
             <details open>
               <summary className="font-bold text-neutral">

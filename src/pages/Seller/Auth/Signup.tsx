@@ -91,19 +91,19 @@ const Sigup = () => {
         <Link to="/" className="btn btn-ghost text-xl text-primary">
           Trang chủ Fnest
         </Link>
-        <p>Hệ thống quản lý Kênh người bán</p>
+        <p className="text-sm lg:text-lg">Hệ thống quản lý Kênh người bán</p>
       </div>
       <section className="grid lg:grid-cols-2 grid-cols-1 place-items-center align-element mt-10">
-        <div className="mx-6 lg:mx-0">
-          <div className="lg:my-4 my-0">
+        <div className="mx-2 lg:mx-0">
+          <div className="lg:my-4 my-0 text-center">
             <h3 className="md:text-2xl lg:text-2xl pb-2 font-semibold text-primary">
               Trở thành người bán ngay hôm nay
             </h3>
             <h3 className="text-gray-500">Đăng ký bán hàng đơn giản chỉ với vài thao tác đơn giản và nhanh chóng</h3>
           </div>
           <img src={login} alt="Ảnh login" />
-          <div>
-            <ul className="steps gap-4 text-gray-500">
+          <div className="flex justify-center">
+            <ul className="steps md:gap-4 gap-1 text-sm md:text-base text-gray-500">
               <li className="step step-primary">Đăng ký tài khoản</li>
               <li className="step step-primary">Thiết lập thông tin</li>
               <li className="step step-primary">Cài đặt vận chuyển</li>

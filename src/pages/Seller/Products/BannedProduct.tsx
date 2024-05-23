@@ -161,7 +161,8 @@ const BannedProduct = () => {
                 </div>
               ))}
           </div>
-          <div>
+          <div className="my-2">
+            <p>Mô tả chi tiết</p>
             <textarea
               onChange={(e) => setDescription(e.target.value)}
               className="textarea textarea-bordered w-full"
@@ -187,7 +188,7 @@ const BannedProduct = () => {
         </div>
       </dialog>
       <div className="card shadow-lg my-2 bg-white">
-        <div className="card-body">
+        <div className="lg:card-body">
           <DataTable
             title="Danh sách sản phẩm vi phạm"
             columns={columns}

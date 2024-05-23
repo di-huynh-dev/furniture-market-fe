@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import vnpay from '@/assets/images/vnpay.png'
 import { formatDate, formatPrice } from '@/utils/helpers'
 import { TransactionType } from '@/types/transaction.type'
+import DataTable, { TableColumn } from 'react-data-table-component'
 
 const PaymentAccount = () => {
   const axiosPrivate = useAxiosPrivate()
@@ -68,6 +69,16 @@ const PaymentAccount = () => {
     }
   }
 
+  const columns: TableColumn<TransactionType>[] = [
+    { name: 'Mã giao dịch', cell: (row) => row.id },
+    {
+      name: 'Nguời giao dịch',
+      cell: (row) => row.ownerName,
+    },
+    { name: 'Hình thức', selector: (row) => row.type },
+    { name: 'Giá trị', selector: (row) => formatPrice(row.value) },
+    { name: 'Thời gian', selector: (row) => formatDate(row.createdAt) },
+  ]
   if (loadingWallet || loadingHistory) {
     return <div>Loading...</div>
   }
@@ -111,13 +122,13 @@ const PaymentAccount = () => {
               <p className="text-primary text-lg font-bold">{formatPrice(wallet.value)}</p>
             </div>
             <img src={vnpay} alt="" />
-            <div className="flex gap-2 my-4">
+            <div className="md:flex gap-2 my-4">
               <button
                 onClick={() => {
                   const dialog = document.getElementById('my_modal_5') as HTMLDialogElement
                   dialog.showModal()
                 }}
-                className="btn btn-success text-white"
+                className="btn btn-success text-white my-2"
               >
                 <FaCompressArrowsAlt className="w-6 h-6" />
                 Nạp tiền vào ví qua VN Pay
@@ -127,7 +138,7 @@ const PaymentAccount = () => {
                   const dialog = document.getElementById('my_modal_3') as HTMLDialogElement
                   dialog.showModal()
                 }}
-                className="btn btn-error text-white"
+                className="btn btn-error text-white my-2"
               >
                 <FaExpandArrowsAlt className="w-6 h-6" />
                 Tạo yêu cầu Rút tiền
@@ -206,32 +217,7 @@ const PaymentAccount = () => {
 
         {activeTab === 'HISTORY' && (
           <>
-            <div className="mt-5">
-              <table className="table table-zebra">
-                <thead>
-                  <tr>
-                    <th>Mã giao dịch</th>
-                    <th>Người giao dịch</th>
-                    <th>Loại</th>
-                    <th>Số tiền</th>
-                    <th>Ngày</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {history.map((item: TransactionType) => (
-                    <tr key={item.id}>
-                      <td>{item.id}</td>
-                      <td>{item.ownerName}</td>
-                      <td>{item.type}</td>
-                      <td>{formatPrice(item.value)}</td>
-                      <td>{formatDate(item.createdAt)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            {history.length === 0 && <p className="text-center">Chưa có giao dịch nào</p>}
+            <DataTable title="Lịch sử giao dịch" data={history} columns={columns} />
           </>
         )}
       </div>

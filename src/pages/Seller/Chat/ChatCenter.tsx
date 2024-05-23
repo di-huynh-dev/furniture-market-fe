@@ -37,6 +37,7 @@ const ChatCenter = () => {
   })
 
   useEffect(() => {
+    scrollTo(0, 0)
     if (user.authData.user.id) {
       const socket = new SockJS(SOCKET_REGISTER_URL)
       const stompClient = Stomp.over(socket)
@@ -119,30 +120,32 @@ const ChatCenter = () => {
   if (isLoadingUserSentMessages) return <LoadingComponent />
 
   return (
-    <section className="mx-4 my-2 text-sm e">
+    <section className="mx-4 my-2 text-sm lg:pr-20">
       <div className="card shadow-lg bg-white">
-        <div className="card-body h-[700px]">
+        <div className="md:card-body bg-white lg:max-h-[1000px] md:max-h-[400px] lg:fixed md:bottom-0 ">
           <div>
             <div className="grid grid-cols-10">
               <Sidebar receiverId={receiverId} handleChooseReceiver={handleChooseReceiver} />
               <div
-                className="col-span-8 overflow-y-auto max-h-[600px]"
+                className="lg:col-span-8 col-span-7 overflow-y-auto lg:max-h-[450px] md:max-h-[300px] max-h-[400px]"
                 style={{ scrollbarWidth: 'thin', scrollbarColor: '#CBD5E0 #E5E7EB' }}
               >
                 <div>
                   <p>Người nhận: {receiverName}</p>
                   <ChatContent messages={messages} />
-
-                  <div className="bottom-0 fixed right-0 left-[250px]">
-                    <form onSubmit={onSubmit}>
-                      <div className="w-full flex items-center">
-                        <input
-                          type="text"
-                          {...register('message', { required: true })}
-                          placeholder="Nhập nội dung tin nhắn"
-                          className="input input-bordered input-neutral w-full"
-                        />
-                        {/* <label className="form-control">
+                </div>
+              </div>
+            </div>
+            <div className="">
+              <form onSubmit={onSubmit}>
+                <div className="w-full flex items-center">
+                  <input
+                    type="text"
+                    {...register('message', { required: true })}
+                    placeholder="Nhập nội dung tin nhắn"
+                    className="input input-bordered input-neutral w-full"
+                  />
+                  {/* <label className="form-control">
                           <input
                             type="file"
                             id="fileInput"
@@ -162,15 +165,12 @@ const ChatCenter = () => {
                             <CiCamera className="w-6 h-6 mx-2" />
                           </label>
                         </label> */}
-                        <button type="submit" className="btn btn-primary text-white">
-                          <IoIosSend />
-                          Gửi
-                        </button>
-                      </div>
-                    </form>
-                  </div>
+                  <button type="submit" className="btn btn-primary text-white">
+                    <IoIosSend />
+                    Gửi
+                  </button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import login from '@/assets/images/login-seller.jpg'
 import { FormInput, LoadingButton } from '@/components'
-import { FcGoogle } from 'react-icons/fc'
 import { Link, useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -67,15 +66,15 @@ const Login = () => {
         <Link to="/" className="btn btn-ghost text-xl text-primary">
           Trang chủ Fnest
         </Link>
-        <p>Hệ thống quản lý Kênh người bán</p>
+        <p className="text-sm lg:text-xl">Hệ thống quản lý Kênh người bán</p>
       </div>
       <section className="h-screen grid lg:grid-cols-2 grid-cols-1 place-items-center align-element">
         <div className="mx-6 lg:mx-0">
-          <div className="my-4">
-            <h3 className="md:text-2xl lg:text-2xl pb-2 font-semibold text-primary">
+          <div className="my-4 text-center">
+            <h3 className="md:text-2xl lg:text-2xl pb-2 font-semibold text-primary ">
               Bán hàng chuyên nghiệp cùng Nội thất Fnest
             </h3>
-            <h3 className="text-gray-500">
+            <h3 className="text-gray-500 ">
               Quản lý shop của bạn một cách hiệu quả hơn trên hệ thống với Kênh Người bán
             </h3>
           </div>

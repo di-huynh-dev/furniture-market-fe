@@ -263,7 +263,7 @@ const SettingProfile = () => {
       </div>
 
       <div className="card shadow-lg my-2 bg-white">
-        <div className="card-body">
+        <div className="md:card-body">
           <div className="flex justify-between items-center">
             <span className="font-bold">Thông tin chủ sở hữu</span>
           </div>

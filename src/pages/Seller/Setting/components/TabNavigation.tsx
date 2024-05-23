@@ -10,7 +10,7 @@ const TabNavigation = () => {
   return (
     <div className="bg-white rounded-lg">
       <p className="text-center font-bold text-lg my-4 text-neutral">Quản lý thông tin cửa hàng</p>
-      <div role="tablist" className="tabs tabs-lifted ">
+      <div role="tablist" className="md:tabs tabs-lifted ">
         <NavLink
           to={'profile'}
           role="tab"

@@ -61,7 +61,7 @@ const OrdersManagement = () => {
   const filteredOrders = filterOrdersByStatus(activeTab)
 
   const columns: TableColumn<OrderItem>[] = [
-    { name: 'Mã đơn', selector: (row) => row.id },
+    { name: 'Mã đơn', cell: (row) => row.id },
     {
       name: 'Danh sách sản phẩm',
       cell: (row) => (
@@ -79,8 +79,8 @@ const OrdersManagement = () => {
   return (
     <section className="mx-4 my-2 text-sm">
       <div className="card shadow-lg m-2 bg-white">
-        <div className="card-body">
-          <div role="tablist" className="tabs tabs-lifted">
+        <div className="md:card-body">
+          <div role="tablist" className="md:tabs tabs-lifted">
             <div
               role="tab"
               onClick={() => handleTabClick('')}
@@ -142,8 +142,8 @@ const OrdersManagement = () => {
           <div className="m-4">
             <DataTable
               title={
-                <div className="flex justify-between">
-                  <p>Danh sách đơn hàng</p>
+                <div className="md:flex justify-between">
+                  <p className="md:text-xl text-base">Danh sách đơn hàng</p>
                   <button onClick={exportToCSV} className="mb-4 btn btn-outline btn-sm ">
                     Xuất báo cáo
                   </button>

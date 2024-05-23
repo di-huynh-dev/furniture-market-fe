@@ -16,7 +16,12 @@ const FormInput: React.FC<FormInputProps> = ({ type, label, placeholder, errorMe
       <label htmlFor={label} className="label">
         <span className="label-text capitalize text-sm">{label}</span>
       </label>
-      <input type={type} placeholder={placeholder} className={`input input-bordered text-sm`} {...register(prop)} />
+      <input
+        type={type}
+        placeholder={placeholder}
+        className={`input input-bordered text-sm input-base`}
+        {...register(prop)}
+      />
       {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
     </div>
   )

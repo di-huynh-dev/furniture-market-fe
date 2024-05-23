@@ -492,12 +492,12 @@ const DiscountManagement = () => {
       </dialog>
 
       <div className="card shadow-lg bg-white">
-        <div className="grid grid-cols-3 gap-2 p-10 items-center">
+        <div className="md:grid grid-cols-3 gap-2 p-10 items-center">
           <div className="col-span-2">
             <p className="font-bold text-2xl">Tạo Voucher ngay để tăng đơn hàng cho Shop của bạn!</p>
             <p>Cơ hội tăng đến 43% đơn hàng và 28% doanh thu khi tạo Voucher ưu đãi cho Khách hàng</p>
-            <div className="flex gap-2 justify-center items-center my-10">
-              <div className="card w-96 bg-base-100 shadow-xl">
+            <div className="md:flex gap-2 justify-center items-center my-10">
+              <div className="card md:w-96 bg-base-100 shadow-xl">
                 <div className="card-body">
                   <h2 className="card-title">Voucher cho toàn shop</h2>
                   <p>Voucher áp dụng cho tất cả các sản phẩm trong shop của bạn</p>
@@ -515,7 +515,7 @@ const DiscountManagement = () => {
                   </div>
                 </div>
               </div>
-              <div className="card w-96 bg-base-100 shadow-xl">
+              <div className="card md:w-96 bg-base-100 shadow-xl">
                 <div className="card-body">
                   <h2 className="card-title">Voucher cho sản phẩm tùy chọn</h2>
                   <p>Voucher chỉ áp dụng cho các sản phẩm nhất định của Shop được chọn</p>
@@ -543,7 +543,6 @@ const DiscountManagement = () => {
 
       <div className="card shadow-lg bg-white mt-2">
         <div className="card-body">
-          <span className="font-bold text-xl">Danh sách voucher của shop</span>
           <div>
             <DataTable
               title="Danh sách voucher của shop"

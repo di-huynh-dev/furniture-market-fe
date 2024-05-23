@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Logo from '@/assets/Logo/logo-color.svg'
-import { CiBellOn } from 'react-icons/ci'
+import { CiBellOn, CiMenuBurger } from 'react-icons/ci'
 import { removeAuth, selectSellerAuth } from '@/redux/reducers/seller/sellerAuthSlice'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
@@ -93,15 +93,18 @@ const SellerHeader = () => {
     <header className="shadow-md bg-base-100 text-base-content sticky top-0 z-30 flex h-24 w-full justify-center bg-opacity-90 backdrop-blur transition-shadow duration-100 [transform:translate3d(0,0,0)]">
       <ConfirmModal content="Bạn có muốn đăng xuất" onClick={handleLogout} />
       <div className="navbar bg-base-100">
+        <label htmlFor="my-drawer-2" className="btn btn-ghost drawer-button lg:hidden">
+          <CiMenuBurger />
+        </label>
         <button onClick={() => navigation('/seller')} tabIndex={0} className="flex-none">
           <img src={Logo} alt="" className="w-24 h-24 object-cover" />
         </button>
         <div className="flex-1">
-          <p className="text-xl font-bold text-neutral">Fnest Kênh người bán</p>
+          <p className="md:text-xl font-bold text-neutral">Fnest Kênh người bán</p>
         </div>
         <div className="flex-none">
-          <div className="hidden flex-none items-center lg:block">
-            <div className="dropdown dropdown-hover dropdown-bottom dropdown-end mx-5">
+          <div className=" flex-none items-center ">
+            <div className="dropdown dropdown-hover dropdown-bottom dropdown-end mx-5 hidden md:block">
               <div tabIndex={0} role="button" className="indicator drawer-button font-normal">
                 <CiBellOn className="w-8 h-8" />
                 {notifications.filter((notification) => !notification.seen).length > 0 && (
@@ -119,7 +122,7 @@ const SellerHeader = () => {
                     </button>
                   </div>
 
-                  <div className="menu scrollbar-thin h-96">
+                  <div className="menu scrollbar-thin lg:h-96 h-64">
                     <div className="overflow-y-auto">
                       {isLoading ? (
                         <p>Đang tải dữ liệu...</p>
@@ -169,7 +172,7 @@ const SellerHeader = () => {
                   <img src={user.authData.user.avatar} alt="" />
                 </div>
               </div>
-              <p>{user.authData.user.fullName}</p>
+              <p className="hidden md:block">{user.authData.user.fullName}</p>
             </div>
             <ul
               tabIndex={0}

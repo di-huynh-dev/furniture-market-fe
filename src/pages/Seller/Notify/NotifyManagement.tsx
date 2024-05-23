@@ -54,7 +54,7 @@ const NotifyManagement = () => {
       <div className="card shadow-lg bg-white">
         <div className="card-body">
           <div className="border-b-2 pb-5 lg:text-lg text-sm">
-            <div className="flex items-center justify-between">
+            <div className="md:flex items-center justify-between">
               <div>
                 <div className="font-bold capitalize">Thông báo tài khoản của tôi</div>
                 <button className="btn btn-sm" onClick={handleMarkAllAsRead}>

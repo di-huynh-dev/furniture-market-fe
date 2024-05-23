@@ -31,7 +31,7 @@ const Landing = () => {
         <div className="fixed inset-0 bg-black opacity-50 z-[101]" onClick={handleOverlayClick} />
       )}
       {showAdditionalIcons && (
-        <div className="fixed bottom-20 right-5 flex flex-col items-center gap-3 z-[102]">
+        <div className="fixed bottom-36 right-9 flex flex-col items-center gap-3 z-[102]">
           <button className="bg-green-500 p-3 rounded-full text-white">
             <FaPhone className="w-6 h-6" />
           </button>
@@ -57,7 +57,7 @@ const Landing = () => {
       )}
       <button
         onClick={handleChatButtonClick}
-        className={`fixed bottom-24 right-9 flex items-center gap-2 bg-primary p-3 rounded-full text-white z-30 ${
+        className={`fixed bottom-24 right-9 flex items-center gap-3 bg-primary p-3 rounded-full text-white z-[101] ${
           showAdditionalIcons ? 'bg-red-600' : 'bg-primary'
         }`}
       >

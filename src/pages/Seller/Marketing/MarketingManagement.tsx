@@ -174,8 +174,8 @@ const MarketingManagement = () => {
             Thêm từ khoá
           </button>
           {isShowKeywordList && (
-            <div className="grid grid-cols-2 gap-2">
-              <div className="space-y-2">
+            <div className="lg:grid grid-cols-2 gap-2">
+              <div className="space-y-2 flex items-center lg:block gap-2">
                 <input
                   onChange={(e) => setNewKeyword(e.target.value)}
                   type="text"
@@ -184,12 +184,12 @@ const MarketingManagement = () => {
                 />
                 <button
                   onClick={() => setKeywords([...keywords, newKeyword])}
-                  className="btn btn-sm btn-primary text-white"
+                  className="btn btn-sm btn-primary text-white "
                 >
                   Thêm
                 </button>
               </div>
-              <div className="space-x-2 space-y-2">
+              <div className="space-y-2">
                 <p>Danh sách từ khóa:</p>
                 {keywords?.map((keyword) => (
                   <div className="badge badge-neutral">{keyword}</div>
@@ -211,24 +211,24 @@ const MarketingManagement = () => {
         </div>
       </dialog>
       <div className="card shadow-lg bg-white">
-        <div className="grid grid-cols-3 gap-2 p-10 items-center">
+        <div className="md:grid md:grid-cols-3 gap-2 p-10 items-center">
           <div className="col-span-2">
-            <p className="font-bold text-2xl text-primary">
+            <p className="font-bold lg:text-2xl text-lg text-primary">
               Tạo Chiến dịch quảng cáo ngay để mở rộng phạm vi tiếp cận đến những người mua tiềm năng !
             </p>
             <p>
               Quảng cáo sẽ hiển thị tại trang kết quả tìm kiếm khi người mua tìm kiếm với từ khóa mà bạn đã thiết lập
               cho sản phẩm đấu thầu của mình.
             </p>
-            <p className="text-lg font-bold text-center my-2">Tại sao nên sử dụng Quảng cáo Tìm Kiếm Sản Phẩm?</p>
-            <div className="flex gap-2 justify-center items-center my-10">
-              <div className="card w-96 bg-base-100 shadow-xl">
+            <p className="lg:text-lg font-bold text-center my-2">Tại sao nên sử dụng Quảng cáo Tìm Kiếm Sản Phẩm?</p>
+            <div className="lg:flex gap-2 justify-center items-center my-10">
+              <div className="card md:w-96 bg-base-100 shadow-xl lg:my-0 my-2">
                 <div className="card-body">
                   <h2 className="card-title">Tăng độ hiển thị</h2>
                   <p>Đẩy sản phẩm của bạn hiển thị ở các vị trí đầu Trang kết quả tìm kiếm.</p>
                 </div>
               </div>
-              <div className="card w-96 bg-base-100 shadow-xl">
+              <div className="card md:w-96 bg-base-100 shadow-xl">
                 <div className="card-body">
                   <h2 className="card-title">Tăng doanh số</h2>
                   <p>
@@ -239,7 +239,7 @@ const MarketingManagement = () => {
               </div>
             </div>
             <button
-              className="btn btn-primary text-white"
+              className="btn btn-primary text-white my-2 md:my-0"
               onClick={() => {
                 const dialog = document.getElementById('my_modal_5') as HTMLDialogElement
                 dialog.showModal()

@@ -33,12 +33,11 @@ const ForgotPassword = () => {
       <div className="card shadow-xl w-[500px] p-4">
         <div className="flex items-center gap-4 font-bold">
           <Link to={'/seller/login'}>
-            {' '}
             <FaArrowLeft className="w-6 h-6" />
           </Link>
-          <span className="text-xl text-center">Lấy lại mật khẩu</span>
+          <span className="md:text-xl text-md text-center">Lấy lại mật khẩu</span>
         </div>
-        <div className="text-center my-2">
+        <div className="text-center my-2 text-sm md:text-base">
           <p>Vui lòng nhập vào email đã đăng ký tài khoản. Chúng tôi sẽ gửi mã xác thực về email của bạn</p>
         </div>
         <input
