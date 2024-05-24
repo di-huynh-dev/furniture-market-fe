@@ -20,7 +20,7 @@ const BuyerFooter = () => {
       </div>
       <div className="grid md:grid-cols-2 lg:grid-cols-4 sm:grid-cols-1 gap-3 text-white align-element">
         <div className="h-full p-4 rounded w-full">
-          <h2 className="text-xl font-semibold text-left">Đa dạng thanh toán</h2>
+          <h2 className="md:text-xl text-lg font-semibold text-left">Đa dạng thanh toán</h2>
           <div className="mt-3 flex flex-col space-y-2">
             <div className="flex items-center space-x-3">
               <PiSwapFill className="w-4 h-4 i-semi-sync text-primary" />
@@ -42,7 +42,7 @@ const BuyerFooter = () => {
         </div>
 
         <div className="h-full p-4  rounded w-full">
-          <h2 className="text-xl font-semibold text-left">Thông tin hữu ích</h2>
+          <h2 className="md:text-xl text-lg font-semibold text-left">Thông tin hữu ích</h2>
           <div className="mt-3 flex flex-col space-y-2">
             <div className="flex items-center space-x-3">
               <TbSettingsCheck className="w-4 h-4 i-semi-sync text-primary" />
@@ -81,7 +81,7 @@ const BuyerFooter = () => {
           </div>
         </div>
         <div className="h-full p-4  rounded w-full">
-          <h2 className="text-xl font-semibold text-left">Mạng xã hội</h2>
+          <h2 className="md:text-xl text-lg font-semibold text-left">Mạng xã hội</h2>
           <div className="mt-3 flex flex-col space-y-2">
             <div className="flex items-center space-x-3">
               <AiFillFacebook className="w-4 h-4 i-semi-sync text-primary" />
@@ -102,7 +102,7 @@ const BuyerFooter = () => {
           </div>
         </div>
         <div className="h-full p-4 rounded w-full">
-          <h2 className="text-xl font-semibold text-left">Phản hồi, góp ý, khiếu nại</h2>
+          <h2 className="md:text-xl text-lg font-semibold text-left">Phản hồi, góp ý, khiếu nại</h2>
           <p className="text-left py-2">
             Phản hồi nóng về chất lượng sản phẩm và dịch vụ. Đội ngũ Kiểm Soát Chất Lượng của chúng tôi sẵn sàng lắng
             nghe quý khách.

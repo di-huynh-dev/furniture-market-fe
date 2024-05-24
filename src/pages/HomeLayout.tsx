@@ -45,8 +45,8 @@ const HomeLayout = () => {
   }
 
   return (
-    <>
-      <div className="slider-container">
+    <main>
+      <div className="slider-container mx-auto">
         <Slider {...settings}>
           <div className="relative">
             <img src={banner1} />
@@ -180,7 +180,7 @@ const HomeLayout = () => {
           </Slider>
         </div>
       </div>
-    </>
+    </main>
   )
 }
 

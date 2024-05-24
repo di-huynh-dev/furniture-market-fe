@@ -10,9 +10,9 @@ const AboutHome = () => {
     <section className="align-element">
       <div className="my-2 bg-white p-4">
         <img src={banner} alt="" className="w-full object-fit " />
-        <div className="mx-40 my-10">
-          <h2 className="text-3xl">Lịch sử hình thành</h2>
-          <p>
+        <div className="lg:mx-40 lg:my-10 md:mx-20 mx-10 my-4">
+          <h2 className="lg:text-3xl text-lg">Lịch sử hình thành</h2>
+          <p className="text-sm md:text-base">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam, sequi perferendis porro atque vitae illum?
             Nisi nihil necessitatibus ad totam nobis veniam quas rerum odio saepe voluptatem repellat, ducimus
             molestias. Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime laborum velit error minima quo
@@ -20,7 +20,7 @@ const AboutHome = () => {
             dolores doloremque.
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-2 my-10">
+        <div className="lg:grid grid-cols-2 gap-2 my-10 items-center justify-center">
           <div>
             <img src={content} alt="" className="w-full object-cover " />
           </div>

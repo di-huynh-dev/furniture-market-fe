@@ -10,12 +10,16 @@ const Notify = ({ title, content, time, navigation }: NotifyProps) => {
     <div className="grid grid-cols-6 gap-2 mb-2 my-2 border-b">
       <div className=" flex items-center justify-center">
         <figure>
-          <img src={title === 'Đơn hàng' ? orderImage : accountImage} alt="Thông báo" className="h-20 w-20" />
+          <img
+            src={title === 'Đơn hàng' ? orderImage : accountImage}
+            alt="Thông báo"
+            className="h-20 w-20 object-contain"
+          />
         </figure>
       </div>
       <div className="md:col-span-4 col-span-5">
         <div>
-          <p>{title}</p>
+          <p className="text-md lg:text-base">{title}</p>
           <div className="text-sm text-gray-500">
             <p>{content}</p>
             <p className="text-gray-500 italic">{time}</p>

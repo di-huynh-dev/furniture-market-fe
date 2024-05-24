@@ -153,6 +153,7 @@ const OrdersManagement = () => {
               data={filteredOrders}
               progressPending={isLoadingOrders}
               progressComponent={<LoadingComponent />}
+              highlightOnHover
               pagination
             />
             ;

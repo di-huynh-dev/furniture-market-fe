@@ -54,8 +54,8 @@ const BuyerPurchase = () => {
         </div>
       </div>
       <div className="my-2">
-        <div role="tablist" className="tabs tabs-lifted">
-          <div className="flex">
+        <div role="tablist" className="lg:tabs tabs-lifted">
+          <div className="lg:flex">
             <div>
               <div
                 onClick={() => handleTabClick('TO_SHIP')}

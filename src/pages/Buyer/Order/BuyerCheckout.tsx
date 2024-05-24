@@ -253,11 +253,11 @@ const BuyerCheckout = () => {
             addresses.deliveryAddresses.map((address: DeliveryAddress) => {
               if (address.id === addresses.defaultAddressId) {
                 return (
-                  <div className="grid grid-cols-6 gap-4 items-center">
+                  <div className="md:grid grid-cols-6 gap-4 items-center">
                     <p className="font-bold">
                       {address.receiverName}, {address.receiverPhone}
                     </p>
-                    <p className="col-span-4">{address.deliveryAddress}</p>
+                    <p className="col-span-4 text-sm md:text-base">{address.deliveryAddress}</p>
 
                     <button
                       className="flex gap-2 items-center cursor-pointer text-primary"
@@ -288,7 +288,7 @@ const BuyerCheckout = () => {
       <div className="align-element ">
         <div className="bg-base-100 shadow-xl p-4">
           <p className="text-lg">Thông tin sản phẩm</p>
-          <div className="grid grid-cols-8 text-gray-500 my-2">
+          <div className="md:grid grid-cols-8 text-gray-500 my-2">
             <div className="col-span-3">Sản phẩm</div>
             <div className="col-span-2">Chất liệu</div>
             <div>Đơn giá</div>
@@ -311,12 +311,12 @@ const BuyerCheckout = () => {
 
             {item.items.map((item) => (
               <>
-                <div className="grid grid-cols-8 my-2 gap-3">
+                <div className="md:grid grid-cols-8 my-2 gap-3">
                   <div className="col-span-3 flex gap-2">
-                    <img src={item.thumbnail} alt={item.name} className="w-24 h-24 object-cover" />
-                    <p>{item.name}</p>
+                    <img src={item.thumbnail} alt={item.name} className="md:w-24 md:h-24 w-12 h-12 object-cover" />
+                    <p className="font-bold">{item.name}</p>
                   </div>
-                  <p className="col-span-2">{item.material}</p>
+                  <p className="col-span-2 text-sm md:text-base">{item.material}</p>
                   <p>{formatPrice(item.price)}</p>
                   <p>x{item.cartQuantity}</p>
                   <p>{formatPrice(item.price * item.cartQuantity)}</p>
@@ -405,17 +405,23 @@ const BuyerCheckout = () => {
       </div>
 
       <div className="align-element bg-base-100 shadow-xl my-2 p-4">
-        <div className="flex items-center gap-2">
+        <div className="md:flex items-center gap-2">
           <p className="text-lg">Phương thức thanh toán</p>
           <button
             onClick={() => setPaymentType('COD')}
-            className={paymentType === 'COD' ? 'btn btn-primary text-white' : 'btn btn-outline btn-primary'}
+            className={
+              paymentType === 'COD' ? 'btn btn-primary btn-sm text-white' : 'btn btn-outline btn-sm btn-primary'
+            }
           >
             Thanh toán khi nhận hàng
           </button>
           <button
             onClick={() => setPaymentType('VIA_WALLET')}
-            className={paymentType === 'VIA_WALLET' ? 'btn btn-primary text-white' : 'btn btn-outline btn-primary'}
+            className={
+              paymentType === 'VIA_WALLET'
+                ? 'btn btn-primary btn-sm text-white'
+                : 'btn btn-outline btn-sm mx-2 btn-primary'
+            }
           >
             Số dư ví
           </button>

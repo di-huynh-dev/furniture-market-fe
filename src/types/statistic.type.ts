@@ -22,3 +22,10 @@ export type StatisticType = {
     soldCount: number
   }[]
 }
+
+export type StatisticIncomeType = {
+  orderId: string
+  tax: number
+  totalPrice: number
+  amount: number
+}

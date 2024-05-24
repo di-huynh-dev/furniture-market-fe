@@ -204,7 +204,7 @@ const ProductsManagement = () => {
               columns={columns}
               title={
                 <div className="lg:flex justify-between items-center gap-2">
-                  <p className="lg:text-xl text-base">Danh sách sản phẩm của shop</p>
+                  <p className="lg:text-xl text-lg">Danh sách sản phẩm của shop</p>
                   <div className="flex gap-2 my-2 lg:my-0">
                     <div className="flex justify-between items-center">
                       <div>

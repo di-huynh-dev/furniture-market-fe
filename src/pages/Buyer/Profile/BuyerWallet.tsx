@@ -129,13 +129,13 @@ const BuyerWallet = () => {
             <p className="text-primary text-lg font-bold">{formatPrice(wallet.value)}</p>
           </div>
           <img src={vnpay} alt="" />
-          <div className="flex gap-2 my-4">
+          <div className="md:flex gap-2 my-4">
             <button
               onClick={() => {
                 const dialog = document.getElementById('my_modal_5') as HTMLDialogElement
                 dialog.showModal()
               }}
-              className="btn btn-success text-white"
+              className="btn btn-success text-white my-2 md:my-0"
             >
               <FaCompressArrowsAlt className="w-6 h-6" />
               Nạp tiền vào ví qua VN Pay

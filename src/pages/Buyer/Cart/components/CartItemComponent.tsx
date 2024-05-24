@@ -30,33 +30,31 @@ const CartItemComponent: React.FC<{ item: CartItem }> = ({ item }) => {
         <div className="flex flex-col lg:flex-row lg:items-center lg:space-x-6">
           <div className="flex-1">
             <p className="font-bold">{item.name}</p>
-            <div className="mt-2 flex items-center gap-1 text-sm">
-              <p className="font-bold">Chất liệu:</p>
-              <p>{item.material}</p>
+            <div className="mt-2 grid grid-cols-10  items-center gap-1 text-sm">
+              <p className="font-bold col-span-2">Chất liệu:</p>
+              <p className="col-span-8">{item.material}</p>
             </div>
-            <div className="mt-2 flex items-center gap-1 text-sm">
-              <p className="font-bold">Kích thước:</p>
-
-              <p className="text-sm">
+            <div className="mt-2 grid grid-cols-10 items-center gap-1 text-sm">
+              <p className="font-bold col-span-2">Kích thước:</p>
+              <p className="text-sm col-span-8">
                 {item.width} cm x {item.height} cm x {item.length} cm
               </p>
             </div>
-            <div className="mt-2 flex items-center gap-1 text-sm">
-              <p className="font-bold">Trọng lượng:</p>
+            <div className="mt-2 grid grid-cols-10 items-center gap-1 text-sm">
+              <p className="font-bold col-span-2">Trọng lượng:</p>
 
-              <p className="text-sm">{item.weight} gram</p>
+              <p className="text-sm col-span-8">{item.weight} gram</p>
             </div>
           </div>
           <div className="mt-2 flex lg:items-center space-x-2 flex-col-reverse">
             {item.salePrice ? (
               <>
                 <div className="lg:text-xl text-sm text-secondary font-semibold">
-                  Tổng:
-                  {formatPrice(item.salePrice * item.cartQuantity)}
+                  Tổng: {formatPrice(item.salePrice * item.cartQuantity)}
                 </div>
                 <div className="text-sm flex gap-2">
-                  <div className="line-through hidden md:block">Giá: {formatPrice(item.price)}</div>
-                  <div> {formatPrice(item.salePrice)}</div>
+                  <div className="hidden md:block">Giá: {formatPrice(item.price)}</div>
+                  <div className="line-through"> {formatPrice(item.salePrice)}</div>
                 </div>
               </>
             ) : (

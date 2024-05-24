@@ -36,7 +36,7 @@ const OrderItemComponent = ({ order }: { order: OrderItem }) => {
                 alt={order.storeInfo.id}
                 className="w-10 h-10 object-cover rounded-full"
               />
-              <p className="font-bold uppercase">{order.storeInfo.name}</p>
+              <p className="font-bold uppercase md:text-base text-sm">{order.storeInfo.name}</p>
               <IoIosArrowForward />
             </div>
           </button>
@@ -70,7 +70,7 @@ const OrderItemComponent = ({ order }: { order: OrderItem }) => {
                 Hủy đơn
               </button>
             )}
-            {order.status === 'CANCELLED' && <p className="badge badge-error text-white p-4">Đơn đã hủy</p>}
+            {order.status === 'CANCELLED' && <p className="badge badge-error text-white p-4 ">Đơn đã hủy</p>}
           </div>
         </div>
         {order.responses.map((response: ResponseItem) => {

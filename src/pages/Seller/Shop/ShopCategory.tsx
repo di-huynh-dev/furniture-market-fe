@@ -261,7 +261,7 @@ const ShopCategory = () => {
             <DataTable
               title={
                 <div className="flex justify-between items-center">
-                  <span className="text-2xl">Danh mục hàng của shop</span>
+                  <span className="text-lg">Danh mục hàng của shop</span>
                   <button
                     onClick={() => {
                       setIsUpdate(false)

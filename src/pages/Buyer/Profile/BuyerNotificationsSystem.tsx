@@ -41,7 +41,7 @@ const BuyerNotificationsSystem = () => {
       <div className="border-b-2 pb-5 lg:text-lg text-sm">
         <div className="flex items-center justify-between">
           <div>
-            <div className="font-bold capitalize">Thông báo đơn hàng của tôi</div>
+            <div className="font-bold capitalize">Thông báo tài khoản của tôi</div>
           </div>
           <div className="flex gap-2 items-center">
             <div className="text-sm">

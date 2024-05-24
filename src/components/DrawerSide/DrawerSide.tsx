@@ -11,7 +11,7 @@ const DrawerSide = () => {
 
       <div className="drawer-side mt-24 lg:my-0">
         <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-        <ul className="menu bg-white w-56 rounded-box h-screen">
+        <ul className="menu bg-white w-56 rounded-box ">
           <li>
             <details open>
               <summary className="font-bold text-neutral">

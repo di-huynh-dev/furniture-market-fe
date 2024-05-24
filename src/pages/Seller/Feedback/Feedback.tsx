@@ -147,6 +147,7 @@ const Feedback = () => {
               data={feedbacks}
               pagination
               progressPending={isLoading}
+              highlightOnHover
               progressComponent={<LoadingComponent />}
             />
             ;

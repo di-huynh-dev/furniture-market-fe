@@ -55,12 +55,12 @@ const BuyerSearch = () => {
   if (systemCategoriesIsLoading) return <div>Loading...</div>
   return (
     <div className="align-element my-2">
-      <div className="grid grid-cols-10 gap-2">
+      <div className="md:grid grid-cols-10 gap-2">
         <div className="flex items-center gap-2 col-span-2">
           <FaFilter />
-          <p>BỘ LỌC TÌM KIẾM</p>
+          <p className="text-sm lg:text-base">BỘ LỌC TÌM KIẾM</p>
         </div>
-        <div className="col-span-8 flex gap-2 my-2 items-center">
+        <div className="col-span-8 md:flex gap-2 my-2 items-center">
           <button
             onClick={() => {
               setSort('sold.ASC')
@@ -99,7 +99,7 @@ const BuyerSearch = () => {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-10 gap-2">
+      <div className="md:grid grid-cols-10 gap-2">
         <div className="col-span-2">
           <div>
             <ul className="menu bg-white w-60 rounded-box min-h-screen p-4">
@@ -183,39 +183,47 @@ const BuyerSearch = () => {
               <li>
                 <summary className="font-bold">Khoảng giá</summary>
                 <ul>
-                  <div className="grid grid-cols-3 gap-2 items-center text-center">
+                  <div className="lg:grid grid-cols-3 gap-2 items-center lg:text-center">
                     <p>Thấp nhất</p>
                     <p>-</p>
                     <p>Cao nhất</p>
                   </div>
-                  <div className="grid grid-cols-2 gap-2 items-center justify-center">
-                    <input
-                      type="number"
-                      value={minPrice}
-                      onChange={(e) => setMinPrice(parseInt(e.target.value))}
-                      className="input input-bordered input-xs w-full max-w-[100px]"
-                    />
-                    <input
-                      type="number"
-                      value={maxPrice}
-                      onChange={(e) => setMaxPrice(parseInt(e.target.value))}
-                      className="input input-bordered input-xs w-full max-w-[100px]"
-                    />
+                  <div className="lg:grid grid-cols-2 gap-2 items-center justify-center">
+                    <div>
+                      <input
+                        type="number"
+                        value={minPrice}
+                        onChange={(e) => setMinPrice(parseInt(e.target.value))}
+                        className="input input-bordered input-xs w-full  max-w-[100px]"
+                      />
+                    </div>
+                    <div>
+                      <input
+                        type="number"
+                        value={maxPrice}
+                        onChange={(e) => setMaxPrice(parseInt(e.target.value))}
+                        className="input input-bordered input-xs max-w-[100px]"
+                      />
+                    </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-1">
-                    <button onClick={() => searchMutation.mutate()} className="btn btn-sm  w-full my-2">
-                      Áp dụng
-                    </button>
-                    <button
-                      onClick={() => {
-                        setMinPrice(0)
-                        setMaxPrice(100000000)
-                        searchMutation.mutate()
-                      }}
-                      className="btn btn-sm  w-full my-2"
-                    >
-                      Reset
-                    </button>
+                  <div className="lg:grid grid-cols-2 gap-1">
+                    <div>
+                      <button onClick={() => searchMutation.mutate()} className="btn btn-sm max-w-[100px]  w-full my-2">
+                        Áp dụng
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        onClick={() => {
+                          setMinPrice(0)
+                          setMaxPrice(100000000)
+                          searchMutation.mutate()
+                        }}
+                        className="btn btn-sm  w-full my-2 max-w-[100px]"
+                      >
+                        Reset
+                      </button>
+                    </div>
                   </div>
                 </ul>
               </li>
@@ -224,7 +232,7 @@ const BuyerSearch = () => {
         </div>
 
         <div className="col-span-8 card bg-white p-4">
-          <div className="flex items-center justify-between">
+          <div className="md:flex items-center justify-between">
             <div className="flex items-center gap-2">
               <FaRegLightbulb />
               <p>Có {productList.length} kết quả tìm kiếm cho từ khoá: </p>
@@ -254,7 +262,7 @@ const BuyerSearch = () => {
           </div>
           <div className="divider"></div>
           {productList.length > 0 ? (
-            <div className="grid grid-cols-3 gap-x-4 gap-y-6 my-4">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-x-4 gap-y-6 my-4">
               {productList.map((product: ProductDetailType) => (
                 <BuyerProductCard key={product.id} {...product} />
               ))}

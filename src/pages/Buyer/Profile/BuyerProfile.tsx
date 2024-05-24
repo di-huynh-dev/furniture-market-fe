@@ -1,7 +1,7 @@
 // import { FormInput } from '@/components'
 import { Buyer_QueryKeys } from '@/constants/query-keys'
 import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
-import { removeAuth, selectAuth, updateProfile } from '@/redux/reducers/authSlice'
+import { selectAuth, updateProfile } from '@/redux/reducers/authSlice'
 import { formatDate } from '@/utils/helpers'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
@@ -274,6 +274,7 @@ const BuyerProfile = () => {
           </form>
         </div>
       </div>
+
       <div className="border-b-2 pb-5 lg:text-lg text-sm">
         <div className="font-bold capitalize">Thông tin cá nhân</div>
         <div className="text-gray-500 text-sm">Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
@@ -299,7 +300,7 @@ const BuyerProfile = () => {
             <tr>
               <td>Họ và tên</td>
               <td>{userProfile.fullName}</td>
-              <td>
+              <td className="hidden md:table-cell">
                 Đang theo dõi:{' '}
                 <button
                   onClick={() => {
