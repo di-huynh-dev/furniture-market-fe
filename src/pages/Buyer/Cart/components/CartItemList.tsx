@@ -43,7 +43,14 @@ const CartItemList = () => {
             </div>
           ))}
           <div className="grid md:grid-cols-2 grid-cols-1 gap-2">
-            <button className="btn btn-ghost btn-info">Khám phá ngay</button>
+            <button
+              onClick={() => {
+                navigation('/products')
+              }}
+              className="btn btn-ghost btn-info"
+            >
+              Khám phá ngay
+            </button>
             <button
               className="btn btn-ghost btn-primary"
               onClick={() => {

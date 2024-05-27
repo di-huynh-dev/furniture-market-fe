@@ -7,9 +7,10 @@ import { AddProductApiType, ProductInfo } from '@/types/product.type'
 import { useQuery } from '@tanstack/react-query'
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useImagePreview from '@/hooks/useImagePreview'
 import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 export type FormData = AddProductApiType
 
@@ -20,11 +21,17 @@ interface CategoryType {
 
 const AddProduct = () => {
   const axiosPrivate = useAxiosPrivate()
+  const navigation = useNavigate()
   const { previewImages: thumbnail, handleFileChange: handleThumbnailChange } = useImagePreview()
   const { previewImages: images, handleFileChange: handleImagesChange } = useImagePreview()
   const [isLoading, setIsLoading] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [selectedSystemCategory, setSelectedSystemCategory] = useState<string>('')
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    document.title = 'Fnest Seller - Thêm sản phẩm'
+  }, [])
 
   const { data: shopCategories, isLoading: isLoadingCategories } = useQuery({
     queryKey: ['shopCategories'],
@@ -112,6 +119,7 @@ const AddProduct = () => {
         reset()
         setSelectedCategory('')
         setSelectedSystemCategory('')
+        navigation('/seller/products')
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -169,7 +177,7 @@ const AddProduct = () => {
                     type="file"
                     accept="image/*"
                     {...register('thumbnail')}
-                    className="input input-bordered text-sm"
+                    className="file-input file-input-bordered file-input-xs w-full max-w-xs"
                     onChange={handleThumbnailChange}
                   />
                   {errors.thumbnail?.message && <p className="text-red-500 text-sm">{errors.thumbnail.message}</p>}
@@ -188,13 +196,13 @@ const AddProduct = () => {
                     id="logo"
                     type="file"
                     accept="image/*"
-                    className="input input-bordered text-sm"
+                    className="file-input file-input-bordered file-input-xs w-full max-w-xs"
                     {...register('images')}
                     onChange={handleImagesChange}
                     multiple
                   />
                   {errors.images?.message && <p className="text-red-500 text-sm">{errors.images.message}</p>}
-                  <div className="lg:grid lg:grid-cols-4 md:grid-cols-2 gap-2">
+                  <div className="lg:grid lg:grid-cols-3 md:grid-cols-2 gap-2">
                     {images &&
                       images.map((image, index) => (
                         <div key={`back-${index}`} className="mt-2 flex">

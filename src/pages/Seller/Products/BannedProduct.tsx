@@ -5,7 +5,7 @@ import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import useImagePreview from '@/hooks/useImagePreview'
 import { ReportedType } from '@/types/reported.type'
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import toast from 'react-hot-toast'
 
@@ -15,6 +15,11 @@ const BannedProduct = () => {
   const [images, setImages] = useState<File[]>([])
   const { previewImages, handleFileChange } = useImagePreview()
   const [description, setDescription] = useState('')
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    document.title = 'Fnest Seller - Báo cáo vi phạm'
+  }, [])
 
   const { data: bannedProducts, isLoading: isLoadingBannedProducts } = useQuery({
     queryKey: [Seller_QueryKeys.REPORTED_PRODUCTS],
@@ -190,7 +195,7 @@ const BannedProduct = () => {
       <div className="card shadow-lg my-2 bg-white">
         <div className="lg:card-body">
           <DataTable
-            title="Danh sách sản phẩm vi phạm"
+            title={<p className="text-xl">DANH SÁCH SẢN PHẨM XỬ LÝ VI PHẠM</p>}
             columns={columns}
             data={bannedProducts}
             progressPending={isLoadingBannedProducts}

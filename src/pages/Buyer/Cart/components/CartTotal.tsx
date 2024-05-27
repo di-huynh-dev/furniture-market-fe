@@ -1,13 +1,41 @@
+import { LoadingComponent } from '@/components'
+import { Buyer_QueryKeys } from '@/constants/query-keys'
+import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 import { selectAuth } from '@/redux/reducers/authSlice'
 import { selectCart } from '@/redux/reducers/buyer/cartSlice'
 import { formatPrice } from '@/utils/helpers'
+import { useQuery } from '@tanstack/react-query'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const CartTotal = () => {
   const cart = useSelector(selectCart)
+  const navigation = useNavigate()
   const user = useSelector(selectAuth)
+  const axiosPrivate = useAxiosBuyerPrivate()
 
+  const { data: addresses, isLoading: isLoadingAddress } = useQuery({
+    queryKey: [Buyer_QueryKeys.USER_ADDRESS],
+    queryFn: async () => {
+      const resp = await axiosPrivate.get('/buyer/delivery-address')
+      return resp.data.data
+    },
+    enabled: !!user.authData.accessToken,
+  })
+
+  const handleCheckoutClick = () => {
+    if (!addresses.defaultAddressId) {
+      toast.error('Vui lòng cung cấp địa chỉ giao hàng!')
+      navigation('/buyer/account/address')
+    } else {
+      navigation('/buyer/checkout')
+    }
+  }
+
+  if (isLoadingAddress) {
+    return <LoadingComponent />
+  }
   return (
     <div className="card bg-base-100 shadow-xl">
       <div className="card-body">
@@ -18,15 +46,17 @@ const CartTotal = () => {
         </p>
       </div>
       <div className="mt-2">
-        {user.authData.accessToken ? (
-          <Link to="/buyer/checkout">
-            <div className="btn btn-round w-full bg-primary text-white">Đặt hàng</div>
-          </Link>
-        ) : (
-          <Link to="/buyer/login" className="btn btn-primary btn-block mt-8 text-white">
-            Vui lòng đăng nhập
-          </Link>
-        )}
+        <div className="mt-2">
+          {user.authData.accessToken ? (
+            <div onClick={handleCheckoutClick} className="btn btn-round w-full bg-primary text-white">
+              Đặt hàng
+            </div>
+          ) : (
+            <Link to="/buyer/login" className="btn btn-primary btn-block mt-8 text-white">
+              Vui lòng đăng nhập
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   )

@@ -189,7 +189,7 @@ const SettingShop = () => {
             {logoImage &&
               logoImage.map((image, index) => (
                 <div key={`back-${index}`} className="mt-2">
-                  <img src={image} alt={`Back Preview ${index}`} className="w-60 h-60" />
+                  <img src={image} alt={`Back Preview ${index}`} className="w-200 h-200 rounded-none object-cover" />
                 </div>
               ))}
 
@@ -293,9 +293,10 @@ const SettingShop = () => {
               placeholder="Số nhà 34/2, đường Nguyễn Thái Học"
               errorMessage={errors.address?.message}
             />
+
             <FormInput
               prop="description"
-              type="text"
+              type="textarea"
               label="Mô tả(*)"
               register={register}
               placeholder="Mô tả shop"

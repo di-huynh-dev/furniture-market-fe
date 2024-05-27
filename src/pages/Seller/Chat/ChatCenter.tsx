@@ -27,6 +27,11 @@ const ChatCenter = () => {
   const [receiverName, setReceiverName] = useState<string | null>('')
   const [messages, setMessages] = useState<ChatItem[]>([])
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    document.title = 'Fnest Seller - Quản lý Chat'
+  }, [])
+
   const { data: userSentMessages, isLoading: isLoadingUserSentMessages } = useQuery({
     queryKey: [Seller_QueryKeys.LIST_USER_SENT_MESSAGE],
     queryFn: async () => {

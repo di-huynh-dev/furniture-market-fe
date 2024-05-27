@@ -15,6 +15,11 @@ const NotifyManagement = () => {
   const [pageSize, setPageSize] = useState<number>(5)
   const [totalPages, setTotalPages] = useState<number>(0)
 
+  useEffect(() => {
+    document.title = 'Fnest Seller - Thông báo'
+    window.scrollTo(0, 0)
+  }, [])
+
   const getNotificationMutation = useMutation({
     mutationFn: async () => {
       const response = await axiosPrivate.get(

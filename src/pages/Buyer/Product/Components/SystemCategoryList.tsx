@@ -1,3 +1,4 @@
+import { LoadingComponent } from '@/components'
 import { Buyer_QueryKeys } from '@/constants/query-keys'
 import axiosClient from '@/libs/axios-client'
 import { CategoryType } from '@/types/category.type'
@@ -54,10 +55,10 @@ const SystemCategoryList = () => {
   return (
     <>
       {isLoading ? (
-        <div>Loading</div>
+        <LoadingComponent />
       ) : (
         <div className="my-4 bg-white p-4">
-          <p>Danh mục sản phẩm</p>
+          <p className="my-2">Danh mục sản phẩm</p>
           <Slider {...settings}>
             {data?.map((category: CategoryType) => (
               <div key={category.id}>

@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { VoucherType } from '@/types/voucher.type'
 import { FormInput, LoadingComponent } from '@/components'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -45,6 +45,11 @@ const DiscountManagement = () => {
 
   const [loading, setLoading] = useState(false)
   const client = useQueryClient()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    document.title = 'Fnest Seller - Khuyến mãi'
+  }, [])
 
   const { data: products, isLoading } = useQuery({
     queryKey: [Seller_QueryKeys.SHOP_PRODUCTS],
@@ -545,7 +550,7 @@ const DiscountManagement = () => {
         <div className="card-body">
           <div>
             <DataTable
-              title="Danh sách voucher của shop"
+              title="DANH SÁCH TOÀN BỘ VOUCHER GIẢM GIÁ CỦA SHOP"
               expandableRowsComponent={ExpandedComponent}
               expandableRows
               progressPending={isLoadingVouchers}

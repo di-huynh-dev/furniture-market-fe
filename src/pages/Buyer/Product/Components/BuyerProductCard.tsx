@@ -7,7 +7,6 @@ import { BsStarFill } from 'react-icons/bs'
 import { CiLocationOn } from 'react-icons/ci'
 import { useDispatch } from 'react-redux'
 import { addToCart, getTotals } from '@/redux/reducers/buyer/cartSlice'
-// import { addItemToWishlist, getTotalsWishlist } from '@/redux/reducers/buyer/wishlistSlice'
 import React from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
@@ -90,12 +89,12 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
           )}
         </div>
         <div className="card-body p-4 md:p-4 lg:p-8">
-          <div className="min-h-[40px]">
+          <div className="min-h-[50px]">
             <h2 className="card-title capitalize text-sm lg:text-base">{name}</h2>
           </div>
           {onSale ? (
             <div className="flex justify-between lg:text-base md:text-sm text-sm">
-              <span className=" text-left line-through text-gray-400">{formatPrice(price)}</span>
+              <span className=" text-left  text-gray-400">Giá bán</span>
               <span className="text-secondary text-left font-bold">{formatPrice(salePrice)}</span>
             </div>
           ) : (

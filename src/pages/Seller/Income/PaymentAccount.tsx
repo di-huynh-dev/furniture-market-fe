@@ -1,7 +1,7 @@
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaCompressArrowsAlt, FaExpandArrowsAlt } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import vnpay from '@/assets/images/vnpay.png'
@@ -15,6 +15,11 @@ const PaymentAccount = () => {
   const client = useQueryClient()
   const [bankCode, setBankCode] = useState('')
   const [activeTab, setActiveTab] = useState('')
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    document.title = 'Fnest Seller - Số dư ví'
+  }, [])
 
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName)

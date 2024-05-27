@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import banner from '@/assets/images/marketing.jpg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
@@ -19,6 +19,11 @@ const MarketingManagement = () => {
   const [packet, setPacket] = useState('')
   const [keywords, setKeywords] = useState<string[]>([])
   const [newKeyword, setNewKeyword] = useState('')
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    document.title = 'Fnest Seller - Chiến dịch QC'
+  }, [])
 
   const { data: products, isLoading: isLoadingProducts } = useQuery({
     queryKey: [Seller_QueryKeys.SHOP_PRODUCTS],
@@ -256,7 +261,7 @@ const MarketingManagement = () => {
 
       <div className="card shadow-lg bg-white my-2">
         <DataTable
-          title="Danh sách Chiến dịch quảng cáo"
+          title={<p className="text-xl">DANH SÁCH CÁC GÓI QUẢNG CÁO SẢN PHẨM CỦA SHOP</p>}
           columns={columnsMarkProduct}
           data={marketingProducts}
           progressPending={isLoadingMarketing}

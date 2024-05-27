@@ -30,6 +30,7 @@ const BuyerProductDetail = () => {
 
   useEffect(() => {
     scrollTo(0, 0)
+    document.title = 'Fnest - Chi tiết sản phẩm'
     getReviewByStarsMutation.mutate(0)
   }, [])
 
@@ -189,7 +190,6 @@ const BuyerProductDetail = () => {
           {product_detail.onSale ? (
             <div className="lg:text-lg text-base">
               <span className="text-primary font-bold pr-4">{formatPrice(product_detail.salePrice)}</span>
-              <span className="line-through">{formatPrice(product_detail.price)}</span>
             </div>
           ) : (
             <div className="lg:text-lg text-base">
@@ -214,8 +214,14 @@ const BuyerProductDetail = () => {
             </p>
             {product_detail.storeCategories[0] && (
               <p className="py-2">
-                <b>Danh mục: </b>
+                <b>Danh mục shop: </b>
                 {product_detail.storeCategories.map((category: string) => category).join(', ')}
+              </p>
+            )}
+            {product_detail.categoryName && (
+              <p className="py-2">
+                <b>Danh mục sàn: </b>
+                {product_detail.categoryName}
               </p>
             )}
             <p className="py-2 leading-loose">

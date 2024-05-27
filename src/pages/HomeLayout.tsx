@@ -18,6 +18,8 @@ import partner7 from '@/assets/images/partner/phudong.png'
 import partner8 from '@/assets/images/partner/vinhome.jpg'
 import { NavLink } from 'react-router-dom'
 import { useEffect } from 'react'
+import FormCollect from '@/components/FormData/FormCollect'
+import RecommendedProductList from './Home/components/RecommendedProductList'
 
 const HomeLayout = () => {
   useEffect(() => {
@@ -78,6 +80,7 @@ const HomeLayout = () => {
           </div>
         </Slider>
       </div>
+
       <div className="align-element">
         {/* Purpose */}
         <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4 ">Mục tiêu</h2>
@@ -148,8 +151,12 @@ const HomeLayout = () => {
           </div>
         </div>
 
-        {/* New producrs */}
-        <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4">Sản phẩm mới</h2>
+        {/* Products  recommended */}
+        <div className="align-element">
+          <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4 ">Gợi ý mua sắm</h2>
+          <div className="w-[100px] h-[3px] bg-primary"></div>
+          <RecommendedProductList />
+        </div>
 
         {/* Partner */}
         <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4">Đối tác</h2>
@@ -179,6 +186,9 @@ const HomeLayout = () => {
             </div>
           </Slider>
         </div>
+
+        {/* Form contact */}
+        <FormCollect />
       </div>
     </main>
   )

@@ -4,7 +4,7 @@ import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { ProductDetailType } from '@/types/product.type'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import toast from 'react-hot-toast'
 
@@ -21,6 +21,11 @@ const ShopCategory = () => {
   const [categoryName, setCategoryName] = useState('')
   const client = useQueryClient()
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    document.title = 'Fnest Seller - Danh mục shop'
+  }, [])
+
   const { data: shopCategories, isLoading } = useQuery({
     queryKey: [Seller_QueryKeys.SHOP_CATEGORY],
     queryFn: async () => {
@@ -36,7 +41,7 @@ const ShopCategory = () => {
   })
 
   const { data: productsOfCategory, isLoading: isLoadingProducts } = useQuery({
-    queryKey: [Seller_QueryKeys.PRODUCT_OF_CATEGORY],
+    queryKey: [Seller_QueryKeys.PRODUCT_OF_CATEGORY, categoryName],
     queryFn: async () => {
       try {
         const resp = await axiosPrivate.get(`/seller/product/store-category?categoryName=${categoryName}`)
@@ -113,21 +118,12 @@ const ShopCategory = () => {
     },
     {
       name: 'Thumbnail',
-      cell: (row) => <img src={row.thumbnail} alt={row.name} className="w-[100px]" />,
+      cell: (row) => <img src={row.thumbnail} alt={row.name} className="w-14 h-18" />,
     },
     {
       name: 'Tên sản phẩm',
       cell: (row) => row.name,
       sortable: true,
-    },
-
-    {
-      name: 'Thao tác',
-      cell: (row) => (
-        <div className="flex gap-2 text-blue-500">
-          <button onClick={() => handleUpdate(row.id)}>Chỉnh sửa</button>
-        </div>
-      ),
     },
   ]
 
@@ -138,7 +134,7 @@ const ShopCategory = () => {
     },
     {
       name: 'Tên danh mục',
-      selector: (row) => row.name,
+      cell: (row) => row.name,
       sortable: true,
     },
     {
@@ -149,7 +145,7 @@ const ShopCategory = () => {
             onClick={() => {
               setCategoryName(row.name)
               client.invalidateQueries({
-                queryKey: [Seller_QueryKeys.PRODUCT_OF_CATEGORY],
+                queryKey: [Seller_QueryKeys.PRODUCT_OF_CATEGORY, row.name],
               })
               const dialog = document.getElementById('my_modal_3') as HTMLDialogElement
               dialog.showModal()
@@ -261,7 +257,7 @@ const ShopCategory = () => {
             <DataTable
               title={
                 <div className="flex justify-between items-center">
-                  <span className="text-lg">Danh mục hàng của shop</span>
+                  <span className="text-xl">DANH MỤC HÀNG CỦA SHOP</span>
                   <button
                     onClick={() => {
                       setIsUpdate(false)

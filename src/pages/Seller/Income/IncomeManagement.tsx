@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import { CiDollar } from 'react-icons/ci'
 import { FaArrowCircleUp } from 'react-icons/fa'
+
 const IncomeManagement = () => {
   const axiosPrivate = useAxiosPrivate()
   const currentDate = new Date()
@@ -16,11 +17,15 @@ const IncomeManagement = () => {
   const [month, setMonth] = useState(currentMonth)
   const [year, setYear] = useState(currentYear)
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    document.title = 'Fnest Seller - Doanh thu'
+  }, [])
+
   const { data, isLoading, refetch } = useQuery({
-    queryKey: [Seller_QueryKeys.GET_WALLET],
+    queryKey: [Seller_QueryKeys.STATISTIC_INCOME],
     queryFn: async () => {
       const resp = await axiosPrivate.get(`/seller/statistic/order-income?month=${month}&year=${year}`)
-
       return resp.data.data
     },
   })
@@ -76,7 +81,7 @@ const IncomeManagement = () => {
   }
 
   return (
-    <section className="mx-4 my-2 text-sm">
+    <section className="mx-4 my-2">
       <div className="card shadow-lg my-2 bg-white">
         <div className="card-body">
           <span className="font-bold">
@@ -106,7 +111,7 @@ const IncomeManagement = () => {
           <DataTable
             title={
               <div className="flex justify-between items-center">
-                <p className="">CHI TIẾT DOANH THU SHOP</p>
+                <p className="text-xl">CHI TIẾT DOANH THU SHOP</p>
                 <div className="flex gap-2">
                   <select className="select select-info w-full max-w-xs" value={month} onChange={handleMonthChange}>
                     <option disabled>Chọn tháng</option>

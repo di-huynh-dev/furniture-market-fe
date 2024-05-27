@@ -53,8 +53,7 @@ const CartItemComponent: React.FC<{ item: CartItem }> = ({ item }) => {
                   Tổng: {formatPrice(item.salePrice * item.cartQuantity)}
                 </div>
                 <div className="text-sm flex gap-2">
-                  <div className="hidden md:block">Giá: {formatPrice(item.price)}</div>
-                  <div className="line-through"> {formatPrice(item.salePrice)}</div>
+                  <div className="hidden md:block">Giá: {formatPrice(item.salePrice)}</div>
                 </div>
               </>
             ) : (

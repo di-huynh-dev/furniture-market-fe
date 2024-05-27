@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { OrderItem, ResponseItem } from '@/types/order.type'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { useQuery } from '@tanstack/react-query'
@@ -12,6 +12,11 @@ const OrdersManagement = () => {
   const [activeTab, setActiveTab] = useState('')
   const axiosPrivate = useAxiosPrivate()
   const [orderListByStatus, setOrderListByStatus] = useState<OrderItem[]>([])
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    document.title = 'Fnest Seller - Tất cả đơn hàng'
+  }, [])
 
   const { isLoading: isLoadingOrders } = useQuery({
     queryKey: [Seller_QueryKeys.ORDER_LIST],
@@ -143,7 +148,7 @@ const OrdersManagement = () => {
             <DataTable
               title={
                 <div className="md:flex justify-between">
-                  <p className="md:text-xl text-base">Danh sách đơn hàng</p>
+                  <p className="md:text-xl text-base">DANH SÁCH TẤT CẢ ĐƠN HÀNG CỦA SHOP</p>
                   <button onClick={exportToCSV} className="mb-4 btn btn-outline btn-sm ">
                     Xuất báo cáo
                   </button>

@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 const Setting = () => {
   useEffect(() => {
     scrollTo(0, 0)
+    document.title = 'Fnest - Thông tin tài khoản'
   }, [])
 
   return (

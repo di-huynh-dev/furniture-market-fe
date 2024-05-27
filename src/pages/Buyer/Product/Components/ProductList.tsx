@@ -52,7 +52,7 @@ const ProductList = () => {
           </div>
         </div>
       </div>
-      <div className="grid lg:grid-cols-4 md:grid-cols-3 gap-2">
+      <div className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-2 gap-y-8">
         {productList.map((product: ProductDetailType) => (
           <BuyerProductCard key={product.id} {...product} />
         ))}

@@ -137,7 +137,7 @@ const ShopHome = () => {
       <div className=" bg-white shadow-md">
         <div className="align-element">
           {shop_profile.topBanner && (
-            <img src={shop_profile.topBanner} alt="Top Banner" className=" max-h-[350px] w-full" />
+            <img src={shop_profile.topBanner} alt="Top Banner" className=" max-h-[350px] w-full object-cover  " />
           )}
           <div className="grid grid-cols-3 gap-2">
             <div className="border p-2 rounded-md border-base-300">
@@ -230,7 +230,11 @@ const ShopHome = () => {
       </div>
 
       {shop_profile.infoBanner && activeTab === '' && (
-        <img src={shop_profile.infoBanner} alt="Top Banner" className=" align-element w-full" />
+        <img
+          src={shop_profile.infoBanner}
+          alt="Top Banner"
+          className=" align-element w-full max-h-[550px] object-cover my-2"
+        />
       )}
 
       <div className="align-element bg-white shawdow-md my-2">

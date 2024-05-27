@@ -139,7 +139,7 @@ const SettingIdentify = () => {
               {frontImages &&
                 frontImages.map((image, index) => (
                   <div key={`front-${index}`} className="mt-2">
-                    <img src={image} alt={`Front Preview ${index}`} className="w-60 h-60" />
+                    <img src={image} alt={`Front Preview ${index}`} className="w-full h-60 object-cover" />
                   </div>
                 ))}
             </div>
@@ -162,7 +162,7 @@ const SettingIdentify = () => {
               {backImages &&
                 backImages.map((image, index) => (
                   <div key={`back-${index}`} className="mt-2">
-                    <img src={image} alt={`Back Preview ${index}`} className="w-60 h-60" />
+                    <img src={image} alt={`Back Preview ${index}`} className="w-full h-60 object-cover" />
                   </div>
                 ))}
             </div>
@@ -212,20 +212,20 @@ const SettingIdentify = () => {
                   <p>Họ và tên</p>
                   <p className="font-semibold italic">{identifierInfo?.shopData.shopInfo.identifier[1]}</p>
                 </div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className=" gap-2">
                   <p>Hình ảnh CCCD mặt trước</p>
                   <img
                     src={identifierInfo?.shopData.shopInfo.identifier[2]}
                     alt=""
-                    className="w-80 h-80 object-cover border-2 border-primary"
+                    className="w-full h-60 object-cover"
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="gap-2">
                   <p>Hình ảnh CCCD mặt sau</p>
                   <img
                     src={identifierInfo?.shopData.shopInfo.identifier[3]}
                     alt=""
-                    className="w-80 h-80 object-cover border-2 border-primary"
+                    className="w-full h-60 object-cover"
                   />
                 </div>
               </div>

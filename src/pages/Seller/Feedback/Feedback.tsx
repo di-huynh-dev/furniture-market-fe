@@ -5,7 +5,7 @@ import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { FeedbackType } from '@/types/review.type'
 import { formatDate } from '@/utils/helpers'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import { toast } from 'react-toastify'
 
@@ -16,6 +16,11 @@ const Feedback = () => {
   const [content, setContent] = useState('')
   const [status, setStatus] = useState<'TRUE' | 'FALSE'>('FALSE')
   const client = useQueryClient()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    document.title = 'Fnest Seller - Đánh giá sản phẩm'
+  }, [])
 
   const { data: feedbacks, isLoading } = useQuery({
     queryKey: [Seller_QueryKeys.FEEDBACK_LIST, status],

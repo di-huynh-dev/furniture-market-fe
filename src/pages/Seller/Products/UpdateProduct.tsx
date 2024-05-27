@@ -1,4 +1,4 @@
-import { FormInput } from '@/components'
+import { FormInput, LoadingComponent } from '@/components'
 import { useForm } from 'react-hook-form'
 // import { yupResolver } from '@hookform/resolvers/yup'
 // import * as yup from 'yup'
@@ -27,7 +27,7 @@ const UpdateProduct = () => {
 
   const { id } = useParams()
 
-  const { data: shopCategories } = useQuery({
+  const { data: shopCategories, isLoading: isLoadingCategories } = useQuery({
     queryKey: [Seller_QueryKeys.SHOP_CATEGORY],
     queryFn: async () => {
       const resp = await axiosPrivate.get('/seller/category')
@@ -90,24 +90,15 @@ const UpdateProduct = () => {
     }
   }
 
-  // const validationSchema = yup.object({
-  //   name: yup.string(),
-  //   price: yup.number().moreThan(0, 'Giá phải lớn hơn 0'),
-  //   salePrice: yup.number().moreThan(0, 'Giá phải lớn hơn 0'),
-  //   description: yup.string(),
-  //   size: yup.string(),
-  //   material: yup.string(),
-  //   inStock: yup.number().moreThan(0, 'Giá phải lớn hơn 0'),
-  //   featured: yup.boolean(),
-  // })
-
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
-    // resolver: yupResolver(validationSchema),
-  })
+  } = useForm<FormData>({})
+
+  if (isLoadingCategories) {
+    return <LoadingComponent />
+  }
 
   return (
     <section className="mx-4 my-2 text-sm">

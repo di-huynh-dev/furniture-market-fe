@@ -3,7 +3,7 @@ import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { ProductDetailType } from '@/types/product.type'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import toast from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
@@ -17,6 +17,11 @@ const ProductsManagement = () => {
   const [selectedRow, setSelectedRow] = useState('')
   const client = useQueryClient()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    document.title = 'Fnest Seller - Tất cả sản phẩm'
+  }, [])
 
   const { data: products, isLoading } = useQuery({
     queryKey: [Seller_QueryKeys.SHOP_PRODUCTS],
@@ -53,6 +58,14 @@ const ProductsManagement = () => {
       name: 'Mã sản phẩm ',
       selector: (row) => row.id,
       wrap: true,
+    },
+    {
+      name: 'Hình ảnh',
+      cell: (row) => (
+        <div className="w-18">
+          <img src={row.thumbnail} alt={row.name} className="max-h-14" />
+        </div>
+      ),
     },
 
     {
@@ -204,7 +217,7 @@ const ProductsManagement = () => {
               columns={columns}
               title={
                 <div className="lg:flex justify-between items-center gap-2">
-                  <p className="lg:text-xl text-lg">Danh sách sản phẩm của shop</p>
+                  <p className="lg:text-xl text-lg">DANH SÁCH TẤT CẢ SẢN PHẨM CỦA SHOP</p>
                   <div className="flex gap-2 my-2 lg:my-0">
                     <div className="flex justify-between items-center">
                       <div>
