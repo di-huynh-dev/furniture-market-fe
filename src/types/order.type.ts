@@ -21,3 +21,12 @@ export type ResponseItem = {
   quantity: number
   total: number
 }
+
+export type RefundOrderType = {
+  id: string
+  reason: string
+  createdAt: string
+  images: string[]
+  accepted: boolean
+  orderId: string
+}

@@ -36,8 +36,8 @@ const DrawerSide = () => {
               </summary>
               <ul>
                 <li className="text-gray-500">
-                  <Link to={'/seller/orders'}>Tất cả</Link>
-                  <a>Trả hàng/hoàn tiền</a>
+                  <Link to={'orders'}>Tất cả</Link>
+                  <Link to={'orders/return'}>Trả hàng/Hoàn tiền</Link>
                 </li>
               </ul>
             </details>

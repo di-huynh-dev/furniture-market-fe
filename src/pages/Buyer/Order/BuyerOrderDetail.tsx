@@ -10,6 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { ResponseItem } from '@/types/order.type'
 import { formatPrice } from '@/utils/helpers'
 import { IoIosArrowForward } from 'react-icons/io'
+import { LoadingComponent } from '@/components'
 
 const BuyerOrderDetail = () => {
   const { id } = useParams()
@@ -25,7 +26,7 @@ const BuyerOrderDetail = () => {
   })
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <LoadingComponent />
   }
   return (
     <div className="mx-4 my-2">

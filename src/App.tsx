@@ -211,12 +211,10 @@ function App() {
         {
           path: seller_routes.orders,
           element: <OrdersManagement />,
-          children: [
-            {
-              path: seller_routes.orders_return,
-              element: <ReturnOrder />,
-            },
-          ],
+        },
+        {
+          path: seller_routes.orders_return,
+          element: <ReturnOrder />,
         },
         {
           path: seller_routes.shop_cagory,

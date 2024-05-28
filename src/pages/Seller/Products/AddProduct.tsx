@@ -102,7 +102,7 @@ const AddProduct = () => {
         formData.append('images', data.images[i])
       }
     } else {
-      toast.error('Vui lòng chọn ít nhất một hình ảnh cho logo.')
+      toast.error('Vui lòng tải lên ít nhất một hình ảnh cho logo.')
       return
     }
 

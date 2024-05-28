@@ -114,6 +114,16 @@ const BuyerPurchase = () => {
               </div>
               <div
                 role="tab"
+                onClick={() => handleTabClick('REFUNDED')}
+                className={`tab ${activeTab === 'REFUNDED' ? 'tab-active font-semibold text-primary' : 'indicator'}`}
+              >
+                Hoàn tiền/Trả hàng
+                <span className={` ${activeTab === 'REFUNDED' ? 'badge text-primary' : 'indicator-item badge'}`}>
+                  {activeTab === 'REFUNDED' && orderListByStatus.length}
+                </span>
+              </div>
+              <div
+                role="tab"
                 onClick={() => handleTabClick('')}
                 className={`tab ${activeTab === '' ? 'tab-active  font-semibold text-primary' : 'indicator'}`}
               >

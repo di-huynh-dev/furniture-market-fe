@@ -43,7 +43,7 @@ export const seller_routes = {
   orders_shipped: 'shipped',
   orders_compelted: 'completed',
   orders_cacelled: 'cancelled',
-  orders_return: 'return',
+  orders_return: '/seller/orders/return',
   orders_failed_delivery: 'failed_delivery',
   products: 'products',
   add_product: 'products/new',
