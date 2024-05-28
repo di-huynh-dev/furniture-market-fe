@@ -28,12 +28,13 @@ const HeaderNotify = () => {
       const topic = `${SOCKET_NOTIFY_TOPIC_PREFIX_URL}/${user.authData.user.id}`
       client.subscribe(topic, (message: { body: string }) => {
         try {
+          const data = JSON.parse(message.body)
           const newNotification: Notification = {
             id: '',
             createdAt: new Date().toISOString(),
             type: '',
             seen: false,
-            content: ['', message.body],
+            content: ['', data.message],
           }
           setNotificationsAccount([...notificationsAccount, newNotification])
         } catch (error: any) {
@@ -122,10 +123,6 @@ const HeaderNotify = () => {
                     <p>Đang tải dữ liệu...</p>
                   ) : (
                     <>
-                      <p className="text-gray-500">Thông báo tài khoản</p>
-                      {notificationsAccount.length === 0 && (
-                        <p className="text-gray-500 text-center my-2">Chưa có thông báo nào</p>
-                      )}
                       {notificationsAccount.slice(0, 5).map((notification: Notification, index: number) => (
                         <div
                           key={index}
@@ -148,7 +145,7 @@ const HeaderNotify = () => {
                           </button>
                         </div>
                       )}
-                      <p className="text-gray-500">Thông báo đơn hàng</p>
+
                       {notificationsOrder.length === 0 && (
                         <p className="text-gray-500 text-center my-2 italic">Chưa có thông báo nào</p>
                       )}
