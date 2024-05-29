@@ -142,9 +142,7 @@ const BuyerPurchase = () => {
       })}
 
       {orderListByStatus.length === 0 && (
-        <div className="text-center my-2 italic text-gray-500">
-          Bạn chưa có đơn hàng nào. Hãy mua sắm thoải mái bạn nhé!
-        </div>
+        <div className="text-center my-2 italic text-gray-500">Bạn chưa có đơn hàng nào ở trạng thái này!</div>
       )}
     </div>
   )

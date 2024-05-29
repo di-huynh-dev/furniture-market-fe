@@ -126,9 +126,10 @@ const BuyerProductDetail = () => {
               <option value="Tên sản phẩm không phù hợp với hình ảnh">Tên sản phẩm không phù hợp với hình ảnh</option>
             </select>
             <textarea
-              placeholder="Mô tả báo cáo (10-50 kí tự)"
-              className="textarea textarea-bordered w-full mt-2 resize-vertical"
+              placeholder="Mô tả báo cáo (10-150 kí tự)"
+              className="textarea textarea-bordered textarea-primary w-full mt-2 resize-vertical"
               rows={3}
+              maxLength={150}
               onChange={(e) => setReportDescription(e.target.value)}
             ></textarea>
             <div className="modal-action flex">
@@ -254,7 +255,6 @@ const BuyerProductDetail = () => {
                 >
                   Xem shop
                 </button>
-                <button className="btn btn-sm btn-outline">Chat</button>
               </div>
             </div>
           </div>

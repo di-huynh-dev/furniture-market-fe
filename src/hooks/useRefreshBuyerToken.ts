@@ -5,7 +5,9 @@ import { store } from '@/redux/store'
 const useRefreshBuyerToken = () => {
   const refresh = async () => {
     try {
-      const resp = await commonApi.refreshToken()
+      const rfToken = store.getState().auth.authData.refreshToken
+      const resp = await commonApi.refreshToken(rfToken)
+
       if (resp.status === 200) {
         // localStorage.setItem('accessTokenBuyer', resp.data.data.accessToken)
         store.dispatch(addAuth(resp.data.data))
@@ -15,6 +17,7 @@ const useRefreshBuyerToken = () => {
       }
     } catch (error) {
       store.dispatch(removeAuth())
+      await commonApi.logout()
     }
   }
   return refresh

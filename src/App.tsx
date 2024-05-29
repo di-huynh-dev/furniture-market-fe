@@ -6,6 +6,7 @@ import {
   BuyerAddress,
   BuyerCart,
   BuyerCheckout,
+  BuyerForgotPassword,
   BuyerLogin,
   BuyerNotificationVoucher,
   BuyerNotificationsOrder,
@@ -159,6 +160,14 @@ function App() {
         {
           path: buyer_routes.login,
           element: <BuyerLogin />,
+        },
+        {
+          path: buyer_routes.forgot_password,
+          element: <BuyerForgotPassword />,
+        },
+        {
+          path: buyer_routes.confirm_reset_password,
+          element: <ConfirmResetPassword />,
         },
         {
           path: buyer_routes.signup,

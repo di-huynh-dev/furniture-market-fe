@@ -10,7 +10,7 @@ import { LoginApiType } from '@/types/user.type'
 import { FormInput, LoadingButton } from '@/components'
 import commonApi from '@/api/commonApi'
 import { useDispatch } from 'react-redux'
-import { addAuth, setToken, updateProfile } from '@/redux/reducers/authSlice'
+import { addAuth, setRefreshToken, setToken, updateProfile } from '@/redux/reducers/authSlice'
 import toast from 'react-hot-toast'
 import axiosClient from '@/libs/axios-client'
 
@@ -52,10 +52,12 @@ const Login = () => {
   //Login by google
   const [searchParams, setSearchParams] = useSearchParams()
   const token = searchParams.get('token')
+  const refreshToken = searchParams.get('refresh-token')
 
   useEffect(() => {
     if (token) {
       dispatch(setToken(token))
+      dispatch(setRefreshToken(refreshToken))
       setIsLoading(true)
       const getUserProfile = async () => {
         try {
@@ -64,6 +66,8 @@ const Login = () => {
               Authorization: `Bearer ${token}`,
             },
           })
+          console.log('resp', resp.data.data)
+
           dispatch(updateProfile(resp.data.data))
           setIsLoading(false)
           toast.success('Đăng nhập thành công!')
@@ -122,7 +126,7 @@ const Login = () => {
           {isLoading ? <LoadingButton /> : 'Đăng nhập'}
         </button>
         <p className="text-left text-sm text-primary p-2">
-          <Link to="/forgot-password" className="">
+          <Link to="/buyer/forgot-password" className="">
             Quên mật khẩu?
           </Link>
         </p>

@@ -73,8 +73,6 @@ const BuyerProfile = () => {
       return resp
     },
     onSuccess: (resp) => {
-      const dialog = document.getElementById('change_password') as HTMLDialogElement
-      dialog.close()
       toast.success(resp.data.messages[0])
     },
     onError: (error) => {
@@ -101,8 +99,6 @@ const BuyerProfile = () => {
         client.invalidateQueries({
           queryKey: [Buyer_QueryKeys.USER_PROFILE],
         })
-        const dialog = document.getElementById('update_avatar') as HTMLDialogElement
-        dialog.close()
       }
     } catch (error) {
       console.error('Error updating avatar:', error)

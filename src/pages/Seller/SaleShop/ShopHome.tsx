@@ -40,6 +40,8 @@ const ShopHome = () => {
   const [activeTab, setActiveTab] = useState('')
   const [sortByPrice, setSortByPrice] = useState('ASC')
   const [evaluate, setEvaluate] = useState(0)
+  const [reportReason, setReportReason] = useState('')
+  const [reportDescription, setReportDescription] = useState('')
 
   useEffect(() => {
     scrollTo(0, 0)
@@ -125,10 +127,75 @@ const ShopHome = () => {
     }
   }
 
+  const handleReportShop = async () => {
+    try {
+      if (!reportReason || !reportDescription) {
+        toast.error('Vui lòng điền đầy đủ thông tin')
+        return
+      }
+      const resp = await axiosPrivate.post(`/user/report`, {
+        reason: reportReason,
+        description: reportDescription,
+        type: 'STORE_REPORT',
+        reporterName: user.authData.user.email,
+        objectId: id,
+      })
+      if (resp.status === 200) {
+        setReportReason('')
+        setReportDescription('')
+        const dialog = document.getElementById('my_modal_3') as HTMLDialogElement
+        dialog.close()
+        toast.success(resp.data.messages[0])
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   if (shop_profile_loading || shop_categories_loading) return <LoadingComponent />
 
   return (
     <>
+      <dialog className="modal" id="my_modal_3">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Báo cáo shop vi phạm!</h3>
+          <select className="select select-primary w-full my-2" onChange={(e) => setReportReason(e.target.value)}>
+            <option disabled selected>
+              Chọn lý do
+            </option>
+            <option value="Người bán có đăng sản phẩm cấm">Người bán có đăng sản phẩm cấm</option>
+            <option value="Người dùng có dấu hiệu lừa đảo">Người dùng có dấu hiệu lừa đảo</option>
+            <option value="Người bán có đăng sản phẩm giả/nhái">Người bán có đăng sản phẩm giả/nhái</option>
+            <option value="Người dùng phát tán tin nhắn/hình ảnh/video có nội dung không lịch sự">
+              Người dùng phát tán tin nhắn/hình ảnh/video có nội dung không lịch sự
+            </option>
+            <option value="Người dùng thực hiện giao dịch ngoài sàn">Người dùng thực hiện giao dịch ngoài sàn</option>
+            <option value="Vi phạm quyền riêng tư">Vi phạm quyền riêng tư</option>
+            <option value="Người dùng đăng tải nội dung/hình ảnh thô tục, phản cảm">
+              Người dùng đăng tải nội dung/hình ảnh thô tục, phản cảm
+            </option>
+            <option value="Lí do khác">Lí do khác</option>
+          </select>
+          <textarea
+            placeholder="Mô tả báo cáo (10-150 kí tự)"
+            className="textarea textarea-bordered textarea-primary w-full mt-2 resize-vertical"
+            rows={3}
+            maxLength={150}
+            onChange={(e) => setReportDescription(e.target.value)}
+          ></textarea>
+          <div className="modal-action flex">
+            <button className="btn btn-primary text-white" onClick={handleReportShop}>
+              Gửi
+            </button>
+            <button
+              className="btn"
+              onClick={() => (document.getElementById('my_modal_3') as HTMLDialogElement).close()}
+            >
+              Hủy
+            </button>
+          </div>
+        </div>
+      </dialog>
       {user.authData?.user?.id && (
         <StompSessionProvider url={SOCKET_REGISTER_URL}>
           <ChatCenter showChat={showChat} toggleChat={toggleChat} receiver={receiver} />
@@ -164,7 +231,12 @@ const ShopHome = () => {
                             Gửi tin nhắn
                           </a>
                         </li>
-                        <li>
+                        <li
+                          onClick={() => {
+                            const dialog = document.getElementById('my_modal_3') as HTMLDialogElement
+                            dialog.showModal()
+                          }}
+                        >
                           <a>
                             <FaFlag />
                             Báo cáo

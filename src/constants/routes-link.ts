@@ -3,6 +3,8 @@ export const buyer_routes = {
   login: '/buyer/login',
   shop_home: '/shop/:id',
   signup: '/buyer/signup',
+  forgot_password: '/buyer/forgot-password',
+  confirm_reset_password: '/buyer/confirm-password',
   confirm_email: '/buyer/confirm-email',
   account: '/buyer/account',
   cart: 'buyer/cart',

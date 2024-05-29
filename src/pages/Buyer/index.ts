@@ -1,5 +1,6 @@
 export { default as BuyerLogin } from './Auth/Login'
 export { default as BuyerSignup } from './Auth/Signup'
+export { default as BuyerForgotPassword } from './Auth/ForgotPassword'
 export { default as BuyerAccount } from './Profile/BuyerAccount'
 export { default as BuyerProfile } from './Profile/BuyerProfile'
 export { default as BuyerPurchase } from './Profile/BuyerPurchase'

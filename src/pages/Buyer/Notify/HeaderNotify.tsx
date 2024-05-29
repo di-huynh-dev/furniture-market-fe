@@ -28,13 +28,12 @@ const HeaderNotify = () => {
       const topic = `${SOCKET_NOTIFY_TOPIC_PREFIX_URL}/${user.authData.user.id}`
       client.subscribe(topic, (message: { body: string }) => {
         try {
-          const data = JSON.parse(message.body)
           const newNotification: Notification = {
             id: '',
             createdAt: new Date().toISOString(),
             type: '',
             seen: false,
-            content: ['', data.message],
+            content: ['', message.body],
           }
           setNotificationsAccount([...notificationsAccount, newNotification])
         } catch (error: any) {
@@ -44,7 +43,7 @@ const HeaderNotify = () => {
     }
   }, [client, user.authData.user.id, notificationsAccount, notificationsOrder])
 
-  const { data: notificationsAccountData, isLoading: isLoadingNotifications } = useQuery({
+  const { isLoading: isLoadingNotifications } = useQuery({
     queryKey: [Buyer_QueryKeys.USER_NOTIFICATION],
     queryFn: async () => {
       const response = await axiosPrivate.get('/user/announce?type=ACCOUNT')
@@ -55,7 +54,7 @@ const HeaderNotify = () => {
     },
   })
 
-  const { data: notificationsOrderData, isLoading: isLoadingOrders } = useQuery({
+  const { isLoading: isLoadingOrders } = useQuery({
     queryKey: [Buyer_QueryKeys.ORDER_NOTIFICATION],
     queryFn: async () => {
       const response = await axiosPrivate.get('/user/announce?type=ORDER')
@@ -138,7 +137,7 @@ const HeaderNotify = () => {
                           </div>
                         </div>
                       ))}
-                      {notificationsOrder.length > 5 && (
+                      {notificationsAccount.length > 5 && (
                         <div className="text-center">
                           <button onClick={() => navigation('/seller/notify')} className="text-primary link">
                             Xem thêm

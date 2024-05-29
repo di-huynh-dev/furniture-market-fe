@@ -5,7 +5,8 @@ import { store } from '@/redux/store'
 const useRefreshToken = () => {
   const refresh = async () => {
     try {
-      const resp = await commonApi.refreshToken()
+      const rfToken = store.getState().sellerAuth.authData.refreshToken
+      const resp = await commonApi.refreshToken(rfToken)
       if (resp.status === 200) {
         // localStorage.setItem('accessToken', resp.data.data.accessToken)
         store.dispatch(addAuth(resp.data.data))

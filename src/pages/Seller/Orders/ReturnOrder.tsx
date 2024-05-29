@@ -56,7 +56,7 @@ const ReturnOrder = () => {
     {
       name: 'Hình ảnh',
       cell: (row) => (
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-2 my-2">
           {row.images.map((image) => (
             <img key={image} src={image} className="w-20 h-20" />
           ))}

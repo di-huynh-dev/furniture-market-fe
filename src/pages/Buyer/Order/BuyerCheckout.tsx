@@ -145,7 +145,7 @@ const BuyerCheckout = () => {
     // Tính tổng tiền hàng, tổng phí vận chuyển và tổng giảm giá từ voucher
     for (const storeItem of cartItems.cartItemList) {
       for (const item of storeItem.items) {
-        const itemPrice = item.price * item.cartQuantity
+        const itemPrice = item.salePrice * item.cartQuantity
         totalPrice += itemPrice
         totalShippingFee += shippingFees[item.id] || 0
 
@@ -317,9 +317,9 @@ const BuyerCheckout = () => {
                     <p className="font-bold">{item.name}</p>
                   </div>
                   <p className="col-span-2 text-sm md:text-base">{item.material}</p>
-                  <p>{formatPrice(item.price)}</p>
+                  <p>{formatPrice(item.salePrice)}</p>
                   <p>x{item.cartQuantity}</p>
-                  <p>{formatPrice(item.price * item.cartQuantity)}</p>
+                  <p>{formatPrice(item.salePrice * item.cartQuantity)}</p>
                 </div>
                 <div className="flex justify-end gap-2">
                   <div className="flex gap-2 items-center text-primary">
@@ -366,7 +366,7 @@ const BuyerCheckout = () => {
                         {selectedVoucher.length !== 0 && (
                           <button
                             className="btn btn-primary text-white"
-                            onClick={() => applyVoucher(item.id, item.price * item.cartQuantity)}
+                            onClick={() => applyVoucher(item.id, item.salePrice * item.cartQuantity)}
                           >
                             Áp dụng
                           </button>
@@ -387,13 +387,13 @@ const BuyerCheckout = () => {
                       {voucherAppliedMessages[item.id] ? (
                         <p>
                           {formatPrice(
-                            item.price * item.cartQuantity +
+                            item.salePrice * item.cartQuantity +
                               shippingFees[item.id] -
                               voucherAppliedMessages[item.id].discount,
                           )}
                         </p>
                       ) : (
-                        <p>{formatPrice(item.price * item.cartQuantity + shippingFees[item.id])}</p>
+                        <p>{formatPrice(item.salePrice * item.cartQuantity + shippingFees[item.id])}</p>
                       )}
                     </div>
                   </div>
