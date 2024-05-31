@@ -140,8 +140,8 @@ const MarketingManagement = () => {
       <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg capitalize">Đăng ký marketing sản phẩm</h3>
-          <p>Chọn loại quảng cáo (*)</p>
-          <select onChange={(e) => setPacket(e.target.value)} className="select select-bordered w-full max-w-xs">
+
+          <select onChange={(e) => setPacket(e.target.value)} className="select select-bordered w-full my-2">
             <option disabled selected>
               Chọn loại hình quảng cáo
             </option>

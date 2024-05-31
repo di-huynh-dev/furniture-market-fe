@@ -3,7 +3,7 @@ import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { selectSellerAuth } from '@/redux/reducers/seller/sellerAuthSlice'
 import { ChatItem } from '@/types/chat.type'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback, memo } from 'react'
 import { useSelector } from 'react-redux'
 import Stomp, { Client, Message } from 'stompjs'
 import SockJS from 'sockjs-client'
@@ -18,6 +18,9 @@ import { LoadingComponent } from '@/components'
 type FormData = {
   message: string
 }
+
+const MemoizedSidebar = memo(Sidebar)
+const MemoizedChatContent = memo(ChatContent)
 
 const ChatCenter = () => {
   const axiosPrivate = useAxiosPrivate()
@@ -76,8 +79,6 @@ const ChatCenter = () => {
   const listMessagesOfReceiverMutation = useMutation({
     mutationFn: async (receiverId: string) => {
       const resp = await axiosPrivate.post(`/common/message/list-message?opponentId=${receiverId}`)
-      console.log('resp', resp.data.data)
-
       return resp.data.data
     },
     onSuccess: (messages) => {
@@ -85,98 +86,77 @@ const ChatCenter = () => {
     },
   })
 
-  const handleChooseReceiver = (user: UserType) => {
+  const handleChooseReceiver = useCallback((user: UserType) => {
     setReceiverId(user.id)
     setReceiverName(user.fullName)
-  }
+  }, [])
 
-  const updateMessages = (message: ChatItem) => {
-    const isMessageExist = messages.some((msg: ChatItem) => msg.randomHash === message.randomHash)
-    if (!isMessageExist) {
-      setMessages((prevMessages) => [...prevMessages, message])
-    }
-  }
-
-  const handleSendMessage = (message: string) => {
-    // if (imgView) {
-    //   handleUploadFile(imgView)
-    // }
-
-    if (client && receiverId) {
-      const newMessage: ChatItem = {
-        senderId: user.authData.user.id,
-        receiverId: receiverId,
-        message: message,
-        createdAt: new Date().toISOString(),
-        type: 'MESSAGE',
-        randomHash: Math.random().toString(),
+  const updateMessages = useCallback(
+    (message: ChatItem) => {
+      const isMessageExist = messages.some((msg: ChatItem) => msg.randomHash === message.randomHash)
+      if (!isMessageExist) {
+        setMessages((prevMessages) => [...prevMessages, message])
       }
-      client.send(`/ws/secured/messenger`, {}, JSON.stringify(newMessage))
-      listMessagesOfReceiverMutation.mutate(receiverId)
+    },
+    [messages],
+  )
 
-      reset()
-    }
-  }
+  const handleSendMessage = useCallback(
+    (message: string) => {
+      if (client && receiverId) {
+        const newMessage: ChatItem = {
+          senderId: user.authData.user.id,
+          receiverId: receiverId,
+          message: message,
+          createdAt: new Date().toISOString(),
+          type: 'MESSAGE',
+          randomHash: Math.random().toString(),
+        }
+        client.send(`/ws/secured/messenger`, {}, JSON.stringify(newMessage))
+        listMessagesOfReceiverMutation.mutate(receiverId)
+        reset()
+      }
+    },
+    [client, receiverId, user.authData.user.id, listMessagesOfReceiverMutation],
+  )
+
   const { register, handleSubmit, reset } = useForm<FormData>()
 
   const onSubmit = handleSubmit((data) => {
     handleSendMessage(data.message)
   })
+
   if (isLoadingUserSentMessages) return <LoadingComponent />
 
   return (
     <section className="mx-4 my-2 text-sm lg:pr-20">
       <div className="card shadow-lg bg-white">
-        <div className="md:card-body bg-white lg:max-h-[1000px] md:max-h-[400px] lg:fixed md:bottom-0 ">
-          <div>
-            <div className="grid grid-cols-10">
-              <Sidebar receiverId={receiverId} handleChooseReceiver={handleChooseReceiver} />
-              <div
-                className="lg:col-span-8 col-span-7 overflow-y-auto lg:max-h-[450px] md:max-h-[300px] max-h-[400px]"
-                style={{ scrollbarWidth: 'thin', scrollbarColor: '#CBD5E0 #E5E7EB' }}
-              >
-                <div>
-                  <p>Người nhận: {receiverName}</p>
-                  <ChatContent messages={messages} />
-                </div>
+        <div className="card-body bg-white h-[calc(100vh-50px)] flex flex-col">
+          <div className="flex-1 flex overflow-hidden">
+            <MemoizedSidebar receiverId={receiverId} handleChooseReceiver={handleChooseReceiver} />
+            <div
+              className="flex-1 overflow-y-auto"
+              style={{ scrollbarWidth: 'thin', scrollbarColor: '#CBD5E0 #E5E7EB' }}
+            >
+              <div className="p-4">
+                <p>Người nhận: {receiverName}</p>
+                <MemoizedChatContent messages={messages} />
               </div>
             </div>
-            <div className="">
-              <form onSubmit={onSubmit}>
-                <div className="w-full flex items-center">
-                  <input
-                    type="text"
-                    {...register('message', { required: true })}
-                    placeholder="Nhập nội dung tin nhắn"
-                    className="input input-bordered input-neutral w-full"
-                  />
-                  {/* <label className="form-control">
-                          <input
-                            type="file"
-                            id="fileInput"
-                            onChange={(e) => {
-                              if (e.target.files && e.target.files.length > 0) {
-                                setImgView(e.target.files[0])
-                              }
-                            }}
-                            className="hidden"
-                          />
-                          {imgView && (
-                            <div className="fixed bottom-0 right-40 mb-5">
-                              <img src={URL.createObjectURL(imgView)} className="w-8 h-8 object-cover" alt="" />
-                            </div>
-                          )}
-                          <label htmlFor="fileInput" className="cursor-pointer">
-                            <CiCamera className="w-6 h-6 mx-2" />
-                          </label>
-                        </label> */}
-                  <button type="submit" className="btn btn-primary text-white">
-                    <IoIosSend />
-                    Gửi
-                  </button>
-                </div>
-              </form>
-            </div>
+          </div>
+          <div className="mt-4">
+            <form onSubmit={onSubmit} className="flex items-center space-x-2">
+              <input
+                type="text"
+                {...register('message', { required: true })}
+                placeholder="Nhập nội dung tin nhắn"
+                className="input input-bordered input-neutral flex-1"
+              />
+              <button type="submit" className="btn btn-primary text-white flex items-center">
+                <IoIosSend />
+                <span className="ml-1">Gửi</span>
+              </button>
+            </form>
           </div>
         </div>
       </div>

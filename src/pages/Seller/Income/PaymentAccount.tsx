@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -5,9 +6,10 @@ import { useEffect, useState } from 'react'
 import { FaCompressArrowsAlt, FaExpandArrowsAlt } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import vnpay from '@/assets/images/vnpay.png'
-import { formatDate, formatPrice } from '@/utils/helpers'
+import { formatPrice } from '@/utils/helpers'
 import { TransactionType } from '@/types/transaction.type'
 import DataTable, { TableColumn } from 'react-data-table-component'
+import { LoadingComponent } from '@/components'
 
 const PaymentAccount = () => {
   const axiosPrivate = useAxiosPrivate()
@@ -53,11 +55,9 @@ const PaymentAccount = () => {
         setAmount(0)
         setBankCode('')
         window.open(resp.data.data, '_blank')
-      } else {
-        toast.error('Lỗi')
       }
-    } catch (error) {
-      toast.error('Lỗi')
+    } catch (error: any) {
+      toast.error(error.response.data.messages[0])
     }
   }
 
@@ -69,8 +69,8 @@ const PaymentAccount = () => {
         setAmount(0)
         toast.success(resp.data.messages[0])
       }
-    } catch (error) {
-      toast.error('Lỗi')
+    } catch (error: any) {
+      toast.error(error.response.data.messages[0])
     }
   }
 
@@ -81,12 +81,25 @@ const PaymentAccount = () => {
       cell: (row) => row.ownerName,
     },
     { name: 'Hình thức', selector: (row) => row.type },
-    { name: 'Giá trị', selector: (row) => formatPrice(row.value) },
-    { name: 'Thời gian', selector: (row) => formatDate(row.createdAt) },
+    {
+      name: 'Giá trị',
+      cell: (row) => (
+        <span
+          style={{
+            color: row.type === 'WITHDRAW' ? 'red' : 'green',
+          }}
+        >
+          {row.type === 'WITHDRAW' ? `-${formatPrice(row.value)}` : formatPrice(row.value)}
+        </span>
+      ),
+    },
+    { name: 'Thời gian', selector: (row) => row.createdAt },
   ]
-  if (loadingWallet || loadingHistory) {
-    return <div>Loading...</div>
+
+  if (loadingWallet) {
+    return <LoadingComponent />
   }
+
   return (
     <section className="mx-4 my-2 text-sm">
       <div className="card shadow-lg my-2 bg-white p-10">
@@ -222,7 +235,14 @@ const PaymentAccount = () => {
 
         {activeTab === 'HISTORY' && (
           <>
-            <DataTable title="Lịch sử giao dịch" data={history} columns={columns} />
+            <DataTable
+              title="Lịch sử giao dịch"
+              data={history}
+              columns={columns}
+              pagination
+              progressPending={loadingHistory}
+              progressComponent={<LoadingComponent />}
+            />
           </>
         )}
       </div>

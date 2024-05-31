@@ -38,7 +38,6 @@ const ProductsManagement = () => {
       }
     },
   })
-  console.log(products)
 
   const deleteCategoryMutation = useMutation({
     mutationFn: async (id: string) => {

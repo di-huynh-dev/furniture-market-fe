@@ -35,6 +35,8 @@ const BannedProduct = () => {
     },
   })
 
+  console.log('bannedProducts', bannedProducts)
+
   const handleExplainReport = async () => {
     try {
       if (!description || images.length === 0) {
@@ -98,13 +100,13 @@ const BannedProduct = () => {
       cell: (row) => {
         switch (row.status) {
           case 'PENDING':
-            return 'Chờ xử lý'
+            return <div className="badge">Chờ xử lý</div>
           case 'PROCESSING':
-            return 'Đang xử lý'
+            return <div className="badge badge-primary">Đang xử lý</div>
           case 'ACCEPTED':
-            return 'Đã chấp nhận'
+            return <div className="badge badge-error">Vi phạm</div>
           default:
-            return 'Vi phạm'
+            return <div className="badge badge-success badge-outline">Không vi phạm</div>
         }
       },
     },
@@ -130,16 +132,6 @@ const BannedProduct = () => {
       ),
     },
   ]
-
-  const ExpandedComponent = ({ data }: { data: ReportedType }) => {
-    return (
-      <div className=" my-10">
-        <p>Kết quả giải trình:</p>
-        <p className="font-bold">{data.explanations?.map((explanation) => explanation.description)}</p>
-        <p className="font-bold">{data.explanations?.length === 0 && 'Chưa có kết quả'}</p>
-      </div>
-    )
-  }
 
   return (
     <section className="mx-4 my-2 text-sm">
@@ -201,8 +193,6 @@ const BannedProduct = () => {
             progressPending={isLoadingBannedProducts}
             progressComponent={<LoadingComponent />}
             pagination
-            expandableRowsComponent={ExpandedComponent}
-            expandableRows
           />
         </div>
       </div>

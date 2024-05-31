@@ -135,6 +135,15 @@ const OrdersManagement = () => {
 
             <div
               role="tab"
+              onClick={() => handleTabClick('REFUNDED')}
+              className={`tab ${
+                activeTab === 'REFUNDED' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
+              }`}
+            >
+              Hoàn tiền
+            </div>
+            <div
+              role="tab"
               onClick={() => handleTabClick('FAILED_DELIVERY')}
               className={`tab ${
                 activeTab === 'FAILED_DELIVERY' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''

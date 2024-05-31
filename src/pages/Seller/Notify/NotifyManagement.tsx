@@ -10,7 +10,9 @@ import Notify from '@/pages/Buyer/Profile/components/Notify'
 const NotifyManagement = () => {
   const axiosPrivate = useAxiosPrivate()
   const queryClient = useQueryClient()
-  const [dataNotifications, setDataNotifications] = useState<Notification[]>([])
+  const [accountNotifications, setAccountNotifications] = useState<Notification[]>([])
+  const [reportNotifications, setReportNotifications] = useState<Notification[]>([])
+  const [currentTab, setCurrentTab] = useState<'ACCOUNT' | 'REPORT'>('ACCOUNT')
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [pageSize, setPageSize] = useState<number>(5)
   const [totalPages, setTotalPages] = useState<number>(0)
@@ -20,19 +22,24 @@ const NotifyManagement = () => {
     window.scrollTo(0, 0)
   }, [])
 
+  const fetchNotifications = async (type: 'ACCOUNT' | 'REPORT') => {
+    const response = await axiosPrivate.get(
+      `/user/announce?type=${type}&currentPage=${currentPage}&pageSize=${pageSize}`,
+    )
+    return response.data.data
+  }
+
   const getNotificationMutation = useMutation({
     mutationFn: async () => {
-      const response = await axiosPrivate.get(
-        `/user/announce?type=ACCOUNT&currentPage=${currentPage}&pageSize=${pageSize}`,
-      )
-      return response
+      const [accountData, reportData] = await Promise.all([fetchNotifications('ACCOUNT'), fetchNotifications('REPORT')])
+      return { accountData, reportData }
     },
-    onSuccess: (response) => {
-      const data = response.data.data || {}
-      setPageSize(data.pageSize)
-      setCurrentPage(data.currentPage)
-      setTotalPages(data.totalPages)
-      setDataNotifications(data.content || [])
+    onSuccess: ({ accountData, reportData }) => {
+      setPageSize(accountData.pageSize) // Assuming pageSize is the same for both types
+      setCurrentPage(accountData.currentPage)
+      setTotalPages(accountData.totalPages) // Assuming totalPages is the same for both types
+      setAccountNotifications(accountData.content || [])
+      setReportNotifications(reportData.content || [])
     },
     onError: (error: any) => {
       toast.error(error.response.data.messages[0])
@@ -54,11 +61,13 @@ const NotifyManagement = () => {
     }
   }
 
+  const currentNotifications = currentTab === 'ACCOUNT' ? accountNotifications : reportNotifications
+
   return (
     <section className="mx-4 my-2 text-sm">
       <div className="card shadow-lg bg-white">
         <div className="card-body">
-          <div className="border-b-2 pb-5 lg:text-lg text-sm">
+          <div className=" lg:text-lg text-sm">
             <div className="md:flex items-center justify-between">
               <div>
                 <div className="font-bold capitalize">Thông báo tài khoản của tôi</div>
@@ -86,9 +95,28 @@ const NotifyManagement = () => {
               </div>
             </div>
           </div>
-          {/* {!data.content && <p className="text-xl">Không có thông báo nào</p>} */}
-          {dataNotifications &&
-            dataNotifications.map((item: Notification) => (
+          <div role="tablist" className="tabs tabs-lifted ">
+            <button
+              className={`tab ${
+                currentTab === 'ACCOUNT' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
+              }`}
+              onClick={() => setCurrentTab('ACCOUNT')}
+            >
+              Tài khoản
+            </button>
+            <button
+              className={`tab ${
+                currentTab === 'REPORT' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
+              }`}
+              onClick={() => setCurrentTab('REPORT')}
+            >
+              Báo cáo
+            </button>
+          </div>
+          {currentNotifications.length === 0 ? (
+            <p className="text-center">Không có thông báo nào</p>
+          ) : (
+            currentNotifications.map((item: Notification) => (
               <div key={item.id}>
                 <Notify
                   title={'Hệ thống'}
@@ -97,7 +125,8 @@ const NotifyManagement = () => {
                   navigation={item.content[0]}
                 />
               </div>
-            ))}
+            ))
+          )}
         </div>
       </div>
     </section>

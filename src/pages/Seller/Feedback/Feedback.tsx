@@ -112,42 +112,46 @@ const Feedback = () => {
       </dialog>
       <div className="card shadow-lg my-2 bg-white">
         <div className="card-body">
-          <div className="pb-5 lg:text-lg text-sm">
-            <div className="grid md:grid-cols-2">
-              <div>
-                <div className="font-bold capitalize">Quản lý Đánh giá của người dùng</div>
-                <div className="text-gray-500 text-sm">Thông tin về số dư của bạn, nạp rút tiền trên tài khoản</div>
-              </div>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <p>Trạng thái:</p>
-            <button
-              className={`btn btn-sm ${status === 'FALSE' ? 'btn-primary text-white' : 'btn-outline'}`}
-              onClick={() => {
-                setStatus('FALSE')
-                client.invalidateQueries({
-                  queryKey: [Seller_QueryKeys.FEEDBACK_LIST, 'FALSE'],
-                })
-              }}
-            >
-              Chưa phản hồi
-            </button>
-            <button
-              className={`btn btn-sm ${status === 'TRUE' ? 'btn-primary text-white' : 'btn-outline'}`}
-              onClick={() => {
-                setStatus('TRUE')
-                client.invalidateQueries({
-                  queryKey: [Seller_QueryKeys.FEEDBACK_LIST, 'TRUE'],
-                })
-              }}
-            >
-              Đã phản hồi
-            </button>
-          </div>
-
           <div className="m-4">
             <DataTable
+              title={
+                <>
+                  <div className="pb-5 lg:text-lg text-sm">
+                    <div className="grid md:grid-cols-2">
+                      <div>
+                        <div className="font-bold capitalize">Quản lý Đánh giá của người dùng</div>
+                        <div className="text-gray-500 text-sm">
+                          Thông tin về đánh giá của người dùng về sản phẩm của shop sau khi mua
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 justify-end">
+                    <button
+                      className={`btn btn-sm ${status === 'FALSE' ? 'btn-primary text-white' : 'btn-outline'}`}
+                      onClick={() => {
+                        setStatus('FALSE')
+                        client.invalidateQueries({
+                          queryKey: [Seller_QueryKeys.FEEDBACK_LIST, 'FALSE'],
+                        })
+                      }}
+                    >
+                      Chưa phản hồi
+                    </button>
+                    <button
+                      className={`btn btn-sm ${status === 'TRUE' ? 'btn-primary text-white' : 'btn-outline'}`}
+                      onClick={() => {
+                        setStatus('TRUE')
+                        client.invalidateQueries({
+                          queryKey: [Seller_QueryKeys.FEEDBACK_LIST, 'TRUE'],
+                        })
+                      }}
+                    >
+                      Đã phản hồi
+                    </button>
+                  </div>
+                </>
+              }
               columns={columns}
               data={feedbacks}
               pagination
