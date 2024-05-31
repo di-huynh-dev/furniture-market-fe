@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useLocation, useNavigate } from 'react-router-dom'
 import { FaCheckCircle, FaWindowClose, FaHome, FaWallet } from 'react-icons/fa'
 import { formatPrice } from '@/utils/helpers'
@@ -46,8 +47,8 @@ const VnPayReturn = () => {
           toast.success(resp.data.messages[0])
         }
       }
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      toast.error(error.response.data.messages[0])
     }
   }
 

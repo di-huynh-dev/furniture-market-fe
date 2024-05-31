@@ -17,9 +17,7 @@ const useWebSocket = (): Client | null => {
 
     return () => {
       if (stompClient) {
-        stompClient.disconnect(() => {
-          console.log('Disconnected from WebSocket')
-        })
+        stompClient.disconnect(() => {})
       }
     }
   }, [])

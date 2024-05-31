@@ -90,8 +90,8 @@ const DiscountManagement = () => {
       })
       toast.success(resp.data.messages[0])
     },
-    onError: (error) => {
-      console.log(error)
+    onError: (error: any) => {
+      toast.error(error.response.data.messages[0])
     },
   })
 

@@ -35,8 +35,6 @@ const BannedProduct = () => {
     },
   })
 
-  console.log('bannedProducts', bannedProducts)
-
   const handleExplainReport = async () => {
     try {
       if (!description || images.length === 0) {

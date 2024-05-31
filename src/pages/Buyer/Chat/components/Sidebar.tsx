@@ -24,7 +24,6 @@ const Sidebar: React.FC<SidebarProps> = ({ receiverId, handleChooseReceiver }) =
     },
     enabled: !!user.authData.user.id,
   })
-  console.log(userSentMessages)
 
   if (isLoadingUserSentMessages) return <div>Loading...</div>
 

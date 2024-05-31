@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import contact from '@/assets/images/contact.png'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -37,8 +38,8 @@ const FormCollect = () => {
       })
       reset()
       toast.success('Gửi góp ý thành công!')
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      toast.error(error.message)
     }
   }
 

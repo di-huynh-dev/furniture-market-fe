@@ -1,6 +1,5 @@
 import { SOCKET_USER_TOPIC_PREFIX_URL } from '@/libs/socker-client'
 import { useState } from 'react'
-import { messages } from 'react-stomp-hooks/dist/mock/client'
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
 
@@ -12,18 +11,14 @@ const ChatGPT = () => {
   const sock = new SockJS(`http://localhost:8080/ws/secured`)
   const stompClient = Stomp.over(sock)
 
-  sock.onopen = function () {
-    console.log('open')
-  }
+  sock.onopen = function () {}
 
   // Khi kết nối được thiết lập, gửi và nhận tin nhắn
-  stompClient.connect({}, function (frame) {
-    console.log('Connected: ' + frame)
+  stompClient.connect({}, function () {
     // Subscribe vào kênh tin nhắn của người dùng
     stompClient.subscribe(
       `${SOCKET_USER_TOPIC_PREFIX_URL}/${'c54aa696-8e96-4003-89c7-25dd389ec57c'}`,
       function (message) {
-        console.log(message)
         setLastMessage(message.body)
       },
     )
@@ -40,7 +35,6 @@ const ChatGPT = () => {
       type: 'MESSAGE',
       randomHash: Math.random().toString(),
     }
-    console.log('Sending message:', newMessage)
     // Gửi tin nhắn qua kết nối Stomp
     stompClient.send(
       `/ws/secured/messenger`, // Đường dẫn đích

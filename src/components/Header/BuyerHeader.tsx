@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import commonApi from '@/api/commonApi'
 import Logo from '@/assets/Logo/Logo1.png'
 import axiosClient from '@/libs/axios-client'
@@ -30,8 +31,8 @@ const BuyerHeader = () => {
     onSuccess: (resp) => {
       setProductList(resp.data.data.content)
     },
-    onError: (error) => {
-      console.log(error)
+    onError: (error: any) => {
+      toast.error(error.response.data.message)
     },
   })
 
@@ -99,7 +100,7 @@ const BuyerHeader = () => {
                           <img src={product.images[0]} alt={product.name} className="w-20" />
                           <div className="col-span-5">
                             <Link to={`/product/${product.id}`} className="w-full">
-                              <p className="text-sm md:text-base">{product.name}</p>
+                              <p className="text-sm">{product.name}</p>
                             </Link>
                           </div>
                         </div>

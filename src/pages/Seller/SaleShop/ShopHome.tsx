@@ -106,8 +106,8 @@ const ShopHome = () => {
     onSuccess: (data: ProductDetailType[]) => {
       setProductList(data)
     },
-    onError: (error: string) => {
-      console.log(error)
+    onError: (error: any) => {
+      toast.error(error.response.data.message[0])
     },
   })
 

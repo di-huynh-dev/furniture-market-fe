@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // import { FormInput } from '@/components'
 import { Buyer_QueryKeys } from '@/constants/query-keys'
 import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
@@ -62,8 +63,8 @@ const BuyerProfile = () => {
       })
       toast.success(resp.data.messages[0])
     },
-    onError: (error) => {
-      console.log(error)
+    onError: (error: any) => {
+      toast.error(error.response.data.messages[0])
     },
   })
 
@@ -75,8 +76,8 @@ const BuyerProfile = () => {
     onSuccess: (resp) => {
       toast.success(resp.data.messages[0])
     },
-    onError: (error) => {
-      console.log(error)
+    onError: (error: any) => {
+      toast.error(error.response.data.messages[0])
     },
   })
 

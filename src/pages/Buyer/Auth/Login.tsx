@@ -66,7 +66,6 @@ const Login = () => {
               Authorization: `Bearer ${token}`,
             },
           })
-          console.log('resp', resp.data.data)
 
           dispatch(updateProfile(resp.data.data))
           setIsLoading(false)

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useSelector } from 'react-redux'
 import image from '@/assets/images/no-item.jpg'
 import { selectAuth } from '@/redux/reducers/authSlice'
@@ -31,8 +32,8 @@ const WishlistItemList = () => {
         queryKey: [Buyer_QueryKeys.USER_WISHLIST],
       })
     },
-    onError: (error) => {
-      console.log(error)
+    onError: (error: any) => {
+      toast.error(error.response.data.messages[0])
     },
   })
 

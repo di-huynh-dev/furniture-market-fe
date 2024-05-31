@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormInput, LoadingComponent } from '@/components'
 import { useForm } from 'react-hook-form'
 // import { yupResolver } from '@hookform/resolvers/yup'
@@ -85,8 +86,8 @@ const UpdateProduct = () => {
         setIsLoading(false)
         toast.error(resp.data.messages[0])
       }
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      toast.error(error.response.data.message[0])
     }
   }
 

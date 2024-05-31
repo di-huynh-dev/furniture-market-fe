@@ -62,9 +62,7 @@ const ChatCenter = () => {
 
       return () => {
         if (client) {
-          client.disconnect(() => {
-            console.log('Disconnected from chat center')
-          })
+          client.disconnect(() => {})
         }
       }
     }

@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react'
 import Stomp, { Client, Message } from 'stompjs'
 import { ChatItem } from '@/types/chat.type'
 import { useForm } from 'react-hook-form'
-import { CiCamera } from 'react-icons/ci'
 import Sidebar from './components/Sidebar'
 import ChatContent from './components/ChatContent'
 import { UserType } from '@/types/user.type'
@@ -33,7 +32,6 @@ const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat, receiver 
   const [receiverId, setReceiverId] = useState<string | null>(receiver?.id || '')
   const [receiverName, setReceiverName] = useState<string | null>(receiver?.name || '')
   const [messages, setMessages] = useState<ChatItem[]>([])
-  console.log(messages)
 
   // const [imgView, setImgView] = useState<File | null>(null)
   // const [image, setImage] = useState('')

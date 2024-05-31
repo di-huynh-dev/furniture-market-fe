@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useParams } from 'react-router-dom'
 import { FaStar } from 'react-icons/fa'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -42,8 +43,8 @@ const BuyerSearch = () => {
       setTotalPages(searchData.totalPages)
       setProductList(resp.data.data.content)
     },
-    onError: (error) => {
-      console.log(error)
+    onError: (error: any) => {
+      toast.error(error.response.data.message)
     },
   })
 
