@@ -135,7 +135,7 @@ const SellerHeader = () => {
 
       if (resp.status === 200) {
         toast.success(resp.data.messages[0])
-        const dialog = document.getElementById('my_modal_3') as HTMLDialogElement
+        const dialog = document.getElementById('explaintion_modal') as HTMLDialogElement
         dialog.close()
       }
     } catch (error: any) {
@@ -145,7 +145,7 @@ const SellerHeader = () => {
 
   return (
     <header className="shadow-md bg-base-100 text-base-content sticky top-0 z-30 flex h-24 w-full justify-center bg-opacity-90 backdrop-blur transition-shadow duration-100 [transform:translate3d(0,0,0)]">
-      <dialog id="my_modal_3" className="modal modal-bottom sm:modal-middle">
+      <dialog id="explaintion_modal" className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Giải trình sai phạm</h3>
           <p>Hình ảnh minh chứng</p>
@@ -183,7 +183,7 @@ const SellerHeader = () => {
               </button>
               <button
                 onClick={() => {
-                  const dialog = document.getElementById('my_modal_3') as HTMLDialogElement
+                  const dialog = document.getElementById('explaintion_modal') as HTMLDialogElement
                   dialog.close()
                 }}
                 className="btn"
@@ -273,7 +273,7 @@ const SellerHeader = () => {
                                   'Bạn nhận được yêu cầu giải trình do cửa hàng bạn bị báo cáo!'
                                 ) {
                                   setSelectedReport(notification.content[0])
-                                  const dialog = document.getElementById('my_modal_3') as HTMLDialogElement
+                                  const dialog = document.getElementById('explaintion_modal') as HTMLDialogElement
                                   dialog.showModal()
                                 }
                               }}

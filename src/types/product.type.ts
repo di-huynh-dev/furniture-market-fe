@@ -66,8 +66,8 @@ export type ProductDetailType = {
   inStock: number
   featured: boolean
   used: boolean
-  categoryId: number
-  collectionId: number
+  hidden: boolean
+  categoryName: string
   thumbnail: string
   reviewAmount: number
   totalReviewPoint: number

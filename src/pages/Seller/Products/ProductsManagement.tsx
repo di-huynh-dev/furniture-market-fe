@@ -7,14 +7,16 @@ import { useEffect, useState } from 'react'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import toast from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
-import { BsToggleOn, BsToggleOff } from 'react-icons/bs'
 import { formatPrice } from '@/utils/helpers'
-import { CiEdit, CiTrash, CiLock } from 'react-icons/ci'
+import { CiEdit, CiTrash } from 'react-icons/ci'
 import { LoadingComponent } from '@/components'
+import { FaBan, FaCheck } from 'react-icons/fa6'
 
 const ProductsManagement = () => {
   const axiosPrivate = useAxiosPrivate()
   const [selectedRow, setSelectedRow] = useState('')
+  const [activeTab, setActiveTab] = useState('ALL')
+  const [searchQuery, setSearchQuery] = useState('')
   const client = useQueryClient()
   const navigate = useNavigate()
 
@@ -36,6 +38,7 @@ const ProductsManagement = () => {
       }
     },
   })
+  console.log(products)
 
   const deleteCategoryMutation = useMutation({
     mutationFn: async (id: string) => {
@@ -53,6 +56,14 @@ const ProductsManagement = () => {
     },
   })
 
+  const handleTabClick = (category: string) => {
+    setActiveTab(category)
+  }
+
+  const filteredProducts = products?.data.data
+    .filter((product: ProductDetailType) => activeTab === 'ALL' || product.storeCategories.includes(activeTab))
+    .filter((product: ProductDetailType) => product.name.toLowerCase().includes(searchQuery.toLowerCase()))
+
   const columns: TableColumn<ProductDetailType>[] = [
     {
       name: 'Mã sản phẩm ',
@@ -67,7 +78,6 @@ const ProductsManagement = () => {
         </div>
       ),
     },
-
     {
       name: 'Tên sản phẩm',
       selector: (row) => row.name,
@@ -76,7 +86,7 @@ const ProductsManagement = () => {
     },
     {
       name: 'Danh mục',
-      selector: (row) => row.storeCategories[0],
+      selector: (row) => row.storeCategories.join(', '),
       sortable: true,
     },
     {
@@ -89,8 +99,10 @@ const ProductsManagement = () => {
       sortable: true,
     },
     {
-      name: 'Trạng thái hiển thị',
-      cell: (row) => <>{row.onDisplay ? <BsToggleOn className="text-green-500 w-12 h-12" /> : <BsToggleOff />}</>,
+      name: 'Trạng thái',
+      cell: (row) => (
+        <>{!row.hidden ? <FaCheck className="text-green-500 w-5 h-5" /> : <FaBan className="text-red-500 w-5 h-5" />}</>
+      ),
     },
     {
       name: 'Thao tác',
@@ -130,6 +142,18 @@ const ProductsManagement = () => {
             <div>
               <p className="font-bold">Chất liệu</p>
               <p>{data.material}</p>
+            </div>
+            <div>
+              <p className="font-bold">Danh mục sàn</p>
+              <p>{data.categoryName}</p>
+            </div>
+            <div>
+              <p className="font-bold">Giá nhập kho</p>
+              <p>{formatPrice(data.price)}</p>
+            </div>
+            <div>
+              <p className="font-bold">Giá bán</p>
+              <p>{formatPrice(data.salePrice)}</p>
             </div>
             <div>
               <p className="font-bold">Đã bán</p>
@@ -181,13 +205,12 @@ const ProductsManagement = () => {
           >
             <CiTrash className="w-6 h-6" /> Xóa
           </button>
-          <button className="btn btn-primary text-white">
-            <CiLock className="w-6 h-6" /> Ngừng kinh doanh
-          </button>
         </div>
       </div>
     )
   }
+
+  if (isLoading) return <LoadingComponent />
 
   return (
     <section className="mx-4 my-2 text-sm">
@@ -212,51 +235,69 @@ const ProductsManagement = () => {
       </dialog>
       <div className="card shadow-lg my-2 bg-white">
         <div className="lg:card-body">
-          <div>
-            <DataTable
-              columns={columns}
-              title={
-                <div className="lg:flex justify-between items-center gap-2">
-                  <p className="lg:text-xl text-lg">DANH SÁCH TẤT CẢ SẢN PHẨM CỦA SHOP</p>
-                  <div className="flex gap-2 my-2 lg:my-0">
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <label className="input input-bordered lg:input input-sm flex items-center gap-2">
-                          <input type="text" className="grow" placeholder="Tìm kiếm theo tên" />
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 16 16"
-                            fill="currentColor"
-                            className="w-4 h-4 opacity-70"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </label>
-                      </div>
+          <div role="tablist" className="tabs tabs-lifted">
+            <div
+              role="tab"
+              onClick={() => handleTabClick('ALL')}
+              className={`tab ${
+                activeTab === 'ALL' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
+              }`}
+            >
+              Tất cả
+            </div>
+            {products?.data.data
+              .reduce((categories: string[], product: ProductDetailType) => {
+                product.storeCategories.forEach((category) => {
+                  if (!categories.includes(category)) categories.push(category)
+                })
+                return categories
+              }, [])
+              .map((category: string) => (
+                <div
+                  key={category}
+                  role="tab"
+                  onClick={() => handleTabClick(category)}
+                  className={`tab ${
+                    activeTab === category ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
+                  }`}
+                >
+                  {category}
+                </div>
+              ))}
+          </div>
+          <DataTable
+            title={
+              <div className="lg:flex justify-between items-center gap-2">
+                <p className="lg:text-xl text-lg">DANH SÁCH TẤT CẢ SẢN PHẨM CỦA SHOP</p>
+                <div className="flex gap-2 my-2 lg:my-0">
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="flex gap-2 items-center">
+                      <input
+                        type="text"
+                        placeholder="Tìm kiếm sản phẩm..."
+                        className="input input-bordered"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                      <button
+                        onClick={() => navigate('/seller/products/new')}
+                        className="btn btn-sm btn-outline btn-primary"
+                      >
+                        + Thêm sản phẩm mới
+                      </button>
                     </div>
                   </div>
-                  <button
-                    onClick={() => navigate('/seller/products/new')}
-                    className="btn btn-sm btn-outline btn-primary"
-                  >
-                    + Thêm sản phẩm mới
-                  </button>
                 </div>
-              }
-              data={products?.data.data}
-              pagination
-              progressPending={isLoading}
-              progressComponent={<LoadingComponent />}
-              expandableRowsComponent={ExpandedComponent}
-              expandableRows
-              pointerOnHover
-              highlightOnHover
-            />
-          </div>
+              </div>
+            }
+            columns={columns}
+            data={filteredProducts}
+            expandableRows
+            expandableRowsComponent={ExpandedComponent}
+            highlightOnHover
+            pointerOnHover
+            pagination
+          />
         </div>
       </div>
     </section>
