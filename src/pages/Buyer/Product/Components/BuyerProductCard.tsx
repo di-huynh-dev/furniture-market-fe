@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ProductDetailType } from '@/types/product.type'
 import { formatPrice } from '@/utils/helpers'
 import { AiOutlineHeart } from 'react-icons/ai'
@@ -63,8 +64,8 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
     onSuccess: (resp) => {
       toast.success(resp.data.messages[0])
     },
-    onError: (error) => {
-      console.log(error)
+    onError: (error: any) => {
+      toast.error(error.response.data.messages[0])
     },
   })
   const handleAddToWishlist = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

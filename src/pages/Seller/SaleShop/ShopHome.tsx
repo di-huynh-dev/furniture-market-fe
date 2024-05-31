@@ -38,13 +38,14 @@ const ShopHome = () => {
   const [categoryName, setCategoryName] = useState('')
   const [productList, setProductList] = useState<ProductDetailType[]>([])
   const [activeTab, setActiveTab] = useState('')
-  const [sortByPrice, setSortByPrice] = useState('ASC')
+  const [sort, setSort] = useState('')
   const [evaluate, setEvaluate] = useState(0)
   const [reportReason, setReportReason] = useState('')
   const [reportDescription, setReportDescription] = useState('')
 
   useEffect(() => {
     scrollTo(0, 0)
+    document.title = 'Fnest - Cửa hàng'
   }, [])
 
   const { data: shop_profile, isLoading: shop_profile_loading } = useQuery({
@@ -98,7 +99,7 @@ const ShopHome = () => {
   const getProductsByCategoryMutation = useMutation({
     mutationFn: async ({ categoryName }: { categoryName: string }) => {
       const resp = await axiosClient.get(
-        `/product/search-filter?storeCategories.contains=${categoryName}&store.equals=id,${id}&sort=price.${sortByPrice}&totalReviewPoint.min=${evaluate}`,
+        `/product/search-filter?sort=${sort}&storeCategories.contains=${categoryName}&store.equals=id,${id}&totalReviewPoint.min=${evaluate}`,
       )
       return resp.data.data.content
     },
@@ -319,19 +320,34 @@ const ShopHome = () => {
       <div className="align-element bg-white shawdow-md my-2">
         <div className="grid grid-cols-5 gap-2 items-center rounded-md p-4">
           <p>Sắp xếp theo</p>
-          <button className="btn btn-outline btn-error btn-sm w-40">Mới nhất</button>
-          <button className="btn btn-outline btn-error btn-sm w-40">Phổ biến nhất</button>
+          <button
+            onClick={() => {
+              setSort('createdAt.ASC')
+              getProductsByCategoryMutation.mutate({ categoryName: categoryName })
+            }}
+            className="btn btn-outline btn-error btn-sm w-40"
+          >
+            Mới nhất
+          </button>
+          <button
+            onClick={() => {
+              setSort('sold.ASC')
+              getProductsByCategoryMutation.mutate({ categoryName: categoryName })
+            }}
+            className="btn btn-outline btn-error btn-sm w-40"
+          >
+            Bán chạy nhất
+          </button>
           <select
             className="select w-full max-w-xs"
-            value={sortByPrice}
             onChange={(e) => {
-              setSortByPrice(e.target.value)
+              setSort(e.target.value)
               getProductsByCategoryMutation.mutate({ categoryName: categoryName })
             }}
           >
             <option>Theo giá</option>
-            <option value="ASC">Theo giá: Thấp đến cao</option>
-            <option value="DESC">Theo giá: Cao đến thấp</option>
+            <option value={'price.DESC'}>Giá thấp</option>
+            <option value={'price.ASC'}>Giá cao</option>
           </select>
           <select
             className="select w-full max-w-xs"
@@ -358,7 +374,7 @@ const ShopHome = () => {
             ))}
           </div>
         ) : (
-          <p className="text-center text-error mt-10">Chưa có sản phẩm nào thuộc danh mục này được bán</p>
+          <p className="text-center  my-10">Danh mục này hiện chưa có sản phẩm được bán</p>
         )}
       </div>
     </>

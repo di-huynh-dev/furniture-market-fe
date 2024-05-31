@@ -54,6 +54,7 @@ const ProductList = ({ selectedCategory }: { selectedCategory: string }) => {
           </div>
         </div>
       </div>
+      {productList.length === 0 && <p className="text-center my-10">Không có sản phẩm nào được tìm thấy</p>}
       <div className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-2 gap-y-8">
         {productList.map((product: ProductDetailType) => (
           <BuyerProductCard key={product.id} {...product} />
