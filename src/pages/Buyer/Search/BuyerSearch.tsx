@@ -19,6 +19,7 @@ const BuyerSearch = () => {
   const [totalPages, setTotalPages] = useState(0)
   const [minPrice, setMinPrice] = useState(0)
   const [maxPrice, setMaxPrice] = useState(50000000)
+  const [location, setLocation] = useState(' ')
   const [selectedCategory, setSelectedCategory] = useState(' ')
   const [totalReviewPointMin, setTotalReviewPointMin] = useState(0)
   const [totalReviewPointMax, setTotalReviewPointMax] = useState(5)
@@ -30,7 +31,7 @@ const BuyerSearch = () => {
   const searchMutation = useMutation({
     mutationFn: async () => {
       const resp = await axiosClient.get(
-        `/product/search-filter?sort=${sort}&category.contains=name,${selectedCategory}&name.contains=${keyword}&price.min=${minPrice}&price.max=${maxPrice}&totalReviewPoint.min=${totalReviewPointMin}&totalReviewPoint.max=${totalReviewPointMax}&currentPage=${currentPage}&pageSize=${pageSize}`,
+        `/product/search-filter?store.contains=address,${location}&sort=${sort}&category.contains=name,${selectedCategory}&name.contains=${keyword}&price.min=${minPrice}&price.max=${maxPrice}&totalReviewPoint.min=${totalReviewPointMin}&totalReviewPoint.max=${totalReviewPointMax}&currentPage=${currentPage}&pageSize=${pageSize}`,
       )
       return resp
     },
@@ -59,6 +60,10 @@ const BuyerSearch = () => {
     searchMutation.mutate()
   }
 
+  const handleLocationChange = (selectedLocation: string) => {
+    setLocation(selectedLocation)
+    searchMutation.mutate()
+  }
   if (systemCategoriesIsLoading) return <LoadingComponent />
   return (
     <div className="align-element my-2">
@@ -175,23 +180,24 @@ const BuyerSearch = () => {
                   <summary className="font-bold">Địa điểm</summary>
                   <ul>
                     <li>
-                      <button>TP HCM</button>
+                      <button onClick={() => handleLocationChange('Thành phố Hồ Chí Minh')}>TP HCM</button>
                     </li>
                     <li>
-                      <button>TP Hà Nội</button>
+                      <button onClick={() => handleLocationChange('Thành phố Hà Nội')}>TP Hà Nội</button>
                     </li>
                     <li>
-                      <button>Đà Nẵng</button>
+                      <button onClick={() => handleLocationChange('Thành phố Đà Nẵng')}>Đà Nẵng</button>
                     </li>
                     <li>
-                      <button>Quy Nhơn</button>
+                      <button onClick={() => handleLocationChange('Thành phố Quy Nhơn')}>Quy Nhơn</button>
                     </li>
                     <li>
-                      <button>Nha Trang</button>
+                      <button onClick={() => handleLocationChange('Thành phố Nha Trang')}>Nha Trang</button>
                     </li>
                   </ul>
                 </details>
               </li>
+
               <li>
                 <summary className="font-bold">Khoảng giá</summary>
                 <ul>
