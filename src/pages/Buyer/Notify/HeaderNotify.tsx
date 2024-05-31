@@ -82,6 +82,8 @@ const HeaderNotify = () => {
       const resp = await axiosPrivate.patch('/user/announce/mark-as-read')
       if (resp.status === 200) {
         queryClient.invalidateQueries({ queryKey: [Buyer_QueryKeys.USER_NOTIFICATION] })
+        queryClient.invalidateQueries({ queryKey: [Buyer_QueryKeys.ORDER_NOTIFICATION] })
+        queryClient.invalidateQueries({ queryKey: [Buyer_QueryKeys.REPORT_NOTIFICATION] })
       }
     } catch (error: any) {
       toast.error(error.response.data.messages[0])

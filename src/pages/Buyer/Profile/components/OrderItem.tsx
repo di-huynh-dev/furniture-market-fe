@@ -235,16 +235,18 @@ const OrderItemComponent = ({ order }: { order: OrderItem }) => {
                 </div>
                 <div className="grid grid-cols-2">
                   <div></div>
-                  <div className="flex items-center justify-end ">
-                    <button
-                      onClick={() => {
-                        navigate(`review-product/${response.productId}`)
-                      }}
-                      className="btn btn-sm btn-primary text-white"
-                    >
-                      Đánh giá
-                    </button>
-                  </div>
+                  {order.status === 'COMPLETED' && (
+                    <div className="flex items-center justify-end ">
+                      <button
+                        onClick={() => {
+                          navigate(`review-product/${response.productId}`)
+                        }}
+                        className="btn btn-sm btn-primary text-white"
+                      >
+                        Đánh giá
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

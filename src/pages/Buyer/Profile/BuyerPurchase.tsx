@@ -4,6 +4,7 @@ import { OrderItem } from '@/types/order.type'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import OrderItemComponent from './components/OrderItem'
+import { LoadingComponent } from '@/components'
 
 const BuyerPurchase = () => {
   const [activeTab, setActiveTab] = useState('')
@@ -40,7 +41,7 @@ const BuyerPurchase = () => {
   }
 
   if (isLoadingOrders) {
-    return <div>Loading...</div>
+    return <LoadingComponent />
   }
 
   return (
