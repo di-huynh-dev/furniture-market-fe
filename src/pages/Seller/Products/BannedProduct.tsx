@@ -104,7 +104,7 @@ const BannedProduct = () => {
           case 'ACCEPTED':
             return 'Đã chấp nhận'
           default:
-            return ''
+            return 'Vi phạm'
         }
       },
     },
@@ -112,7 +112,7 @@ const BannedProduct = () => {
       name: 'Thao tác',
       cell: (row) => (
         <>
-          {row.status === 'PENDING' ? (
+          {row.status === 'PROCESSING' ? (
             <button
               onClick={() => {
                 setSelectedRow(row.id)

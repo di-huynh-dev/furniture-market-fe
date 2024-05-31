@@ -115,7 +115,6 @@ const TopHeader = () => {
                       <li>
                         <Link to={'/buyer/account'} className="justify-between">
                           Hồ sơ của bạn
-                          <span className="badge">New</span>
                         </Link>
                       </li>
                       <li>

@@ -8,6 +8,7 @@ import { FaFilter, FaRegLightbulb } from 'react-icons/fa'
 import { useEffect, useState } from 'react'
 import BuyerProductCard from '../Product/Components/BuyerProductCard'
 import { ProductDetailType } from '@/types/product.type'
+import { LoadingComponent } from '@/components'
 
 const BuyerSearch = () => {
   const { keyword } = useParams()
@@ -18,6 +19,7 @@ const BuyerSearch = () => {
   const [totalPages, setTotalPages] = useState(0)
   const [minPrice, setMinPrice] = useState(0)
   const [maxPrice, setMaxPrice] = useState(50000000)
+  const [selectedCategory, setSelectedCategory] = useState(' ')
   const [totalReviewPointMin, setTotalReviewPointMin] = useState(0)
   const [totalReviewPointMax, setTotalReviewPointMax] = useState(5)
 
@@ -28,7 +30,7 @@ const BuyerSearch = () => {
   const searchMutation = useMutation({
     mutationFn: async () => {
       const resp = await axiosClient.get(
-        `/product/search-filter?sort=${sort}&name.contains=${keyword}&price.min=${minPrice}&price.max=${maxPrice}&totalReviewPoint.min=${totalReviewPointMin}&totalReviewPoint.max=${totalReviewPointMax}&currentPage=${currentPage}&pageSize=${pageSize}`,
+        `/product/search-filter?sort=${sort}&category.contains=name,${selectedCategory}&name.contains=${keyword}&price.min=${minPrice}&price.max=${maxPrice}&totalReviewPoint.min=${totalReviewPointMin}&totalReviewPoint.max=${totalReviewPointMax}&currentPage=${currentPage}&pageSize=${pageSize}`,
       )
       return resp
     },
@@ -52,7 +54,12 @@ const BuyerSearch = () => {
     },
   })
 
-  if (systemCategoriesIsLoading) return <div>Loading...</div>
+  const handleCategoryChange = (categoryName: string) => {
+    setSelectedCategory(categoryName)
+    searchMutation.mutate()
+  }
+
+  if (systemCategoriesIsLoading) return <LoadingComponent />
   return (
     <div className="align-element my-2">
       <div className="md:grid grid-cols-10 gap-2">
@@ -110,7 +117,12 @@ const BuyerSearch = () => {
                     {systemCategories.map((category: CategoryType) => (
                       <li key={category.id}>
                         <label className="cursor-pointer">
-                          <input type="checkbox" />
+                          <input
+                            type="radio"
+                            name="category"
+                            checked={selectedCategory === category.name}
+                            onChange={() => handleCategoryChange(category.name)}
+                          />
                           <span className="label-text">{category.name}</span>
                         </label>
                       </li>

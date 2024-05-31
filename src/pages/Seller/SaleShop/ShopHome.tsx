@@ -129,10 +129,17 @@ const ShopHome = () => {
 
   const handleReportShop = async () => {
     try {
+      if (!user.authData.accessToken) {
+        toast.error('Vui đăng nhập để gửi báo cáo')
+        const dialog = document.getElementById('my_modal_3') as HTMLDialogElement
+        dialog.close()
+        return
+      }
       if (!reportReason || !reportDescription) {
         toast.error('Vui lòng điền đầy đủ thông tin')
         return
       }
+
       const resp = await axiosPrivate.post(`/user/report`, {
         reason: reportReason,
         description: reportDescription,
@@ -147,8 +154,8 @@ const ShopHome = () => {
         dialog.close()
         toast.success(resp.data.messages[0])
       }
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      toast.error(error.response.data.messages[0])
     }
   }
 

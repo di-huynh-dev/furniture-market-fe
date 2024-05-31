@@ -5,7 +5,7 @@ import { CategoryType } from '@/types/category.type'
 import { useQuery } from '@tanstack/react-query'
 import Slider from 'react-slick'
 
-const SystemCategoryList = () => {
+const SystemCategoryList = ({ setSelectedCategory }: { setSelectedCategory: (category: string) => void }) => {
   const settings = {
     infinite: false,
     speed: 500,
@@ -63,7 +63,12 @@ const SystemCategoryList = () => {
             {data?.map((category: CategoryType) => (
               <div key={category.id}>
                 <div className="flex justify-center">
-                  <img src={category.image} alt="Hình ảnh thuộng hãng" className="w-16 h-16 rounded-xl object-cover" />
+                  <img
+                    onClick={() => setSelectedCategory(category.name)}
+                    src={category.image}
+                    alt="Hình ảnh thuộng hãng"
+                    className="w-16 h-16 rounded-xl object-cover"
+                  />
                 </div>
                 <p className="text-center">{category.name}</p>
               </div>

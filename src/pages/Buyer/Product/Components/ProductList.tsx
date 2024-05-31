@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query'
 import BuyerProductCard from './BuyerProductCard'
 import { useEffect, useState } from 'react'
 
-const ProductList = () => {
+const ProductList = ({ selectedCategory }: { selectedCategory: string }) => {
   const [productList, setProductList] = useState<ProductDetailType[]>([])
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [pageSize, setPageSize] = useState<number>(16)
@@ -12,7 +12,9 @@ const ProductList = () => {
 
   const searchMutation = useMutation({
     mutationFn: async () => {
-      const resp = await axiosClient.get(`/product/search-filter?currentPage=${currentPage}&pageSize=${pageSize}`)
+      const resp = await axiosClient.get(
+        `/product/search-filter?category.contains=name,${selectedCategory}&currentPage=${currentPage}&pageSize=${pageSize}`,
+      )
       return resp
     },
     onSuccess: (resp) => {
@@ -29,7 +31,7 @@ const ProductList = () => {
 
   useEffect(() => {
     searchMutation.mutate()
-  }, [currentPage, pageSize])
+  }, [currentPage, pageSize, selectedCategory])
 
   return (
     <div className="my-4 bg-white p-4">

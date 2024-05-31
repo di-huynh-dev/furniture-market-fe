@@ -18,6 +18,7 @@ const HeaderNotify = () => {
   const user = useSelector(selectAuth)
   const axiosPrivate = useAxiosBuyerPrivate()
   const [notificationsAccount, setNotificationsAccount] = useState<Notification[]>([])
+  const [notificationsReport, setNotificationsReport] = useState<Notification[]>([])
   const [notificationsOrder, setNotificationsOrder] = useState<Notification[]>([])
   const queryClient = useQueryClient()
   const navigation = useNavigate()
@@ -65,6 +66,17 @@ const HeaderNotify = () => {
     },
   })
 
+  const { isLoading: isLoadingReports } = useQuery({
+    queryKey: [Buyer_QueryKeys.REPORT_NOTIFICATION],
+    queryFn: async () => {
+      const response = await axiosPrivate.get('/user/announce?type=REPORT')
+      if (response.status === 200) {
+        setNotificationsReport(response.data.data.content)
+      }
+      return response.data.data.content
+    },
+  })
+
   const handleMarkAllAsRead = async () => {
     try {
       const resp = await axiosPrivate.patch('/user/announce/mark-as-read')
@@ -92,20 +104,21 @@ const HeaderNotify = () => {
         <div tabIndex={0} role="button" className=" drawer-button text-gray-600 hover:text-black flex  items-center">
           <FaRegBell className="mr-1" />
           Thông báo
-          {!notificationsAccount && !notificationsOrder ? (
+          {!notificationsAccount && !notificationsOrder && !notificationsReport ? (
             <span className=" badge badge-secondary text-white ml-2 badge-sm">0</span>
           ) : (
             <>
               <div className="badge badge-secondary text-white ml-2 badge-sm">
                 {notificationsAccount.filter(({ seen }) => !seen).length +
-                  notificationsOrder.filter(({ seen }) => !seen).length}
+                  notificationsOrder.filter(({ seen }) => !seen).length +
+                  notificationsReport.filter(({ seen }) => !seen).length}
               </div>
             </>
           )}
         </div>
 
         <ul tabIndex={0} className="dropdown-content z-[100] p-3 shadow bg-base-100 rounded-box w-96">
-          {!notificationsAccount && !notificationsOrder ? (
+          {!notificationsAccount && !notificationsOrder && !notificationsReport ? (
             <p className="p-4 text-center">Bạn không có thông báo nào</p>
           ) : (
             <>
@@ -118,11 +131,26 @@ const HeaderNotify = () => {
 
               <div className="menu scrollbar-thin h-96">
                 <div className="overflow-y-auto">
-                  {isLoadingNotifications || isLoadingOrders ? (
+                  {isLoadingNotifications || isLoadingOrders || isLoadingReports ? (
                     <p>Đang tải dữ liệu...</p>
                   ) : (
                     <>
                       {notificationsAccount.slice(0, 5).map((notification: Notification, index: number) => (
+                        <div
+                          key={index}
+                          className={`mb-2 px-3 rounded-lg text-xs border-b grid grid-cols-10 items-center gap-2 ${
+                            notification.seen ? '' : 'bg-gray-100'
+                          }`}
+                          onClick={() => handleMarkAsRead(notification.id)}
+                        >
+                          <img src={accountImage} alt="" className="w-16 object-cover col-span-1" />
+                          <div className="col-span-9">
+                            <p>{notification.content[1]}</p>
+                            <p className="text-gray-500 italic">({notification.createdAt})</p>
+                          </div>
+                        </div>
+                      ))}
+                      {notificationsReport.slice(0, 5).map((notification: Notification, index: number) => (
                         <div
                           key={index}
                           className={`mb-2 px-3 rounded-lg text-xs border-b grid grid-cols-10 items-center gap-2 ${
