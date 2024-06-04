@@ -6,6 +6,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import UserItemList from './UserItemList'
 import { UserType } from '@/types/user.type'
+import { LoadingComponent } from '@/components'
 
 interface SidebarProps {
   receiverId: string | null
@@ -25,7 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({ receiverId, handleChooseReceiver }) =
     enabled: !!user.authData.user.id,
   })
 
-  if (isLoadingUserSentMessages) return <div>Loading...</div>
+  if (isLoadingUserSentMessages) return <LoadingComponent />
 
   return (
     <div

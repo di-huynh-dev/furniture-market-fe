@@ -80,7 +80,19 @@ const PaymentAccount = () => {
       name: 'Nguời giao dịch',
       cell: (row) => row.ownerName,
     },
-    { name: 'Hình thức', selector: (row) => row.type },
+    {
+      name: 'Hình thức',
+      cell: (row) =>
+        row.type === 'CHARGE' ? (
+          <div className="flex gap-1 items-center">
+            <p>Nạp</p>
+          </div>
+        ) : (
+          <div className="flex gap-1 items-center">
+            <p>Rút</p>
+          </div>
+        ),
+    },
     {
       name: 'Giá trị',
       cell: (row) => (

@@ -13,6 +13,7 @@ import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 import { useSelector } from 'react-redux'
 import { selectAuth } from '@/redux/reducers/authSlice'
 import { toast } from 'react-toastify'
+import { LoadingComponent } from '@/components'
 
 const BuyerProductDetail = () => {
   const { id } = useParams()
@@ -105,7 +106,7 @@ const BuyerProductDetail = () => {
   const handleAddToWishList = () => {}
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <LoadingComponent />
   }
 
   return (

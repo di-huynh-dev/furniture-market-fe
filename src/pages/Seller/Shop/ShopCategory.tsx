@@ -118,7 +118,7 @@ const ShopCategory = () => {
     },
     {
       name: 'Thumbnail',
-      cell: (row) => <img src={row.thumbnail} alt={row.name} className="w-14 h-18" />,
+      cell: (row) => <img src={row.thumbnail} alt={row.name} className="w-14 max-h-14 my-1" />,
     },
     {
       name: 'Tên sản phẩm',
@@ -171,7 +171,7 @@ const ShopCategory = () => {
   return (
     <section className="mx-4 my-2 text-sm">
       <dialog id="my_modal_3" className="modal">
-        <div className="modal-box  max-w-5xl">
+        <div className="modal-box  max-w-2xl">
           <h3 className="font-bold text-lg">Danh sách sản phẩm thuộc danh mục {categoryName}</h3>
           <DataTable
             columns={productsColumns}
@@ -183,7 +183,7 @@ const ShopCategory = () => {
           <div className="modal-action">
             <form method="dialog">
               <div className="flex gap-2">
-                <button className="btn">Close</button>
+                <button className="btn">Đóng</button>
               </div>
             </form>
           </div>

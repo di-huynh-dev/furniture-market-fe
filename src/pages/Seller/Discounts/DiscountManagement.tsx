@@ -293,6 +293,8 @@ const DiscountManagement = () => {
         }
       } catch (error: any) {
         setLoading(false)
+        const dialog = document.getElementById('my_modal_1') as HTMLDialogElement
+        dialog.close()
         toast.error(error.response.data.messages[0])
       }
     }

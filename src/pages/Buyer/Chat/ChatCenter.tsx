@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form'
 import Sidebar from './components/Sidebar'
 import ChatContent from './components/ChatContent'
 import { UserType } from '@/types/user.type'
+import { LoadingComponent } from '@/components'
 
 interface ChatCenterProps {
   showChat: boolean
@@ -143,7 +144,7 @@ const ChatCenter: React.FC<ChatCenterProps> = ({ showChat, toggleChat, receiver 
     handleSendMessage(data.message)
   })
 
-  if (isLoadingUserSentMessages) return <div>Loading...</div>
+  if (isLoadingUserSentMessages) return <LoadingComponent/>
 
   return (
     showChat && (

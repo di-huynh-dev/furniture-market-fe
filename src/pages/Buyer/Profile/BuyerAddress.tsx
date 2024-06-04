@@ -345,11 +345,11 @@ const BuyerAddress = () => {
               <div className="">
                 {addresses.defaultAddressId === address.id ? (
                   <span>
-                    <span className="text-accent font-semibold">Mặc định</span>
+                    <span className="text-primary font-semibold">Mặc định</span>
                   </span>
                 ) : (
                   <>
-                    <button className="text-primary" onClick={() => handleSetDefault(address.id)}>
+                    <button className="text-neutral btn btn-sm" onClick={() => handleSetDefault(address.id)}>
                       Đặt làm mặc định
                     </button>
                   </>

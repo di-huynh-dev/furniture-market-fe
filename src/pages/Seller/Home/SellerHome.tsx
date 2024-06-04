@@ -9,6 +9,7 @@ import { MdTableRestaurant } from 'react-icons/md'
 import IncomeLineChart from './components/IncomeLineChart'
 import OrderBarChart from './components/OrderBarChart'
 import SoldPieChart from './components/SoldePieChart'
+import { LoadingComponent } from '@/components'
 
 const SellerHome = () => {
   const axiosPrivate = useAxiosPrivate()
@@ -63,7 +64,7 @@ const SellerHome = () => {
   }
 
   if (loadingStatistics) {
-    return <div>Loading...</div>
+    return <LoadingComponent />
   }
 
   return (

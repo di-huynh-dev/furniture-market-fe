@@ -50,26 +50,26 @@ const TopShopList = () => {
           <div>
             <img
               src={
-                'https://vending-cdn.kootoro.com/torov-cms/upload/image/1669358914523-kh%C3%A1i%20ni%E1%BB%87m%20qu%E1%BA%A3ng%20c%C3%A1o%20banner%20tr%C3%AAn%20website.jpg'
+                'https://marketplace.canva.com/EAE6uxzge6c/1/0/1600w/canva-yellow-and-white-minimalist-big-sale-banner-BjBIq-T_6j4.jpg'
               }
-              className="w-full h-40 object-cover rounded-lg"
+              className="w-full h-64 object-cover rounded-lg"
             />
           </div>
 
           <div>
             <img
               src={
-                'https://vending-cdn.kootoro.com/torov-cms/upload/image/1669358914523-kh%C3%A1i%20ni%E1%BB%87m%20qu%E1%BA%A3ng%20c%C3%A1o%20banner%20tr%C3%AAn%20website.jpg'
+                'https://cdn.printnetwork.com/production/assets/5966561450122033bd4456f8/imageLocker/blog-description/blog/sales_banners.jpg'
               }
-              className="w-full h-40 object-cover"
+              className="w-full h-64 object-cover rounded-lg"
             />
           </div>
           <div>
             <img
               src={
-                'https://vending-cdn.kootoro.com/torov-cms/upload/image/1669358914523-kh%C3%A1i%20ni%E1%BB%87m%20qu%E1%BA%A3ng%20c%C3%A1o%20banner%20tr%C3%AAn%20website.jpg'
+                'https://marketplace.canva.com/EAFED0hv9G0/1/0/1600w/canva-blue-pink-modern-special-offer-sale-banner-J5VkNReQ8WA.jpg'
               }
-              className="w-full h-40 object-cover"
+              className="w-full h-64 object-cover rounded-lg"
             />
           </div>
         </Slider>

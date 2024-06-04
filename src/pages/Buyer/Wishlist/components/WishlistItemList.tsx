@@ -7,6 +7,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 import { toast } from 'react-toastify'
 import { CiCircleRemove } from 'react-icons/ci'
+import { LoadingComponent } from '@/components'
 
 const WishlistItemList = () => {
   const axiosPrivate = useAxiosBuyerPrivate()
@@ -37,7 +38,7 @@ const WishlistItemList = () => {
     },
   })
 
-  if (isLoading) return <p>Loading...</p>
+  if (isLoading) return <LoadingComponent />
   return (
     <div className="">
       {userWishlist?.length === 0 ? (

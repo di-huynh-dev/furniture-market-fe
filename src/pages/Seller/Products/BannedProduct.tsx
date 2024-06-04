@@ -100,11 +100,11 @@ const BannedProduct = () => {
           case 'PENDING':
             return <div className="badge">Chờ xử lý</div>
           case 'PROCESSING':
-            return <div className="badge badge-primary">Đang xử lý</div>
+            return <div className="badge badge-primary text-white">Đang xử lý</div>
           case 'ACCEPTED':
-            return <div className="badge badge-error">Vi phạm</div>
+            return <div className="badge badge-error  text-white">Vi phạm</div>
           default:
-            return <div className="badge badge-success badge-outline">Không vi phạm</div>
+            return <div className="badge badge-success badge-outline text-white">Không vi phạm</div>
         }
       },
     },

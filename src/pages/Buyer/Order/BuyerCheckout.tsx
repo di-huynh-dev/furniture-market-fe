@@ -14,6 +14,7 @@ import { VoucherRespType } from '@/types/voucher.type'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IoIosArrowForward } from 'react-icons/io'
+import { LoadingComponent } from '@/components'
 
 type DeliveryAddress = {
   id: string
@@ -208,7 +209,7 @@ const BuyerCheckout = () => {
     }
   }
 
-  if (isLoadingAddress) return <p>Loading...</p>
+  if (isLoadingAddress) return <LoadingComponent />
 
   return (
     <div className="">

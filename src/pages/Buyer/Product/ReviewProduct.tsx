@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { FaRegStar, FaStar } from 'react-icons/fa'
 import { useQuery } from '@tanstack/react-query'
+import { LoadingComponent } from '@/components'
 
 const ReviewProduct = () => {
   const axiosPrivate = useAxiosBuyerPrivate()
@@ -44,7 +45,7 @@ const ReviewProduct = () => {
     }
   }
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <LoadingComponent />
   return (
     <>
       <div className="p-10">

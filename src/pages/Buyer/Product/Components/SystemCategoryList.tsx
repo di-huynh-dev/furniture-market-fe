@@ -67,7 +67,7 @@ const SystemCategoryList = ({ setSelectedCategory }: { setSelectedCategory: (cat
                     onClick={() => setSelectedCategory(category.name)}
                     src={category.image}
                     alt="Hình ảnh thuộng hãng"
-                    className="w-16 h-16 rounded-xl object-cover"
+                    className="w-16 h-16 rounded-xl object-cover hover:cursor-pointer"
                   />
                 </div>
                 <p className="text-center">{category.name}</p>

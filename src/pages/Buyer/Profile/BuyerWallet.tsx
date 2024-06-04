@@ -1,6 +1,6 @@
 import { Buyer_QueryKeys } from '@/constants/query-keys'
 import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
-import { formatDate, formatPrice } from '@/utils/helpers'
+import { formatPrice } from '@/utils/helpers'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import vnpay from '@/assets/images/vnpay.png'
@@ -9,6 +9,7 @@ import toast from 'react-hot-toast'
 import { TransactionType } from '@/types/transaction.type'
 import { LoadingComponent } from '@/components'
 import { axiosCommon } from '@/libs/axios-client'
+import DataTable, { TableColumn } from 'react-data-table-component'
 
 export type BankType = { shortName: string; name: string }
 const BuyerWallet = () => {
@@ -28,6 +29,10 @@ const BuyerWallet = () => {
       return resp.data.data
     },
   })
+
+  const handleTabClick = (tabName: string) => {
+    setActiveTab(tabName)
+  }
 
   const { data: history, isLoading: loadingHistory } = useQuery({
     queryKey: [Buyer_QueryKeys.GET_HISTORY_TRANSACTION],
@@ -87,6 +92,40 @@ const BuyerWallet = () => {
     }
   }
 
+  const columns: TableColumn<TransactionType>[] = [
+    { name: 'Mã giao dịch', cell: (row) => row.id },
+    {
+      name: 'Nguời giao dịch',
+      cell: (row) => row.ownerName,
+    },
+    {
+      name: 'Hình thức',
+      cell: (row) =>
+        row.type === 'CHARGE' ? (
+          <div className="flex gap-1 items-center">
+            <p>Nạp</p>
+          </div>
+        ) : (
+          <div className="flex gap-1 items-center">
+            <p>Rút</p>
+          </div>
+        ),
+    },
+    {
+      name: 'Giá trị',
+      cell: (row) => (
+        <span
+          style={{
+            color: row.type === 'WITHDRAW' ? 'red' : 'green',
+          }}
+        >
+          {row.type === 'WITHDRAW' ? `-${formatPrice(row.value)}` : formatPrice(row.value)}
+        </span>
+      ),
+    },
+    { name: 'Thời gian', selector: (row) => row.createdAt },
+  ]
+
   if (loadingWallet || loadingHistory || loadingBank) {
     return <LoadingComponent />
   }
@@ -103,7 +142,7 @@ const BuyerWallet = () => {
       <div role="tablist" className="tabs tabs-lifted">
         <a
           role="tab"
-          onClick={() => setActiveTab('wallet')}
+          onClick={() => handleTabClick('wallet')}
           className={`tab ${
             activeTab === 'wallet' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
           }`}
@@ -112,9 +151,9 @@ const BuyerWallet = () => {
         </a>
         <a
           role="tab"
-          onClick={() => setActiveTab('historic')}
+          onClick={() => handleTabClick('HISTORY')}
           className={`tab ${
-            activeTab === 'historic' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
+            activeTab === 'HISTORY' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
           }`}
         >
           Lịch sử giao dịch
@@ -154,22 +193,19 @@ const BuyerWallet = () => {
           <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
             <div className="modal-box">
               <h3 className="font-bold text-lg">Thông tin nạp tiền</h3>
-              <label className="form-control w-full max-w-xs my-2">
+              <label className="form-control w-full  my-2">
                 <div className="label">
                   <span className="label-text">Nhập số tiền nạp</span>
                 </div>
                 <input
                   type="number"
                   placeholder="VNĐ"
-                  className="input input-bordered w-full max-w-xs"
+                  className="input input-bordered w-full "
                   onChange={(e) => setAmount(Number(e.target.value))}
                 />
               </label>
               <p className="text-sm">Chọn ngân hàng</p>
-              <select
-                className="select select-bordered w-full max-w-xs my-2"
-                onChange={(e) => setBankCode(e.target.value)}
-              >
+              <select className="select select-bordered w-full  my-2" onChange={(e) => setBankCode(e.target.value)}>
                 <option disabled selected>
                   Chọn ngân hàng
                 </option>
@@ -266,36 +302,16 @@ const BuyerWallet = () => {
         </div>
       )}
 
-      {activeTab === 'historic' && (
+      {activeTab === 'HISTORY' && (
         <>
-          <div className="mt-5">
-            <table className="table table-zebra">
-              <thead>
-                <tr>
-                  <th>Mã giao dịch</th>
-                  <th>Người giao dịch</th>
-                  <th>Loại</th>
-                  <th>Số tiền</th>
-                  <th>Ngày</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {history.map((item: TransactionType) => (
-                  <tr key={item.id}>
-                    <td>{item.id}</td>
-                    <td>{item.ownerName}</td>
-                    <td>{item.type}</td>
-                    <td>{formatPrice(item.value)}</td>
-                    <td>{formatDate(item.createdAt)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {history.length === 0 && (
-            <p className="text-center my-2 italic text-gray-500">Tài khoản của bạn chưa có giao dịch nào</p>
-          )}
+          <DataTable
+            title="Lịch sử giao dịch"
+            data={history}
+            columns={columns}
+            pagination
+            progressPending={loadingHistory}
+            progressComponent={<LoadingComponent />}
+          />
         </>
       )}
     </div>

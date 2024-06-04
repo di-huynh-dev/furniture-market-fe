@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { UserType } from '@/types/user.type'
 import { useNavigate } from 'react-router-dom'
+import { LoadingComponent } from '@/components'
 
 type FormData = {
   fullName: string
@@ -140,7 +141,7 @@ const BuyerProfile = () => {
     resolver: yupResolver(schema),
   })
 
-  if (isLoading || isFollowingLoading) return <div>Loading...</div>
+  if (isLoading || isFollowingLoading) return <LoadingComponent />
 
   return (
     <div className="mx-4 my-2">

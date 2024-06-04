@@ -19,11 +19,13 @@ const BuyerPurchase = () => {
       setOrderListByStatus(resp.data.data.content)
       return resp.data.data.content
     },
+    enabled: activeTab === '',
   })
 
   const getOrderListByStatusMutation = useMutation({
     mutationFn: async (status: string) => {
       const resp = await axiosPrivate.get(`/buyer/order/by-status?status=${status}`)
+      setOrderListByStatus(resp.data.data.content)
       return resp
     },
     onSuccess: (resp) => {
@@ -36,7 +38,7 @@ const BuyerPurchase = () => {
     if (tabName !== '') {
       getOrderListByStatusMutation.mutate(tabName)
     } else {
-      client.invalidateQueries({ queryKey: [Buyer_QueryKeys.ORDER_LIST] })
+      client.invalidateQueries({ queryKey: [Buyer_QueryKeys.ORDER_LIST, activeTab] })
     }
   }
 

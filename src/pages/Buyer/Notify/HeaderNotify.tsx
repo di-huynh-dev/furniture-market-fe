@@ -140,7 +140,7 @@ const HeaderNotify = () => {
                       {notificationsAccount.slice(0, 5).map((notification: Notification, index: number) => (
                         <div
                           key={index}
-                          className={`mb-2 px-3 rounded-lg text-xs border-b grid grid-cols-10 items-center gap-2 ${
+                          className={`mb-2 px-3 rounded-lg text-xs border-b grid grid-cols-10 items-center gap-2 hover:cursor-pointer ${
                             notification.seen ? '' : 'bg-gray-100'
                           }`}
                           onClick={() => handleMarkAsRead(notification.id)}
@@ -155,7 +155,7 @@ const HeaderNotify = () => {
                       {notificationsReport.slice(0, 5).map((notification: Notification, index: number) => (
                         <div
                           key={index}
-                          className={`mb-2 px-3 rounded-lg text-xs border-b grid grid-cols-10 items-center gap-2 ${
+                          className={`mb-2 px-3 rounded-lg text-xs border-b grid grid-cols-10 items-center gap-2 hover:cursor-pointer ${
                             notification.seen ? '' : 'bg-gray-100'
                           }`}
                           onClick={() => handleMarkAsRead(notification.id)}
@@ -181,7 +181,7 @@ const HeaderNotify = () => {
                       {notificationsOrder.slice(0, 5).map((notification: Notification, index: number) => (
                         <div
                           key={index}
-                          className={`mb-2 px-3 rounded-lg text-xs border-b grid grid-cols-10 items-center gap-2 ${
+                          className={`mb-2 px-3 rounded-lg text-xs border-b grid grid-cols-10 items-center gap-2 hover:cursor-pointer ${
                             notification.seen ? '' : 'bg-gray-100'
                           }`}
                           onClick={() => {

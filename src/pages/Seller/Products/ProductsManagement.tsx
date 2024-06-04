@@ -209,8 +209,6 @@ const ProductsManagement = () => {
     )
   }
 
-  if (isLoading) return <LoadingComponent />
-
   return (
     <section className="mx-4 my-2 text-sm">
       <dialog id="my_modal_2" className="modal">
@@ -226,7 +224,7 @@ const ProductsManagement = () => {
                 >
                   Xác nhận
                 </button>
-                <button className="btn">Close</button>
+                <button className="btn">Đóng</button>
               </div>
             </form>
           </div>
@@ -234,7 +232,7 @@ const ProductsManagement = () => {
       </dialog>
       <div className="card shadow-lg my-2 bg-white">
         <div className="lg:card-body">
-          <div role="tablist" className="tabs tabs-lifted">
+          <div role="tablist" className=" tabs-lifted">
             <div
               role="tab"
               onClick={() => handleTabClick('ALL')}
@@ -242,7 +240,7 @@ const ProductsManagement = () => {
                 activeTab === 'ALL' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
               }`}
             >
-              Tất cả
+              Tất cả ({products?.data.data.length})
             </div>
             {products?.data.data
               .reduce((categories: string[], product: ProductDetailType) => {
@@ -260,7 +258,13 @@ const ProductsManagement = () => {
                     activeTab === category ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
                   }`}
                 >
-                  {category}
+                  {category} (
+                  {
+                    products?.data.data.filter((product: ProductDetailType) =>
+                      product.storeCategories.includes(category),
+                    ).length
+                  }
+                  )
                 </div>
               ))}
           </div>
@@ -291,6 +295,8 @@ const ProductsManagement = () => {
             }
             columns={columns}
             data={filteredProducts}
+            progressPending={isLoading}
+            progressComponent={<LoadingComponent />}
             expandableRows
             expandableRowsComponent={ExpandedComponent}
             highlightOnHover
