@@ -93,7 +93,7 @@ const SellerHome = () => {
               <p className="font-bold">
                 Doanh thu tháng {month}/{year}
               </p>
-              <p className="md:text-2xl text-lg">{formatPrice(statistics?.income)}</p>
+              <p className="md:text-2xl text-lg">{formatPrice(statistics?.totalIncome)}</p>
             </div>
             <div className="flex justify-end">
               <FaMoneyBillTrendUp className="md:h-20 w-16 h-16 text-yellow-500" />

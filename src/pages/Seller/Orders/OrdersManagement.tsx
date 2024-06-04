@@ -31,6 +31,10 @@ const OrdersManagement = () => {
     },
   })
 
+  if (isLoadingOrders) {
+    return <LoadingComponent />
+  }
+
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName)
   }

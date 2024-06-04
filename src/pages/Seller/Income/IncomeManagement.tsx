@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import { CiDollar } from 'react-icons/ci'
-import { FaArrowCircleUp } from 'react-icons/fa'
+import { FaArrowCircleUp, FaShippingFast } from 'react-icons/fa'
 
 const IncomeManagement = () => {
   const axiosPrivate = useAxiosPrivate()
@@ -26,6 +26,14 @@ const IncomeManagement = () => {
     queryKey: [Seller_QueryKeys.STATISTIC_INCOME],
     queryFn: async () => {
       const resp = await axiosPrivate.get(`/seller/statistic/order-income?month=${month}&year=${year}`)
+      return resp.data.data
+    },
+  })
+
+  const { data: statistics, isLoading: loadingStatistics } = useQuery({
+    queryKey: [Seller_QueryKeys.SHOP_STATISTICS, month, year],
+    queryFn: async () => {
+      const resp = await axiosPrivate.get(`seller/statistic?month=${month}&year=${year}`)
       return resp.data.data
     },
   })
@@ -76,7 +84,7 @@ const IncomeManagement = () => {
     ))
   }
 
-  if (isLoading) {
+  if (isLoading || loadingStatistics) {
     return <LoadingComponent />
   }
 
@@ -92,14 +100,25 @@ const IncomeManagement = () => {
               <CiDollar className="w-20 h-20 text-yellow-500" />
               <div>
                 <p>Tổng đơn hàng</p>
-                <p className="font-bold text-xl">{data?.length}</p>
+                <p className="font-bold text-xl">{statistics?.numOfOrderByMonth}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <FaShippingFast className="w-20 h-20 text-blue-500" />
+              <div>
+                <p className="">Tổng giá trị đơn đang vận chuyển</p>
+                <p className="font-bold text-xl">
+                  {formatPrice(statistics?.incomeOfShippingOrders)}/{statistics?.numOfShippingOrderByMonth} đơn
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <FaArrowCircleUp className="w-20 h-20 text-green-500" />
               <div>
-                <p className="">Tổng doanh thu</p>
-                {/* <p className="font-bold text-xl">{totalIncome}</p> */}
+                <p className="">Tổng lợi nhuận thu được</p>
+                <p className="font-bold text-xl">
+                  {formatPrice(statistics?.incomeOfCompletedOrders)}/{statistics?.numOfCompletedOrderByMonth} đơn
+                </p>
               </div>
             </div>
           </div>

@@ -11,7 +11,7 @@ interface PieChartProps {
 
 const SoldPieChart: React.FC<PieChartProps> = ({ data }) => {
   // Placeholder product names
-  const productNames = data.soldByProductResponses.map((item) => `Sản phẩm ${item.productId}`)
+  const productNames = data.soldByProductResponses.map((item) => `Sản phẩm ${item.productName}`)
   const soldCounts = data.soldByProductResponses.map((item) => item.soldCount)
 
   const formattedData: ChartData<'pie'> = {
