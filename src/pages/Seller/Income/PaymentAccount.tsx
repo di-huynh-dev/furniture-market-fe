@@ -87,6 +87,10 @@ const PaymentAccount = () => {
           <div className="flex gap-1 items-center">
             <p>Nạp</p>
           </div>
+        ) : row.type === 'ORDER_INCOME' ? (
+          <div className="flex gap-1 items-center">
+            <p>Lợi nhuận đơn hàng</p>
+          </div>
         ) : (
           <div className="flex gap-1 items-center">
             <p>Rút</p>
