@@ -1,16 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react'
 import { OrderItem, ResponseItem } from '@/types/order.type'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import { formatPrice } from '@/utils/helpers'
 import Papa from 'papaparse'
 import { LoadingComponent } from '@/components'
+import { toast } from 'react-toastify'
 
 const OrdersManagement = () => {
   const [activeTab, setActiveTab] = useState('')
   const axiosPrivate = useAxiosPrivate()
+  const queryClient = useQueryClient()
+  const [selectedOrder, setSelectedOrder] = useState<OrderItem | null>(null)
   const [orderListByStatus, setOrderListByStatus] = useState<OrderItem[]>([])
 
   useEffect(() => {
@@ -18,7 +22,7 @@ const OrdersManagement = () => {
     document.title = 'Fnest Seller - Tất cả đơn hàng'
   }, [])
 
-  const { isLoading: isLoadingOrders } = useQuery({
+  const { data: orders, isLoading: isLoadingOrders } = useQuery({
     queryKey: [Seller_QueryKeys.ORDER_LIST],
     queryFn: async () => {
       const resp = await axiosPrivate.get('/seller/order')
@@ -59,10 +63,6 @@ const OrdersManagement = () => {
     document.body.removeChild(link)
   }
 
-  if (isLoadingOrders) {
-    return <LoadingComponent />
-  }
-
   const filteredOrders = filterOrdersByStatus(activeTab)
 
   const columns: TableColumn<OrderItem>[] = [
@@ -77,12 +77,138 @@ const OrdersManagement = () => {
         </div>
       ),
     },
-    { name: 'Trạng thái', selector: (row) => row.status },
+    {
+      name: 'Trạng thái',
+      cell: (row) =>
+        row.status === 'TO_SHIP' ? (
+          <div className="badge badge-primary text-white">Chờ vận chuyển</div>
+        ) : row.status === 'SHIPPING' ? (
+          <div className="badge badge-warning text-white">Đang giao</div>
+        ) : row.status === 'COMPLETED' ? (
+          <div className="badge badge-success text-white">Đã giao</div>
+        ) : row.status === 'CANCELLED' ? (
+          <div className="badge badge-error text-white">Đã hủy</div>
+        ) : row.status === 'REFUNDED' ? (
+          <div className="badge badge-neutral text-white">Hoàn tiền</div>
+        ) : (
+          <div>Giao hàng không thành công</div>
+        ),
+    },
+    { name: 'Thanh toán', cell: (row) => (row.paid ? 'Đã thanh toán' : 'Chưa thanh toán') },
     { name: 'Tổng', selector: (row) => formatPrice(row.total) },
+    {
+      name: 'Action',
+      cell: (row) =>
+        row.status === 'TO_SHIP' || row.status === 'SHIPPING' ? (
+          <button
+            className="link"
+            onClick={() => {
+              setSelectedOrder(row)
+              const dialog = document.getElementById('modal') as HTMLDialogElement
+              dialog.showModal()
+            }}
+          >
+            Cập nhật trạng thái
+          </button>
+        ) : null,
+    },
   ]
+  const updateOrderStatus = async () => {
+    try {
+      let status: string = ''
+      switch (selectedOrder?.status) {
+        case 'TO_SHIP':
+          status = 'SHIPPING'
+          break
+        case 'SHIPPING':
+          status = 'COMPLETED'
+          break
+        default:
+          break
+      }
+      const resp = await axiosPrivate.patch(`/seller/order/status`, {
+        orderId: selectedOrder?.id,
+        status: status,
+      })
 
+      if (resp.status === 200) {
+        const dialog = document.getElementById('modal') as HTMLDialogElement
+        dialog.close()
+        toast.success(resp.data.messages[0])
+        queryClient.invalidateQueries({ queryKey: [Seller_QueryKeys.ORDER_LIST] })
+      }
+    } catch (error: any) {
+      toast.error(error.response.data.messages[0])
+    }
+  }
+
+  const ExpandedComponent = ({ data }: { data: OrderItem }) => {
+    return (
+      <div>
+        <div className="">
+          <div>
+            <p className="text-lg">Danh sách sản phẩm</p>
+            {data.responses.map((item: ResponseItem) => (
+              <div className="grid grid-cols-4 gap-2">
+                <div>
+                  <p className="font-bold">Mã sản phẩm</p>
+                  <p>{item.id}</p>
+                </div>
+                <div>
+                  <p className="font-bold">Tên sản phẩm</p>
+                  <p>{item.productName}</p>
+                </div>
+                <div>
+                  <p className="font-bold">Chất liệu</p>
+                  <p>{item.productMaterial}</p>
+                </div>
+                <div>
+                  <p className="font-bold">Hình ảnh</p>
+                  <img src={item.productThumbnail} alt={item.productName} className="h-12 w-12" />
+                </div>
+                <div>
+                  <p className="font-bold">Số lượng</p>
+                  <p>{item.quantity}</p>
+                </div>
+                <div>
+                  <p className="font-bold">Thành tiền</p>
+                  <p>{formatPrice(item.total)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
   return (
     <section className="mx-4 my-2 text-sm">
+      <dialog id="modal" className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Cập nhật trạng thái đơn hàng!</h3>
+          <p className="py-4">
+            Bạn chắc chắn muốn cập nhật trạng thái đơn hàng này thành{' '}
+            {selectedOrder?.status === 'TO_SHIP' ? '"Đang giao hàng"' : '"Đã giao thành công"'}{' '}
+          </p>
+          <div className="modal-action">
+            <div className="flex gap-2">
+              <button className="btn btn-primary text-white" onClick={() => updateOrderStatus()}>
+                Cập nhật
+              </button>
+              <button
+                className="btn"
+                onClick={() => {
+                  const dialog = document.getElementById('modal') as HTMLDialogElement
+                  dialog.close()
+                  setSelectedOrder(null)
+                }}
+              >
+                Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      </dialog>
       <div className="card shadow-lg m-2 bg-white">
         <div className="md:card-body">
           <div role="tablist" className="md:tabs tabs-lifted">
@@ -93,7 +219,7 @@ const OrdersManagement = () => {
                 activeTab === '' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
               }`}
             >
-              Tất cả
+              Tất cả ({orders.length})
             </div>
             <div
               role="tab"
@@ -102,7 +228,7 @@ const OrdersManagement = () => {
               }`}
               onClick={() => handleTabClick('TO_SHIP')}
             >
-              Chờ vận chuyển
+              Chờ vận chuyển ({orders.filter((order: OrderItem) => order.status === 'TO_SHIP').length})
             </div>
             <div
               role="tab"
@@ -111,7 +237,7 @@ const OrdersManagement = () => {
               }`}
               onClick={() => handleTabClick('SHIPPING')}
             >
-              Đang giao
+              Đang giao ({orders.filter((order: OrderItem) => order.status === 'SHIPPING').length})
             </div>
             <div
               role="tab"
@@ -120,7 +246,7 @@ const OrdersManagement = () => {
               }`}
               onClick={() => handleTabClick('COMPLETED')}
             >
-              Đã hoàn thành
+              Đã hoàn thành ({orders.filter((order: OrderItem) => order.status === 'COMPLETED').length})
             </div>
             <div
               role="tab"
@@ -129,8 +255,7 @@ const OrdersManagement = () => {
                 activeTab === 'CANCELLED' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
               }`}
             >
-              {' '}
-              Đã hủy
+              Đã hủy ({orders.filter((order: OrderItem) => order.status === 'CANCELLED').length})
             </div>
 
             <div
@@ -140,7 +265,7 @@ const OrdersManagement = () => {
                 activeTab === 'REFUNDED' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
               }`}
             >
-              Hoàn tiền
+              Hoàn tiền ({orders.filter((order: OrderItem) => order.status === 'REFUNDED').length})
             </div>
             <div
               role="tab"
@@ -149,7 +274,7 @@ const OrdersManagement = () => {
                 activeTab === 'FAILED_DELIVERY' ? 'tab-active font-bold [--tab-border-color:primary] text-primary' : ''
               }`}
             >
-              Thất bại
+              Thất bại ({orders.filter((order: OrderItem) => order.status === 'FAILED_DELIVERY').length})
             </div>
           </div>
 
@@ -166,6 +291,8 @@ const OrdersManagement = () => {
               columns={columns}
               data={filteredOrders}
               progressPending={isLoadingOrders}
+              expandableRows
+              expandableRowsComponent={ExpandedComponent}
               progressComponent={<LoadingComponent />}
               highlightOnHover
               pagination

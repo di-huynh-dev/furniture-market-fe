@@ -275,6 +275,8 @@ const ShopCategory = () => {
               pagination
               progressPending={isLoading}
               progressComponent={<LoadingComponent />}
+              highlightOnHover
+              pointerOnHover
             />
             ;
           </div>

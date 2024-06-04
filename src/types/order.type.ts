@@ -8,6 +8,7 @@ export type OrderItem = {
     logo: string
     name: string
   }
+  paid: boolean
 }
 
 export type ResponseItem = {
