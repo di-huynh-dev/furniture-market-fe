@@ -83,12 +83,12 @@ const MarketingManagement = () => {
   const columnsProduct: TableColumn<ProductDetailType>[] = [
     {
       name: 'Hình ảnh',
-      cell: (row) => <img src={row.thumbnail} alt={row.name} className="w-[100px]" />,
+      cell: (row) => <img src={row.thumbnail} alt={row.name} className="w-12 h-12" />,
     },
 
     {
       name: 'Tên sản phẩm',
-      selector: (row) => row.name,
+      cell: (row) => row.name,
       sortable: true,
     },
   ]

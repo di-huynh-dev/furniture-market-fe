@@ -9,17 +9,11 @@ import product2 from '@/assets/images/product/banner2.jpg'
 import product3 from '@/assets/images/product/banner3.jpg'
 import product4 from '@/assets/images/product/banner4.jpg'
 import product5 from '@/assets/images/product/banner5.jpg'
-import partner1 from '@/assets/images/partner/cantavil.jpg'
-import partner2 from '@/assets/images/partner/celadon.png'
-import partner3 from '@/assets/images/partner/eco.jpg'
-import partner5 from '@/assets/images/partner/masteri.png'
-import partner6 from '@/assets/images/partner/miizuki.jpg'
-import partner7 from '@/assets/images/partner/phudong.png'
-import partner8 from '@/assets/images/partner/vinhome.jpg'
 import { NavLink } from 'react-router-dom'
 import { useEffect } from 'react'
 import FormCollect from '@/components/FormData/FormCollect'
 import RecommendedProductList from './Home/components/RecommendedProductList'
+import MarketingProductList from './Home/components/MarketingProductList'
 
 const HomeLayout = () => {
   useEffect(() => {
@@ -34,16 +28,6 @@ const HomeLayout = () => {
     autoplay: true,
     speed: 2000,
     autoplaySpeed: 3500,
-  }
-
-  const settings_partner = {
-    infinite: true,
-    slidesToShow: 4,
-    slidesToScroll: 2,
-    autoplay: true,
-    speed: 2000,
-    autoplaySpeed: 2000,
-    cssEase: 'linear',
   }
 
   return (
@@ -151,45 +135,27 @@ const HomeLayout = () => {
           </div>
         </div>
 
+        {/* Products hot */}
+        <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4 ">Sản phẩm nổi bật</h2>
+        <div className="w-[100px] h-[3px] bg-primary"></div>
+        <MarketingProductList />
+
+        {/* Products whistlist */}
+        <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4 ">Sản phẩm yêu thích</h2>
+        <div className="w-[100px] h-[3px] bg-primary"></div>
+
+        {/* Products whistlist */}
+        <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4 ">Sản phẩm bán chạy</h2>
+        <div className="w-[100px] h-[3px] bg-primary"></div>
+
         {/* Products  recommended */}
-        <div className="align-element">
-          <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4 ">Gợi ý mua sắm</h2>
-          <div className="w-[100px] h-[3px] bg-primary"></div>
-          <RecommendedProductList />
-        </div>
-
-        {/* Partner */}
-        <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4">Đối tác</h2>
-        <div className="slider-container">
-          <Slider {...settings_partner}>
-            <div>
-              <img src={partner1} className="max-h-[120px]" />
-            </div>
-            <div>
-              <img src={partner2} className="max-h-[120px]" />
-            </div>
-            <div>
-              <img src={partner3} className="max-h-[120px]" />
-            </div>
-            <div>
-              <img src={partner7} className="max-h-[120px]" />
-            </div>
-            <div>
-              <img src={partner6} className="max-h-[120px]" />
-            </div>
-            <div>
-              <img src={partner5} className="max-h-[120px]" />
-            </div>
-
-            <div>
-              <img src={partner8} className="max-h-[120px]" />
-            </div>
-          </Slider>
-        </div>
-
-        {/* Form contact */}
-        <FormCollect />
+        <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4 ">Gợi ý mua sắm</h2>
+        <div className="w-[100px] h-[3px] bg-primary"></div>
+        <RecommendedProductList />
       </div>
+
+      {/* Form contact */}
+      <FormCollect />
     </main>
   )
 }

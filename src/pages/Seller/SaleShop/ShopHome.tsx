@@ -64,6 +64,10 @@ const ShopHome = () => {
 
   const handleFollow = async () => {
     try {
+      if (!user.authData.accessToken) {
+        toast.error('Vui đăng nhập để theo dõi!')
+        return
+      }
       const resp = await axiosPrivate.post(`/user/connection?id=${id}`)
       if (resp.status === 200) {
         toast.success(resp.data.messages[0])

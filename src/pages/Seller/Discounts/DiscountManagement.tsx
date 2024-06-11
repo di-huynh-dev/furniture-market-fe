@@ -100,15 +100,18 @@ const DiscountManagement = () => {
       name: 'Mã sản phẩm ',
       selector: (row) => row.id,
     },
-
+    {
+      name: 'Hình ảnh ',
+      cell: (row) => <img src={row.thumbnail} alt={row.name} className="max-h-14" />,
+    },
     {
       name: 'Tên sản phẩm',
-      selector: (row) => row.name,
+      cell: (row) => row.name,
       sortable: true,
     },
     {
       name: 'Giá bán',
-      selector: (row) => row.salePrice,
+      selector: (row) => formatPrice(row.salePrice),
       sortable: true,
     },
   ]
