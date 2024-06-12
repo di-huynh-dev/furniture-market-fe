@@ -57,7 +57,7 @@ const Landing = () => {
       )}
       <button
         onClick={handleChatButtonClick}
-        className={`fixed bottom-24 right-9 flex items-center gap-3 bg-primary p-3 rounded-full text-white z-[101] ${
+        className={`fixed bottom-10 right-9 flex items-center gap-3 bg-primary p-3 rounded-full text-white z-[101] ${
           showAdditionalIcons ? 'bg-red-600' : 'bg-primary'
         }`}
       >

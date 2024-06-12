@@ -49,7 +49,7 @@ const FormCollect = () => {
         <div className="sm:w-[60%] lg:w-[50%] bg-cover bg-center items-center justify-center hidden md:flex">
           <img src={contact} alt="login" className="h-[500px]" />
         </div>
-        <div className="mx-auto w-full lg:w-1/2 md:p-10 py-5 md:py-0">
+        <div className="mx-auto w-full lg:w-1/2 md:p-10 py-5 md:py-0 items-center grid">
           <h1 className="text-center text-2xl sm:text-3xl font-semibold text-primary">
             Đóng góp ý kiến về trải nghiệm
           </h1>

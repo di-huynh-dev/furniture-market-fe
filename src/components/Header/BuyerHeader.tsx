@@ -5,7 +5,7 @@ import axiosClient from '@/libs/axios-client'
 import { removeAuth, selectAuth } from '@/redux/reducers/authSlice'
 import { ProductDetailType } from '@/types/product.type'
 import { useMutation } from '@tanstack/react-query'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { AiOutlineLogin, AiOutlineLogout } from 'react-icons/ai'
 import { FaBarsStaggered } from 'react-icons/fa6'
 import { FiBell, FiList } from 'react-icons/fi'
@@ -85,6 +85,11 @@ const BuyerHeader = () => {
                   tabIndex={0}
                   role="button"
                   type="text"
+                  onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                    if (e.key === 'Enter') {
+                      navigate(`/search/${keyword}`)
+                    }
+                  }}
                   onChange={(e) => {
                     setKeyword(e.target.value)
                     handleSearch()
@@ -93,7 +98,7 @@ const BuyerHeader = () => {
                   className="input input-bordered input-xs md:input-md w-[120px] md:w-full text-xs"
                 />
                 {productList.length > 0 && (
-                  <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box">
+                  <ul tabIndex={0} className="dropdown-content z-[1]  menu p-2 shadow bg-base-100 rounded-box">
                     {productList?.map((product: ProductDetailType) => (
                       <li className="w-full" key={product.id}>
                         <div className="grid grid-cols-6 gap-2">
