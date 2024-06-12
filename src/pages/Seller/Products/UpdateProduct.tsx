@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form'
 // import * as yup from 'yup'
 import { UpdateProductApiType } from '@/types/product.type'
 import { useQuery } from '@tanstack/react-query'
-import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { useState } from 'react'
 import useImagePreview from '@/hooks/useImagePreview'
@@ -29,7 +28,7 @@ const UpdateProduct = () => {
   const { id } = useParams()
 
   const { data: shopCategories, isLoading: isLoadingCategories } = useQuery({
-    queryKey: [Seller_QueryKeys.SHOP_CATEGORY],
+    queryKey: ['shopCategories'],
     queryFn: async () => {
       const resp = await axiosPrivate.get('/seller/category')
       return resp.data.data
@@ -108,7 +107,7 @@ const UpdateProduct = () => {
           <form onSubmit={handleSubmit(handleUpdateProduct)} encType="multipart/form-data">
             <div className="my-2">
               <span className="font-bold text-xl">Cập nhật sản phẩm</span>
-              <p className="text-warning">Lưu ý: Chỉ nhập mới thông tin vào ô cần cập nhật</p>
+              <p className="text-error text-lg">Lưu ý: Chỉ nhập mới thông tin vào ô cần cập nhật</p>
               <div className="">
                 <div className=" ">1. Hình ảnh sản phẩm</div>
                 <div className="grid grid-cols-3 gap-2">

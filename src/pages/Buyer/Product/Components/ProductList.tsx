@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 const ProductList = ({ selectedCategory }: { selectedCategory: string }) => {
   const [productList, setProductList] = useState<ProductDetailType[]>([])
   const [currentPage, setCurrentPage] = useState<number>(0)
-  const [pageSize, setPageSize] = useState<number>(16)
+  const [pageSize, setPageSize] = useState<number>(12)
   const [totalPages, setTotalPages] = useState<number>(0)
 
   const searchMutation = useMutation({
@@ -15,6 +15,8 @@ const ProductList = ({ selectedCategory }: { selectedCategory: string }) => {
       const resp = await axiosClient.get(
         `/product/search-filter?category.contains=name,${selectedCategory}&currentPage=${currentPage}&pageSize=${pageSize}`,
       )
+      console.log(resp)
+
       return resp
     },
     onSuccess: (resp) => {

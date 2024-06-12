@@ -63,12 +63,15 @@ const BuyerNotificationsVoucher = () => {
           </div>
         </div>
       </div>
-      {dataNotifications &&
+      {dataNotifications.length === 0 ? (
+        <p className="text-center">Bạn chưa có thông báo nào!</p>
+      ) : (
         dataNotifications.map((item: Notification) => (
           <div key={item.id}>
             <Notify title={'Khuyến mãi'} content={item.content[1]} time={item.createdAt} navigation={item.content[0]} />
           </div>
-        ))}
+        ))
+      )}
     </div>
   )
 }

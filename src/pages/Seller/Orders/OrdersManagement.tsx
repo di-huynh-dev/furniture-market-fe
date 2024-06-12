@@ -149,11 +149,11 @@ const OrdersManagement = () => {
   const ExpandedComponent = ({ data }: { data: OrderItem }) => {
     return (
       <div>
-        <div className="">
+        <div className="my-4">
           <div>
             <p className="text-lg">Danh sách sản phẩm</p>
             {data.responses.map((item: ResponseItem) => (
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-6 gap-2">
                 <div>
                   <p className="font-bold">Mã sản phẩm</p>
                   <p>{item.id}</p>

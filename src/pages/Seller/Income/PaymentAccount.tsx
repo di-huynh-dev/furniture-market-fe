@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Seller_QueryKeys } from '@/constants/query-keys'
+import { Buyer_QueryKeys, Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
@@ -10,10 +10,15 @@ import { formatPrice } from '@/utils/helpers'
 import { TransactionType } from '@/types/transaction.type'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import { LoadingComponent } from '@/components'
+import { axiosCommon } from '@/libs/axios-client'
+import { BankType } from '@/pages/Buyer/Profile/BuyerWallet'
 
 const PaymentAccount = () => {
   const axiosPrivate = useAxiosPrivate()
   const [amount, setAmount] = useState(0)
+  const [bankInfo, setBankInfo] = useState<BankType>({ shortName: '', name: '' })
+  const [bankNumber, setBankNumber] = useState('')
+  const [ownerName, setOwnerName] = useState('')
   const client = useQueryClient()
   const [bankCode, setBankCode] = useState('')
   const [activeTab, setActiveTab] = useState('')
@@ -43,7 +48,13 @@ const PaymentAccount = () => {
     },
     enabled: !!wallet,
   })
-
+  const { data: bankList, isLoading: loadingBank } = useQuery({
+    queryKey: [Buyer_QueryKeys.BANK_LIST],
+    queryFn: async () => {
+      const resp = await axiosCommon.get('https://api.vietqr.io/v2/banks')
+      return resp.data.data
+    },
+  })
   const handleCreatePayment = async () => {
     if (!amount || !bankCode) {
       toast.error('Vui lòng nhập đầy đủ thông tin nạp tiền!')
@@ -63,14 +74,23 @@ const PaymentAccount = () => {
 
   const handleCreatWithdraw = async () => {
     try {
-      const resp = await axiosPrivate.put(`/user/wallet/withdraw`, { amount })
+      const resp = await axiosPrivate.post(`/user/withdrawal`, {
+        value: amount,
+        accountNumber: bankNumber,
+        bankName: `${bankInfo.shortName} - ${bankInfo.name}`,
+        ownerName: ownerName,
+      })
       if (resp.status === 200) {
         client.invalidateQueries({ queryKey: [Seller_QueryKeys.GET_WALLET] })
         setAmount(0)
+        setBankCode('')
+        setBankInfo({ shortName: '', name: '' })
+        setBankNumber('')
+        setOwnerName('')
         toast.success(resp.data.messages[0])
       }
-    } catch (error: any) {
-      toast.error(error.response.data.messages[0])
+    } catch (error) {
+      toast.error('Lỗi')
     }
   }
 
@@ -112,7 +132,7 @@ const PaymentAccount = () => {
     { name: 'Thời gian', selector: (row) => row.createdAt },
   ]
 
-  if (loadingWallet) {
+  if (loadingWallet || loadingHistory || loadingBank) {
     return <LoadingComponent />
   }
 
@@ -222,14 +242,58 @@ const PaymentAccount = () => {
             <dialog id="my_modal_3" className="modal modal-bottom sm:modal-middle">
               <div className="modal-box">
                 <h3 className="font-bold text-lg">Thông tin rút tiền</h3>
-                <label className="form-control w-full max-w-xs my-2">
+
+                <select
+                  className="select select-bordered w-full  my-2"
+                  onChange={(e) => {
+                    const selectedBank = bankList?.find(
+                      (item: BankType) => `${item.name} - ${item.shortName}` === e.target.value,
+                    )
+                    if (selectedBank) {
+                      setBankInfo(selectedBank)
+                    }
+                  }}
+                >
+                  <option disabled selected>
+                    Chọn ngân hàng
+                  </option>
+                  {bankList?.map((item: BankType) => (
+                    <option value={`${item.name} - ${item.shortName}`}>
+                      {item.shortName} - {item.name}
+                    </option>
+                  ))}
+                </select>
+                <label className="form-control w-full  my-2">
+                  <div className="label">
+                    <span className="label-text">Nhập số tài khoản</span>
+                  </div>
+                  <input
+                    type="string"
+                    className="input input-bordered w-full "
+                    onChange={(e) => setBankNumber(e.target.value)}
+                  />
+                </label>
+
+                <label className="form-control w-full  my-2">
+                  <div className="label">
+                    <span className="label-text">Tên chủ thẻ</span>
+                  </div>
+                  <input
+                    type="string"
+                    placeholder="Viết hoa không dấu, không chứa dấu cách"
+                    className="input input-bordered w-full "
+                    onChange={(e) => setOwnerName(e.target.value)}
+                  />
+                </label>
+
+                <label className="form-control w-full  my-2">
                   <div className="label">
                     <span className="label-text">Nhập số tiền rút</span>
                   </div>
                   <input
                     type="number"
                     placeholder="VNĐ"
-                    className="input input-bordered w-full max-w-xs"
+                    className="input input-bordered w-full "
                     onChange={(e) => setAmount(Number(e.target.value))}
                   />
                 </label>

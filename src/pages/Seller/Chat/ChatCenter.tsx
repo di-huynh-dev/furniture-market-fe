@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form'
 import Sidebar from './components/Sidebar'
 import ChatContent from './components/ChatContent'
 import { LoadingComponent } from '@/components'
+import image from '@/assets/images/no-message.png'
 
 type FormData = {
   message: string
@@ -128,36 +129,45 @@ const ChatCenter = () => {
 
   return (
     <section className="mx-4 my-2 text-sm lg:pr-20">
-      <div className="card shadow-lg bg-white">
-        <div className="card-body bg-white h-[calc(100vh-50px)] flex flex-col">
-          <div className="flex-1 flex overflow-hidden">
-            <MemoizedSidebar receiverId={receiverId} handleChooseReceiver={handleChooseReceiver} />
-            <div
-              className="flex-1 overflow-y-auto"
-              style={{ scrollbarWidth: 'thin', scrollbarColor: '#CBD5E0 #E5E7EB' }}
-            >
-              <div className="p-4">
-                <p>Người nhận: {receiverName}</p>
-                <MemoizedChatContent messages={messages} />
+      {!userSentMessages.lenght ? (
+        <>
+          <p className="text-center">Bạn chưa có tin nhắn nào!</p>
+          <div className="flex justify-center">
+            <img src={image} alt="" />
+          </div>
+        </>
+      ) : (
+        <div className="card shadow-lg bg-white">
+          <div className="card-body bg-white h-[calc(100vh-50px)] flex flex-col">
+            <div className="flex-1 flex overflow-hidden">
+              <MemoizedSidebar receiverId={receiverId} handleChooseReceiver={handleChooseReceiver} />
+              <div
+                className="flex-1 overflow-y-auto"
+                style={{ scrollbarWidth: 'thin', scrollbarColor: '#CBD5E0 #E5E7EB' }}
+              >
+                <div className="p-4">
+                  <p>Người nhận: {receiverName}</p>
+                  <MemoizedChatContent messages={messages} />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="mt-4">
-            <form onSubmit={onSubmit} className="flex items-center space-x-2">
-              <input
-                type="text"
-                {...register('message', { required: true })}
-                placeholder="Nhập nội dung tin nhắn"
-                className="input input-bordered input-neutral flex-1"
-              />
-              <button type="submit" className="btn btn-primary text-white flex items-center">
-                <IoIosSend />
-                <span className="ml-1">Gửi</span>
-              </button>
-            </form>
+            <div className="mt-4">
+              <form onSubmit={onSubmit} className="flex items-center space-x-2">
+                <input
+                  type="text"
+                  {...register('message', { required: true })}
+                  placeholder="Nhập nội dung tin nhắn"
+                  className="input input-bordered input-neutral flex-1"
+                />
+                <button type="submit" className="btn btn-primary text-white flex items-center">
+                  <IoIosSend />
+                  <span className="ml-1">Gửi</span>
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   )
 }

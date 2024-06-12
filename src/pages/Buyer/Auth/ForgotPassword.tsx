@@ -32,7 +32,7 @@ const ForgotPassword = () => {
     <div className="flex items-center justify-center h-screen">
       <div className="card shadow-xl w-[500px] p-4">
         <div className="flex items-center gap-4 font-bold">
-          <Link to={'/seller/login'}>
+          <Link to={'/buyer/login'}>
             <FaArrowLeft className="w-6 h-6" />
           </Link>
           <span className="md:text-xl text-md text-center">Lấy lại mật khẩu</span>

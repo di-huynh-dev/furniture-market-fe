@@ -64,12 +64,15 @@ const BuyerNotificationsSystem = () => {
         </div>
       </div>
       {/* {!data.content && <p className="text-xl">Không có thông báo nào</p>} */}
-      {dataNotifications &&
+      {dataNotifications.length === 0 ? (
+        <p className="text-center">Bạn chưa có thông báo nào!</p>
+      ) : (
         dataNotifications.map((item: Notification) => (
           <div key={item.id}>
             <Notify title={'Hệ thống'} content={item.content[1]} time={item.createdAt} navigation={item.content[0]} />
           </div>
-        ))}
+        ))
+      )}
     </div>
   )
 }
