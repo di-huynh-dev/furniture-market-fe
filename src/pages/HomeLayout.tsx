@@ -14,6 +14,8 @@ import { useEffect } from 'react'
 import FormCollect from '@/components/FormData/FormCollect'
 import RecommendedProductList from './Home/components/RecommendedProductList'
 import MarketingProductList from './Home/components/MarketingProductList'
+import BestSellerProductList from './Home/components/BestSellerProductList'
+import WhishlistProductList from './Home/components/WhishlistProductList'
 
 const HomeLayout = () => {
   useEffect(() => {
@@ -143,10 +145,12 @@ const HomeLayout = () => {
         {/* Products whistlist */}
         <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4 ">Sản phẩm yêu thích</h2>
         <div className="w-[100px] h-[3px] bg-primary"></div>
+        <WhishlistProductList />
 
         {/* Products whistlist */}
         <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4 ">Sản phẩm bán chạy</h2>
         <div className="w-[100px] h-[3px] bg-primary"></div>
+        <BestSellerProductList />
 
         {/* Products  recommended */}
         <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4 ">Gợi ý mua sắm</h2>
