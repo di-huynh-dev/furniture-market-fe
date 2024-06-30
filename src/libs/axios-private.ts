@@ -1,5 +1,5 @@
 import useRefreshToken from '@/hooks/useRefreshToken'
-import { axiosPrivate } from './axios-client'
+import axiosClient from './axios-client'
 import { useEffect } from 'react'
 import { store } from '@/redux/store'
 import { jwtDecode } from 'jwt-decode'
@@ -7,7 +7,7 @@ import { jwtDecode } from 'jwt-decode'
 const useAxiosPrivate = () => {
   const refresh = useRefreshToken()
   useEffect(() => {
-    const requestIntercept = axiosPrivate.interceptors.request.use(
+    const requestIntercept = axiosClient.interceptors.request.use(
       async (config) => {
         const newConfig = { ...config }
 
@@ -27,11 +27,11 @@ const useAxiosPrivate = () => {
       (error) => Promise.reject(error),
     )
     return () => {
-      axiosPrivate.interceptors.request.eject(requestIntercept)
+      axiosClient.interceptors.request.eject(requestIntercept)
     }
   }, [refresh])
 
-  return axiosPrivate
+  return axiosClient
 }
 
 export default useAxiosPrivate

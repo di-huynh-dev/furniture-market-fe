@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import BuyerProductCard from '../Product/Components/BuyerProductCard'
 import { ProductDetailType } from '@/types/product.type'
 import { LoadingComponent } from '@/components'
+import { toast } from 'react-toastify'
 
 const BuyerSearch = () => {
   const { keyword } = useParams()

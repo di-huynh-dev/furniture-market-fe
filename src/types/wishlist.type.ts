@@ -3,6 +3,7 @@ export type WishlistItem = {
   thumbnail: string
   name: string
   material: string
+  wishlistQuantity: number
 }
 export type WishlistType = {
   wishlistItemList: WishlistItem[]

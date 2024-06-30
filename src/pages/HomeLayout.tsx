@@ -20,6 +20,7 @@ import WhishlistProductList from './Home/components/WhishlistProductList'
 const HomeLayout = () => {
   useEffect(() => {
     window.scrollTo(0, 0)
+    document.title = 'Fnest - Trang chủ'
   }, [])
 
   const settings = {

@@ -80,6 +80,7 @@ const Login = () => {
     } else {
       setIsLoading(false)
       navigate('/buyer/login')
+      setSearchParams({})
     }
   }, [token])
 
