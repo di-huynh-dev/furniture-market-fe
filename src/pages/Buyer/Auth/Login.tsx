@@ -166,12 +166,11 @@ import { FormInput, LoadingButton } from '@/components'
 import { LoginApiType } from '@/types/user.type'
 
 export type FormData = LoginApiType
-
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
 
   const validationSchema = yup.object({
     email: yup.string().email('Email không hợp lệ!').required('Không được để trống'),
