@@ -50,6 +50,7 @@ const Login = () => {
   }
 
   //Login by google
+  const GOOGLE_AUTH_BASE_URL = `${import.meta.env.VITE_REACT_APP_URL}/oauth2/authorization/google`
   const [searchParams, setSearchParams] = useSearchParams()
   const token = searchParams.get('token')
   const refreshToken = searchParams.get('refresh-token')
@@ -131,7 +132,7 @@ const Login = () => {
           </Link>
         </p>
         <div className="divider">OR</div>
-        <Link to="http://localhost:8080/oauth2/authorization/google">
+        <Link to={GOOGLE_AUTH_BASE_URL}>
           <div className="btn btn-ghost flex justify-center w-full items-center text-center">
             <FcGoogle className="w-12 h-12 text-primary" />
             <p className="hidden md:block lg:block"> Đăng nhập bằng Google</p>
