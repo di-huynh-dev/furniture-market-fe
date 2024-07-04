@@ -13,7 +13,7 @@ const BestSellerProductList = () => {
     queryKey: [Buyer_QueryKeys.BESTSELLER_PRODUCTS],
     queryFn: async () => {
       const resp = await axiosClient.get(`/product/most-buying?currentPage=0&pageSize=12`)
-      return resp.data.data
+      return resp.data.data.content
     },
   })
   const settings = {

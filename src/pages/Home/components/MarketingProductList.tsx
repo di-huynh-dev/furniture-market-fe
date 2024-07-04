@@ -32,13 +32,17 @@ const MarketingProductList = () => {
 
   return (
     <div>
-      <Slider {...settings}>
-        {products.map((product: ProductDetailType) => (
-          <div key={product.id} className="px-1 py-6">
-            <BuyerProductCard {...product} />
-          </div>
-        ))}
-      </Slider>
+      {products.lenght > 0 ? (
+        <Slider {...settings}>
+          {products?.map((product: ProductDetailType) => (
+            <div key={product.id} className="px-1 py-6">
+              <BuyerProductCard {...product} />
+            </div>
+          ))}
+        </Slider>
+      ) : (
+        <p>Danh sách sản phẩm trống!</p>
+      )}
     </div>
   )
 }
