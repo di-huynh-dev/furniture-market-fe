@@ -129,7 +129,7 @@ const ChatCenter = () => {
 
   return (
     <section className="mx-4 my-2 text-sm lg:pr-20">
-      {!userSentMessages.lenght ? (
+      {userSentMessages.lenght < 0 ? (
         <>
           <p className="text-center">Bạn chưa có tin nhắn nào!</p>
           <div className="flex justify-center">
