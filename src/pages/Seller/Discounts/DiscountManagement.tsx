@@ -559,6 +559,7 @@ const DiscountManagement = () => {
               expandableRowsComponent={ExpandedComponent}
               expandableRows
               progressPending={isLoadingVouchers}
+              progressComponent={<LoadingComponent />}
               columns={columns}
               data={vouchers?.data.data}
               pagination

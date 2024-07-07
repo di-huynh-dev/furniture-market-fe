@@ -97,14 +97,19 @@ const Feedback = () => {
         <div className="modal-box">
           <h3 className="font-bold text-lg">Phản hồi đánh giá</h3>
           <p className="py-4">Nội dung phản hồi</p>
-          <input type="text" onChange={(e) => setContent(e.target.value)} className="input input-bordered w-full" />
+          <textarea
+            rows={3}
+            className="textarea textarea-bordered w-full"
+            placeholder="Nhập nội dung phản hồi"
+            onChange={(e) => setContent(e.target.value)}
+          ></textarea>
           <div className="modal-action">
             <form method="dialog">
               <div className="flex gap-2">
                 <button className="btn btn-primary text-white" onClick={handleReplyFeedback}>
                   Gửi
                 </button>
-                <button className="btn">Close</button>
+                <button className="btn">Hủy</button>
               </div>
             </form>
           </div>
