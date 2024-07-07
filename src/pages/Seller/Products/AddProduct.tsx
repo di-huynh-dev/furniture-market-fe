@@ -79,6 +79,7 @@ const AddProduct = () => {
       featured: data.featured,
       used: data.used,
     }
+
     if (selectedCategory !== '') {
       info['storeCategoryId'] = selectedCategory
     }
@@ -231,14 +232,15 @@ const AddProduct = () => {
                     errorMessage={errors.material?.message}
                     placeholder="Ví dụ: Gỗ Beech, MDF Veneer beech"
                   />
-                  <FormInput
-                    prop="description"
-                    label="Mô tả chi tiết (*)"
-                    register={register}
-                    errorMessage={errors.description?.message}
-                    type="text"
+                  <label className="label">
+                    <span className="label-text capitalize text-sm">Mô tả chi tiết (*)</span>
+                  </label>
+                  <textarea
+                    rows={3}
+                    {...register('description')}
+                    className="textarea textarea-bordered w-full"
                     placeholder="Mô tả chi tiết sản phẩm"
-                  />
+                  ></textarea>
                 </div>
               </div>
               <div>
