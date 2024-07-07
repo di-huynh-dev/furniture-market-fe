@@ -50,7 +50,6 @@ import {
   ShopCategory,
   ShopError,
   ShopHome,
-  ShopManagement,
   UpdateProduct,
 } from './pages/Seller'
 
@@ -278,10 +277,6 @@ function App() {
         {
           path: seller_routes.feedback,
           element: <Feedback />,
-        },
-        {
-          path: seller_routes.shop,
-          element: <ShopManagement />,
         },
         {
           path: seller_routes.notify,
