@@ -116,10 +116,10 @@ const BuyerWallet = () => {
       cell: (row) => (
         <span
           style={{
-            color: row.type === 'WITHDRAW' ? 'red' : 'green',
+            color: row.type === 'PAY' ? 'red' : 'green',
           }}
         >
-          {row.type === 'WITHDRAW' ? `-${formatPrice(row.value)}` : formatPrice(row.value)}
+          {row.type === 'PAY' ? `-${formatPrice(row.value)}` : formatPrice(row.value)}
         </span>
       ),
     },

@@ -48,6 +48,7 @@ const PaymentAccount = () => {
     },
     enabled: !!wallet,
   })
+
   const { data: bankList, isLoading: loadingBank } = useQuery({
     queryKey: [Buyer_QueryKeys.BANK_LIST],
     queryFn: async () => {
@@ -122,10 +123,10 @@ const PaymentAccount = () => {
       cell: (row) => (
         <span
           style={{
-            color: row.type === 'WITHDRAW' ? 'red' : 'green',
+            color: row.type === 'PAY' ? 'red' : 'green',
           }}
         >
-          {row.type === 'WITHDRAW' ? `-${formatPrice(row.value)}` : formatPrice(row.value)}
+          {row.type === 'PAY' ? `-${formatPrice(row.value)}` : formatPrice(row.value)}
         </span>
       ),
     },
