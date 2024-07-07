@@ -183,14 +183,15 @@ const UpdateProduct = () => {
                       type="text"
                       placeholder="Chiều dài- chiều rộng - chiều cao. Ví dụ: D2000 - R550 - C562 mm"
                     />
-                    <FormInput
-                      prop="description"
-                      label="Mô tả chi tiết "
-                      register={register}
-                      errorMessage={errors.description?.message}
-                      type="text"
+                    <label className="label">
+                      <span className="label-text capitalize text-sm">Mô tả chi tiết</span>
+                    </label>
+                    <textarea
+                      rows={3}
+                      {...register('description')}
+                      className="textarea textarea-bordered w-full"
                       placeholder="Mô tả chi tiết sản phẩm"
-                    />
+                    ></textarea>
                   </div>
                 </div>
                 <div>

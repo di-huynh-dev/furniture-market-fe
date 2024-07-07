@@ -4,7 +4,7 @@ import { Seller_QueryKeys } from '@/constants/query-keys'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import useImagePreview from '@/hooks/useImagePreview'
 import { ReportedType } from '@/types/reported.type'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import toast from 'react-hot-toast'
@@ -15,6 +15,7 @@ const BannedProduct = () => {
   const [images, setImages] = useState<File[]>([])
   const { previewImages, handleFileChange } = useImagePreview()
   const [description, setDescription] = useState('')
+  const client = useQueryClient()
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -67,6 +68,9 @@ const BannedProduct = () => {
         toast.success(resp.data.messages[0])
         const dialog = document.getElementById('my_modal_3') as HTMLDialogElement
         dialog.close()
+        client.invalidateQueries({
+          queryKey: [Seller_QueryKeys.REPORTED_PRODUCTS],
+        })
       }
     } catch (error: any) {
       toast.error(error.response.data.messages[0])
@@ -112,7 +116,7 @@ const BannedProduct = () => {
       name: 'Thao tác',
       cell: (row) => (
         <>
-          {row.status === 'PROCESSING' ? (
+          {row.explanations.length === 0 && row.status === 'PROCESSING' ? (
             <button
               onClick={() => {
                 setSelectedRow(row.id)
@@ -124,7 +128,7 @@ const BannedProduct = () => {
               Giải trình
             </button>
           ) : (
-            <p className="italic">Hoàn tất xử lý</p>
+            <p className="italic"></p>
           )}
         </>
       ),
@@ -148,11 +152,11 @@ const BannedProduct = () => {
             }}
             multiple
           />
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-2 gap-2">
             {previewImages &&
               previewImages.map((image, index) => (
                 <div key={`back-${index}`} className="mt-2 flex">
-                  <img src={image} alt={`Back Preview ${index}`} className="w-80 h-60 object-contain" />
+                  <img src={image} alt={`Back Preview ${index}`} className="w-80 h-80 Object-cover" />
                 </div>
               ))}
           </div>

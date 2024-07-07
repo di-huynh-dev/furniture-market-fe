@@ -9,10 +9,13 @@ import { formatPrice } from '@/utils/helpers'
 import Papa from 'papaparse'
 import { LoadingComponent } from '@/components'
 import { toast } from 'react-toastify'
+import { useDebounce } from 'use-debounce'
 
 const OrdersManagement = () => {
   const [activeTab, setActiveTab] = useState('')
   const axiosPrivate = useAxiosPrivate()
+  const [searchQuery, setSearchQuery] = useState('')
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 500)
   const queryClient = useQueryClient()
   const [selectedOrder, setSelectedOrder] = useState<OrderItem | null>(null)
   const [orderListByStatus, setOrderListByStatus] = useState<OrderItem[]>([])
@@ -30,6 +33,14 @@ const OrdersManagement = () => {
       return resp.data.data
     },
   })
+  useEffect(() => {
+    if (debouncedSearchQuery) {
+      const filteredOrders = orders.filter((order: OrderItem) => order.id.toString().includes(debouncedSearchQuery))
+      setOrderListByStatus(filteredOrders)
+    } else {
+      setOrderListByStatus(orders)
+    }
+  }, [debouncedSearchQuery, orders])
 
   if (isLoadingOrders) {
     return <LoadingComponent />
@@ -287,9 +298,20 @@ const OrdersManagement = () => {
               title={
                 <div className="md:flex justify-between">
                   <p className="md:text-xl text-base">DANH SÁCH TẤT CẢ ĐƠN HÀNG CỦA SHOP</p>
-                  <button onClick={exportToCSV} className="mb-4 btn btn-outline btn-sm ">
-                    Xuất báo cáo
-                  </button>
+                  <div className="flex gap-2 my-2 lg:my-0">
+                    <div className="flex gap-2 items-center">
+                      <input
+                        type="text"
+                        placeholder="Tìm kiếm đơn hàng..."
+                        className="input input-bordered"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                      <button onClick={exportToCSV} className="btn btn-sm btn-outline btn-primary">
+                        Xuất báo cáo
+                      </button>
+                    </div>
+                  </div>
                 </div>
               }
               columns={columns}
