@@ -120,7 +120,7 @@ const ShopHome = () => {
     { icon: FiUserPlus, label: 'Đang theo dõi', value: shop_profile?.numFollower },
     { icon: PiUsersFourThin, label: 'Người theo dõi', value: shop_profile?.numFollower },
     { icon: CiChat1, label: 'Tổng số đánh giá', value: shop_profile?.numReview },
-    { icon: CiStar, label: 'Điểm đánh giá', value: shop_profile?.avgReviewStar },
+    { icon: CiStar, label: 'Điểm đánh giá', value: parseFloat(shop_profile?.avgReviewStar).toFixed(1) },
   ]
 
   const handleSentMessage = () => {

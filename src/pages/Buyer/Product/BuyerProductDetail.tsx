@@ -180,8 +180,9 @@ const BuyerProductDetail = () => {
           </div>
           <div className="flex justify-between p-2 lg:text-base text-sm">
             <div className="flex items-center">
-              {product_detail.totalReviewPoint} <FaStar className="text-yellow-500" />/ ({product_detail.reviewAmount}{' '}
-              đánh giá)
+              {product_detail.reviewAmount &&
+                (product_detail.totalReviewPoint / product_detail.reviewAmount).toFixed(1)}
+              <FaStar className="text-yellow-500" />/ ({product_detail.reviewAmount} đánh giá)
             </div>
 
             <span>
@@ -271,9 +272,11 @@ const BuyerProductDetail = () => {
 
             <div className="flex gap-2">
               <p>Điểm đánh giá: </p>
-              <div className="text-primary flex gap-2">
+              <div className="text-primary flex gap-2 items-center">
                 <p>
-                  {product_detail.storeInfo.avgReviewStar !== 'NaN' ? product_detail.storeInfo.avgReviewStar : '...'}
+                  {product_detail.storeInfo.avgReviewStar !== 'NaN'
+                    ? product_detail.storeInfo.avgReviewStar.toFixed(1)
+                    : '...'}
                 </p>{' '}
                 <FaStar className="text-yellow-500" />
               </div>
