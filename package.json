@@ -33,6 +33,7 @@
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.23.0",
     "react-scroll-to-bottom": "^4.2.0",
+    "react-share": "^5.1.0",
     "react-slick": "^0.30.2",
     "react-stomp": "^5.1.0",
     "react-stomp-hooks": "^2.2.1",

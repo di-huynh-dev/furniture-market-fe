@@ -15,6 +15,18 @@ import { useSelector } from 'react-redux'
 import { selectAuth } from '@/redux/reducers/authSlice'
 import { toast } from 'react-toastify'
 import { LoadingComponent } from '@/components'
+import {
+  TwitterShareButton,
+  TwitterIcon,
+  FacebookShareButton,
+  FacebookMessengerShareButton,
+  EmailShareButton,
+  LinkedinShareButton,
+  EmailIcon,
+  LinkedinIcon,
+  FacebookIcon,
+  FacebookMessengerIcon,
+} from 'react-share'
 
 const BuyerProductDetail = () => {
   const { id } = useParams()
@@ -27,6 +39,9 @@ const BuyerProductDetail = () => {
   const [reportReason, setReportReason] = useState('')
   const [reportDescription, setReportDescription] = useState('')
   const user = useSelector(selectAuth)
+
+  const url = import.meta.env.VITE_PUBLIC_WEBSITE_URL
+  const shareLink = `${url}/product/${id}`
 
   const dispatch = useDispatch()
 
@@ -164,6 +179,25 @@ const BuyerProductDetail = () => {
                 />
               )
             })}
+          </div>
+
+          <div className="flex items-center gap-x-2 justify-center w-full mt-10">
+            <p>Chia sẻ:</p>
+            <FacebookShareButton url={shareLink} title={product_detail.name}>
+              <FacebookIcon size={32} round />
+            </FacebookShareButton>
+            <FacebookMessengerShareButton appId="" url={shareLink} title={product_detail.name}>
+              <FacebookMessengerIcon size={32} round />
+            </FacebookMessengerShareButton>
+            <TwitterShareButton url={shareLink} title={product_detail.name}>
+              <TwitterIcon size={32} round />
+            </TwitterShareButton>
+            <LinkedinShareButton url={shareLink} title={product_detail.name}>
+              <LinkedinIcon size={32} round />
+            </LinkedinShareButton>
+            <EmailShareButton url={shareLink} subject={product_detail.name}>
+              <EmailIcon size={32} round />
+            </EmailShareButton>
           </div>
         </div>
         <div>
