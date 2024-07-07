@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import axiosClient from '@/libs/axios-client'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -69,8 +70,8 @@ const BuyerProductDetail = () => {
         dialog.close()
         toast.success(resp.data.messages[0])
       }
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      toast.error(error.response.data.messages[0])
     }
   }
 
@@ -290,7 +291,7 @@ const BuyerProductDetail = () => {
           <div className="flex items-center">
             <p className="text-4xl font-bold">
               {product_detail.totalReviewPoint && product_detail.reviewAmount !== 'NaN'
-                ? product_detail.totalReviewPoint / product_detail.reviewAmount
+                ? (product_detail.totalReviewPoint / product_detail.reviewAmount).toFixed(1)
                 : '...'}
               /
             </p>
