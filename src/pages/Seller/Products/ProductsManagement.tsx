@@ -11,12 +11,14 @@ import { formatPrice } from '@/utils/helpers'
 import { CiEdit, CiTrash } from 'react-icons/ci'
 import { LoadingComponent } from '@/components'
 import { FaBan, FaCheck } from 'react-icons/fa6'
+import { useDebounce } from 'use-debounce'
 
 const ProductsManagement = () => {
   const axiosPrivate = useAxiosPrivate()
   const [selectedRow, setSelectedRow] = useState('')
   const [activeTab, setActiveTab] = useState('ALL')
   const [searchQuery, setSearchQuery] = useState('')
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 500)
   const client = useQueryClient()
   const navigate = useNavigate()
 
@@ -61,7 +63,7 @@ const ProductsManagement = () => {
 
   const filteredProducts = products?.data.data
     .filter((product: ProductDetailType) => activeTab === 'ALL' || product.storeCategories.includes(activeTab))
-    .filter((product: ProductDetailType) => product.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    .filter((product: ProductDetailType) => product.name.toLowerCase().includes(debouncedSearchQuery.toLowerCase()))
 
   const columns: TableColumn<ProductDetailType>[] = [
     {
@@ -213,7 +215,7 @@ const ProductsManagement = () => {
     <section className="mx-4 my-2 text-sm">
       <dialog id="my_modal_2" className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Xác nhận</h3>
+          <h3 className="font-bold text-lg">Thông báo xác nhận</h3>
           <p className="py-4">Bạn có chắc chắn muốn xóa sản phẩm này?</p>
           <div className="modal-action">
             <form method="dialog">
@@ -224,7 +226,7 @@ const ProductsManagement = () => {
                 >
                   Xác nhận
                 </button>
-                <button className="btn">Đóng</button>
+                <button className="btn">Hủy</button>
               </div>
             </form>
           </div>

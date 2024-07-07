@@ -15,17 +15,19 @@ import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { useDebounce } from 'use-debounce'
 
 const BuyerHeader = () => {
   const navigate = useNavigate()
   const [keyword, setKeyword] = useState('###@#@#@#')
+  const [debouncedKeyword] = useDebounce(keyword, 500)
   const [productList, setProductList] = useState([])
   const user = useSelector(selectAuth)
   const dispatch = useDispatch()
 
   const searchMutation = useMutation({
     mutationFn: async () => {
-      const resp = await axiosClient.get(`/product/search-filter?name.contains=${keyword}`)
+      const resp = await axiosClient.get(`/product/search-filter?name.contains=${debouncedKeyword}`)
       return resp
     },
     onSuccess: (resp) => {

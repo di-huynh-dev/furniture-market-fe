@@ -191,8 +191,8 @@ const ShopCategory = () => {
       </dialog>
       <dialog id="my_modal_2" className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Xác nhận</h3>
-          <p className="py-4">Bạn có chắc chắn muốn xóa danh mục?</p>
+          <h3 className="font-bold text-lg">Thông báo xác nhận</h3>
+          <p className="py-4">Bạn có chắc chắn muốn xóa danh mục này?</p>
           <div className="modal-action">
             <form method="dialog">
               <div className="flex gap-2">
@@ -202,7 +202,7 @@ const ShopCategory = () => {
                 >
                   Xác nhận
                 </button>
-                <button className="btn">Close</button>
+                <button className="btn">Hủy</button>
               </div>
             </form>
           </div>
@@ -218,7 +218,7 @@ const ShopCategory = () => {
             required
             value={categoryName}
             onChange={(e) => setCategoryName(e.target.value)}
-            className="input input-bordered w-full max-w-xs my-2"
+            className="input input-bordered w-full my-2"
           />
           <div className="modal-action">
             <form method="dialog">
