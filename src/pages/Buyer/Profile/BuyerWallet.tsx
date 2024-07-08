@@ -2,7 +2,7 @@ import { Buyer_QueryKeys } from '@/constants/query-keys'
 import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 import { formatPrice } from '@/utils/helpers'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import vnpay from '@/assets/images/vnpay.png'
 import { FaCompressArrowsAlt, FaExpandArrowsAlt } from 'react-icons/fa'
 import toast from 'react-hot-toast'
@@ -21,6 +21,10 @@ const BuyerWallet = () => {
   const [ownerName, setOwnerName] = useState('')
   const client = useQueryClient()
   const [activeTab, setActiveTab] = useState('wallet')
+
+  useEffect(() => {
+    scrollTo(0, 0)
+  }, [])
 
   const { data: wallet, isLoading: loadingWallet } = useQuery({
     queryKey: [Buyer_QueryKeys.GET_WALLET],

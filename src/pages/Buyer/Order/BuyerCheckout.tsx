@@ -15,6 +15,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IoIosArrowForward } from 'react-icons/io'
 import { LoadingComponent } from '@/components'
+import VnPay from '@/assets/images/vnpay.png'
 
 type DeliveryAddress = {
   id: string
@@ -37,6 +38,7 @@ const BuyerCheckout = () => {
   }>({})
   const [selectedVouchers, setSelectedVouchers] = useState<{ [key: string]: string[] }>({})
   const [selectedVoucher, setSelectedVoucher] = useState([])
+  const [wallet, setWallet] = useState(0)
 
   useEffect(() => {
     document.title = 'Fnest - Thanh toán'
@@ -75,6 +77,15 @@ const BuyerCheckout = () => {
     try {
       const resp = await axiosPrivate.get(`/buyer/voucher/by-product/${id}`)
       setSelectedVoucher(resp.data.data)
+    } catch (error: any) {
+      toast.error(error.response.data.messages[0])
+    }
+  }
+
+  const getWallet = async () => {
+    try {
+      const resp = await axiosPrivate.get(`/user/wallet`)
+      setWallet(resp.data.data.value)
     } catch (error: any) {
       toast.error(error.response.data.messages[0])
     }
@@ -136,6 +147,7 @@ const BuyerCheckout = () => {
     }
 
     calculateShippingFees() // Gọi hàm tính toán phí vận chuyển khi có sự thay đổi
+    getWallet()
   }, [isLoadingAddress, selectedAddressId, cartItems])
 
   const calculateTotalPrice = () => {
@@ -159,6 +171,8 @@ const BuyerCheckout = () => {
 
     // Tổng thanh toán = Tổng tiền hàng + Tổng phí vận chuyển - Tổng giảm giá từ voucher
     const totalPayment = totalPrice + totalShippingFee - totalDiscount
+
+    //Kiểm tra số dư ví
 
     return {
       totalPrice: totalPrice,
@@ -215,7 +229,12 @@ const BuyerCheckout = () => {
     <div className="">
       <dialog id="my_modal_2" className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Chọn địa chỉ giao hàng</h3>
+          <div className="flex justify-between">
+            <h3 className="font-bold text-lg">Chọn địa chỉ giao hàng</h3>
+            <button onClick={() => navigation('/buyer/account/address')} className="btn  btn-sm">
+              Thêm địa chỉ mới
+            </button>
+          </div>
           {addresses &&
             addresses.deliveryAddresses.map((address: DeliveryAddress) => (
               <div key={address.id} className="grid grid-cols-4 gap-2 my-2">
@@ -233,6 +252,7 @@ const BuyerCheckout = () => {
                 </div>
               </div>
             ))}
+
           <div className="modal-action">
             <form method="dialog">
               <div className="flex gap-2">
@@ -427,6 +447,37 @@ const BuyerCheckout = () => {
             Số dư ví
           </button>
         </div>
+        {paymentType === 'COD' ? (
+          <p>Phí thu hộ: 0đ</p>
+        ) : (
+          <>
+            <div className="flex gap-2 items-center">
+              <img src={VnPay} alt="VNPay Logo" />
+              <div>
+                <p>Ví cá nhân của bạn</p>
+                <p>Số dư: {formatPrice(wallet)}</p>
+              </div>
+            </div>
+            {wallet < totalPriceInfo.totalPayment ? (
+              <>
+                <p className="text-red-500">
+                  Số dư của bạn không đủ để thực hiện thanh toán đơn hàng này. Vui lòng nạp thêm tiền vào ví!
+                </p>
+                <Link className="btn btn-sm" to="/buyer/account/wallet">
+                  Nạp tiền tại đây
+                </Link>
+              </>
+            ) : (
+              <>
+                <p className="text-green-500">
+                  Số dư sau thanh toán đơn hàng: {formatPrice(wallet)} - {formatPrice(totalPriceInfo.totalPayment)} ={' '}
+                  {formatPrice(wallet - totalPriceInfo.totalPayment)}
+                </p>
+              </>
+            )}
+          </>
+        )}
+
         <div className="flex justify-end">
           <div>
             <div className="flex gap-2 my-4">
