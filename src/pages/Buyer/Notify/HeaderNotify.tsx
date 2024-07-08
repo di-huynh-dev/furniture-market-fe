@@ -19,6 +19,9 @@ const HeaderNotify = () => {
   const axiosPrivate = useAxiosBuyerPrivate()
   const [notificationsAccount, setNotificationsAccount] = useState<Notification[]>([])
   const [notificationsReport, setNotificationsReport] = useState<Notification[]>([])
+  const [notificationsDiscount, setNotificationsDiscount] = useState<Notification[]>([])
+  console.log(notificationsDiscount)
+
   const [notificationsOrder, setNotificationsOrder] = useState<Notification[]>([])
   const queryClient = useQueryClient()
   const navigation = useNavigate()
@@ -29,14 +32,16 @@ const HeaderNotify = () => {
       const topic = `${SOCKET_NOTIFY_TOPIC_PREFIX_URL}/${user.authData.user.id}`
       client.subscribe(topic, (message: { body: string }) => {
         try {
+          const parsedMessage = JSON.parse(message.body)
           const newNotification: Notification = {
-            id: '',
-            createdAt: new Date().toISOString(),
-            type: '',
+            id: parsedMessage.id,
+            createdAt: parsedMessage.createdAt,
+            type: parsedMessage.type,
             seen: false,
-            content: ['', message.body],
+            content: ['', parsedMessage.message],
+            message: parsedMessage.message,
           }
-          setNotificationsAccount([...notificationsAccount, newNotification])
+          setNotificationsAccount((prev) => [newNotification, ...prev])
         } catch (error: any) {
           toast.error('Failed to parse notification message:', error)
         }
@@ -61,6 +66,16 @@ const HeaderNotify = () => {
       const response = await axiosPrivate.get('/user/announce?type=ORDER')
       if (response.status === 200) {
         setNotificationsOrder(response.data.data.content)
+      }
+      return response.data.data.content
+    },
+  })
+  const { isLoading: isLoadingVouchers } = useQuery({
+    queryKey: [Buyer_QueryKeys.VOUCHER_NOTIFICATION],
+    queryFn: async () => {
+      const response = await axiosPrivate.get('/user/announce?type=VOUCHER')
+      if (response.status === 200) {
+        setNotificationsDiscount(response.data.data.content)
       }
       return response.data.data.content
     },
@@ -106,21 +121,22 @@ const HeaderNotify = () => {
         <div tabIndex={0} role="button" className=" drawer-button text-gray-600 hover:text-black flex  items-center">
           <FaRegBell className="mr-1" />
           Thông báo
-          {!notificationsAccount && !notificationsOrder && !notificationsReport ? (
+          {!notificationsAccount && !notificationsOrder && !notificationsReport && !notificationsDiscount ? (
             <span className=" badge badge-secondary text-white ml-2 badge-sm">0</span>
           ) : (
             <>
               <div className="badge badge-secondary text-white ml-2 badge-sm">
                 {notificationsAccount.filter(({ seen }) => !seen).length +
                   notificationsOrder.filter(({ seen }) => !seen).length +
-                  notificationsReport.filter(({ seen }) => !seen).length}
+                  notificationsReport.filter(({ seen }) => !seen).length +
+                  notificationsDiscount.filter(({ seen }) => !seen).length}
               </div>
             </>
           )}
         </div>
 
         <ul tabIndex={0} className="dropdown-content z-[100] p-3 shadow bg-base-100 rounded-box w-96">
-          {!notificationsAccount && !notificationsOrder && !notificationsReport ? (
+          {!notificationsAccount && !notificationsOrder && !notificationsReport && !notificationsDiscount ? (
             <p className="p-4 text-center">Bạn không có thông báo nào</p>
           ) : (
             <>
@@ -133,11 +149,56 @@ const HeaderNotify = () => {
 
               <div className="menu scrollbar-thin h-96">
                 <div className="overflow-y-auto">
-                  {isLoadingNotifications || isLoadingOrders || isLoadingReports ? (
+                  {isLoadingNotifications || isLoadingOrders || isLoadingReports || isLoadingVouchers ? (
                     <p>Đang tải dữ liệu...</p>
                   ) : (
                     <>
+                      <p className="text-xs">Thông báo đơn hàng</p>
+                      {notificationsOrder.length === 0 && (
+                        <p className="text-gray-500 text-center my-2 italic">Chưa có thông báo nào</p>
+                      )}
+                      {notificationsOrder.slice(0, 5).map((notification: Notification, index: number) => (
+                        <div
+                          key={index}
+                          className={`mb-2 px-3 rounded-lg text-xs border-b grid grid-cols-10 items-center gap-2 hover:cursor-pointer ${
+                            notification.seen ? '' : 'bg-gray-100'
+                          }`}
+                          onClick={() => {
+                            handleMarkAsRead(notification.id)
+                            navigation(`/buyer/account/purchase/order/${notification.content[0]}`)
+                          }}
+                        >
+                          <img src={orderImage} alt="" className="w-16 object-cover col-span-1" />
+                          <div className="col-span-9">
+                            <p>{notification.content[1]}</p>
+                            <p className="text-gray-500 italic">({notification.createdAt})</p>
+                          </div>
+                        </div>
+                      ))}
+                      {notificationsOrder.length > 5 && (
+                        <div className="text-center">
+                          <button onClick={() => navigation('/seller/notify')} className="text-primary link">
+                            Xem thêm
+                          </button>
+                        </div>
+                      )}
+                      <p className="text-xs">Thông báo tài khoản</p>
                       {notificationsAccount.slice(0, 5).map((notification: Notification, index: number) => (
+                        <div
+                          key={index}
+                          className={`mb-2 px-3 rounded-lg text-xs border-b grid grid-cols-10 items-center gap-2 hover:cursor-pointer ${
+                            notification.seen ? '' : 'bg-gray-100'
+                          }`}
+                          onClick={() => handleMarkAsRead(notification.id)}
+                        >
+                          <img src={accountImage} alt="" className="w-16 object-cover col-span-1" />
+                          <div className="col-span-9">
+                            <p>{notification.content[1]}</p>
+                            <p className="text-gray-500 italic">({notification.createdAt})</p>
+                          </div>
+                        </div>
+                      ))}
+                      {notificationsDiscount.slice(0, 5).map((notification: Notification, index: number) => (
                         <div
                           key={index}
                           className={`mb-2 px-3 rounded-lg text-xs border-b grid grid-cols-10 items-center gap-2 hover:cursor-pointer ${
@@ -168,35 +229,6 @@ const HeaderNotify = () => {
                         </div>
                       ))}
                       {notificationsAccount.length > 5 && (
-                        <div className="text-center">
-                          <button onClick={() => navigation('/seller/notify')} className="text-primary link">
-                            Xem thêm
-                          </button>
-                        </div>
-                      )}
-
-                      {notificationsOrder.length === 0 && (
-                        <p className="text-gray-500 text-center my-2 italic">Chưa có thông báo nào</p>
-                      )}
-                      {notificationsOrder.slice(0, 5).map((notification: Notification, index: number) => (
-                        <div
-                          key={index}
-                          className={`mb-2 px-3 rounded-lg text-xs border-b grid grid-cols-10 items-center gap-2 hover:cursor-pointer ${
-                            notification.seen ? '' : 'bg-gray-100'
-                          }`}
-                          onClick={() => {
-                            handleMarkAsRead(notification.id)
-                            navigation(`/buyer/account/purchase/order/${notification.content[0]}`)
-                          }}
-                        >
-                          <img src={orderImage} alt="" className="w-16 object-cover col-span-1" />
-                          <div className="col-span-9">
-                            <p>{notification.content[1]}</p>
-                            <p className="text-gray-500 italic">({notification.createdAt})</p>
-                          </div>
-                        </div>
-                      ))}
-                      {notificationsOrder.length > 5 && (
                         <div className="text-center">
                           <button onClick={() => navigation('/seller/notify')} className="text-primary link">
                             Xem thêm

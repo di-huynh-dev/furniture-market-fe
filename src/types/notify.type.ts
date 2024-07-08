@@ -11,4 +11,5 @@ export interface Notification {
   type: string
   seen: boolean
   content: [string, string]
+  message?: [string, string]
 }

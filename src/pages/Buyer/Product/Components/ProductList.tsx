@@ -15,7 +15,6 @@ const ProductList = ({ selectedCategory }: { selectedCategory: string }) => {
       const resp = await axiosClient.get(
         `/product/search-filter?category.contains=name,${selectedCategory}&currentPage=${currentPage}&pageSize=${pageSize}`,
       )
-      console.log(resp)
 
       return resp
     },

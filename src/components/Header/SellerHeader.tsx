@@ -36,16 +36,18 @@ const SellerHeader = () => {
       const topic = `${SOCKET_NOTIFY_TOPIC_PREFIX_URL}/${user.authData.user.id}`
       client.subscribe(topic, (message: { body: string }) => {
         try {
+          const parsedMessage = JSON.parse(message.body)
           const newNotification: Notification = {
-            id: '',
-            createdAt: '',
-            type: '',
+            id: parsedMessage.id,
+            createdAt: parsedMessage.createdAt,
+            type: parsedMessage.type,
             seen: false,
-            content: ['', message.body],
+            content: ['', parsedMessage.message],
+            message: parsedMessage.message,
           }
           setNotifications((prev) => [...prev, newNotification])
-        } catch (error) {
-          console.error('Failed to parse notification message:', error)
+        } catch (error: any) {
+          toast.error('Failed to parse notification message:', error)
         }
       })
     }
