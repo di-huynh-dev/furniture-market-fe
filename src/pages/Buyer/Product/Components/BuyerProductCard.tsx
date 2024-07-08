@@ -12,6 +12,8 @@ import React from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
+import { useSelector } from 'react-redux'
+import { selectAuth } from '@/redux/reducers/authSlice'
 
 const BuyerProductCard: React.FC<ProductDetailType> = ({
   id,
@@ -50,6 +52,7 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
     material,
   }
   const axiosPrivate = useAxiosBuyerPrivate()
+  const user = useSelector(selectAuth)
   const dispatch = useDispatch()
   const handleAddToCart = () => {
     dispatch(addToCart(product))
@@ -70,7 +73,11 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
   })
   const handleAddToWishlist = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault()
-    addToWishlistMutation.mutate(id)
+    if (!user.authData.accessToken) {
+      toast.error('Vui đăng nhập để yêu thích sản phẩm!')
+    } else {
+      addToWishlistMutation.mutate(id)
+    }
   }
   return (
     <div key={id} className="card w-full hover:shadow-2xl ease-in-out duration-300 bg-white">
