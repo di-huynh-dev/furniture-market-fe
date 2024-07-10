@@ -16,6 +16,7 @@ const WhishlistProductList = () => {
       return resp.data.data.content
     },
   })
+
   const settings = {
     dots: true,
     infinite: true,
@@ -28,7 +29,7 @@ const WhishlistProductList = () => {
   if (isLoading) return <LoadingComponent />
   return (
     <div>
-      {products.lenght > 0 ? (
+      {products.length > 0 ? (
         <Slider {...settings}>
           {products?.map((product: ProductDetailType) => (
             <div key={product.id} className="px-1 py-6">
