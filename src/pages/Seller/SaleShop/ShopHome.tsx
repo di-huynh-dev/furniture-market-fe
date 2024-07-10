@@ -326,19 +326,19 @@ const ShopHome = () => {
           <p>Sắp xếp theo</p>
           <button
             onClick={() => {
-              setSort('createdAt.ASC')
+              setSort('createdAt.DESC')
               getProductsByCategoryMutation.mutate({ categoryName: categoryName })
             }}
-            className="btn btn-outline btn-error btn-sm w-40"
+            className="btn btn-outline hover:text-white text-error hover:bg-error  btn-sm w-40"
           >
             Mới nhất
           </button>
           <button
             onClick={() => {
-              setSort('sold.ASC')
+              setSort('sold.DESC')
               getProductsByCategoryMutation.mutate({ categoryName: categoryName })
             }}
-            className="btn btn-outline btn-error btn-sm w-40"
+            className="btn btn-outline hover:text-white text-error hover:bg-error  btn-sm w-40"
           >
             Bán chạy nhất
           </button>
