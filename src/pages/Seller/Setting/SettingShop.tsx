@@ -245,11 +245,12 @@ const SettingShop = () => {
                   onChange={(e) => handleProvinceChange(e.target.value, e.target.options[e.target.selectedIndex].text)}
                 >
                   <option value="">Chọn tỉnh</option>
-                  {provinces.map((province: Location) => (
-                    <option key={province.id} value={province.id}>
-                      {province.name}
-                    </option>
-                  ))}
+                  {provinces &&
+                    provinces.map((province: Location) => (
+                      <option key={province.id} value={province.id}>
+                        {province.name}
+                      </option>
+                    ))}
                 </select>
                 <select
                   className="select select-bordered w-full max-w-xs"
