@@ -10,6 +10,7 @@ import { useState } from 'react'
 import useImagePreview from '@/hooks/useImagePreview'
 import toast from 'react-hot-toast'
 import { useParams } from 'react-router-dom'
+import { Seller_QueryKeys } from '@/constants/query-keys'
 
 export type FormData = UpdateProductApiType
 
@@ -24,6 +25,7 @@ const UpdateProduct = () => {
   const { previewImages: images, handleFileChange: handleImagesChange } = useImagePreview()
   const [isLoading, setIsLoading] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<string>('')
+  const [selectedSystemCategory, setSelectedSystemCategory] = useState<string>('')
 
   const { id } = useParams()
 
@@ -32,6 +34,20 @@ const UpdateProduct = () => {
     queryFn: async () => {
       const resp = await axiosPrivate.get('/seller/category')
       return resp.data.data
+    },
+  })
+
+  const { data: systemCategories, isLoading: isLoadingSystemCategories } = useQuery({
+    queryKey: [Seller_QueryKeys.SYSTEM_CATEGORY],
+    queryFn: async () => {
+      try {
+        const resp = await axiosPrivate.get('/category/system')
+        if (resp.status === 200) {
+          return resp.data.data
+        }
+      } catch (error: any) {
+        toast.error(error.response.data.messages[0])
+      }
     },
   })
 
@@ -57,6 +73,9 @@ const UpdateProduct = () => {
 
     if (selectedCategory !== '') {
       info['storeCategoryId'] = selectedCategory
+    }
+    if (selectedSystemCategory !== '') {
+      info['systemCategoryId'] = selectedCategory
     }
     const json = JSON.stringify(info)
 
@@ -101,7 +120,7 @@ const UpdateProduct = () => {
     formState: { errors },
   } = useForm<FormData>({})
 
-  if (isLoadingCategories) {
+  if (isLoadingCategories || isLoadingSystemCategories) {
     return <LoadingComponent />
   }
 
@@ -125,7 +144,7 @@ const UpdateProduct = () => {
                       type="file"
                       accept="image/*"
                       {...register('thumbnail')}
-                      className="input input-bordered text-sm"
+                      className="file-input file-input-bordered file-input-xs w-full max-w-xs"
                       onChange={handleThumbnailChange}
                     />
                     {errors.thumbnail?.message && <p className="text-red-500 text-sm">{errors.thumbnail.message}</p>}
@@ -144,7 +163,7 @@ const UpdateProduct = () => {
                       id="logo"
                       type="file"
                       accept="image/*"
-                      className="input input-bordered text-sm"
+                      className="file-input file-input-bordered file-input-xs w-full max-w-xs"
                       {...register('images')}
                       onChange={handleImagesChange}
                       multiple
@@ -179,14 +198,6 @@ const UpdateProduct = () => {
                       type="text"
                       errorMessage={errors.material?.message}
                       placeholder="Ví dụ: Gỗ Beech, MDF Veneer beech"
-                    />
-                    <FormInput
-                      prop="size"
-                      register={register}
-                      errorMessage={errors.size?.message}
-                      label="Kích thước "
-                      type="text"
-                      placeholder="Chiều dài- chiều rộng - chiều cao. Ví dụ: D2000 - R550 - C562 mm"
                     />
                     <label className="label">
                       <span className="label-text capitalize text-sm">Mô tả chi tiết</span>
@@ -228,8 +239,63 @@ const UpdateProduct = () => {
                     />
                   </div>
                 </div>
+
                 <div>
-                  <span>4. Thông tin vận chuyển</span>
+                  <span>4. Thuộc</span>
+
+                  <div className="mx-10 grid grid-cols-4 gap-4">
+                    <select
+                      onChange={(e) => setSelectedSystemCategory(e.target.value)}
+                      className="select select-bordered w-full max-w-xs"
+                    >
+                      <option disabled selected>
+                        Danh mục hàng của sàn
+                      </option>
+                      {systemCategories &&
+                        systemCategories.map((category: CategoryType) => (
+                          <option key={category.id} value={category.id}>
+                            {category.name}
+                          </option>
+                        ))}
+                    </select>
+                    <select
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                      className="select select-bordered w-full max-w-xs"
+                    >
+                      <option disabled selected>
+                        Danh mục hàng của shop
+                      </option>
+                      {shopCategories &&
+                        shopCategories.map((category: CategoryType) => (
+                          <option key={category.id} value={category.id}>
+                            {category.name}
+                          </option>
+                        ))}
+                    </select>
+                    <select className="select select-bordered w-full max-w-xs" {...register('used')}>
+                      <option disabled selected value="">
+                        Tình trạng
+                      </option>
+                      <option value="false">Mới</option>
+                      <option value="true"> Đã qua sử dụng</option>
+                    </select>
+
+                    <div className="flex items-center">
+                      <input
+                        id="featured"
+                        type="checkbox"
+                        {...register('featured')} // Bind checkbox with register
+                        className="form-checkbox h-5 w-5 text-blue-500"
+                      />
+                      <label htmlFor="featured" className="ml-2">
+                        Sản phẩm nổi bật
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <span>5. Thông tin vận chuyển</span>
                   <div className="mx-10 md:grid grid-cols-4 gap-4">
                     <FormInput
                       label="Chiều dài(*)"
@@ -259,45 +325,6 @@ const UpdateProduct = () => {
                       placeholder="Đơn vị: gram"
                       register={register}
                     />
-                  </div>
-                </div>
-
-                <div>
-                  <span>5. Khác</span>
-                  <div className="mx-10 grid grid-cols-3 gap-4">
-                    <select
-                      onChange={(e) => setSelectedCategory(e.target.value)}
-                      className="select select-bordered w-full max-w-xs"
-                    >
-                      <option disabled selected>
-                        Danh mục hàng
-                      </option>
-                      {shopCategories &&
-                        shopCategories.map((category: CategoryType) => (
-                          <option key={category.id} value={category.id}>
-                            {category.name}
-                          </option>
-                        ))}
-                    </select>
-                    <select className="select select-bordered w-full max-w-xs" {...register('used')}>
-                      <option disabled selected value="">
-                        Tình trạng
-                      </option>
-                      <option value="false">Mới</option>
-                      <option value="true"> Đã qua sử dụng</option>
-                    </select>
-
-                    <div className="flex items-center">
-                      <input
-                        id="featured"
-                        type="checkbox"
-                        {...register('featured')} // Bind checkbox with register
-                        className="form-checkbox h-5 w-5 text-blue-500"
-                      />
-                      <label htmlFor="featured" className="ml-2">
-                        Sản phẩm nổi bật
-                      </label>
-                    </div>
                   </div>
                 </div>
               </div>
