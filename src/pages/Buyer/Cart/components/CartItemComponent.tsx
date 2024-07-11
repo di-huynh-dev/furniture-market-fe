@@ -76,7 +76,8 @@ const CartItemComponent: React.FC<{ item: CartItem }> = ({ item }) => {
               <div className="flex items-center border-gray-100">
                 <button
                   className="btn btn-ghost"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault()
                     handleDecrease(item)
                   }}
                 >
@@ -90,7 +91,8 @@ const CartItemComponent: React.FC<{ item: CartItem }> = ({ item }) => {
                 />
                 <button
                   className="btn btn-ghost"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault()
                     handleIncrease(item)
                   }}
                 >
@@ -98,7 +100,13 @@ const CartItemComponent: React.FC<{ item: CartItem }> = ({ item }) => {
                 </button>
               </div>
             </div>
-            <button className="btn btn-ghost" onClick={() => removeItemFromTheCart(item)}>
+            <button
+              className="btn btn-ghost"
+              onClick={(e) => {
+                e.preventDefault()
+                removeItemFromTheCart(item)
+              }}
+            >
               Xóa
               <CiCircleRemove className="w-[30px] h-[30px]" />
             </button>

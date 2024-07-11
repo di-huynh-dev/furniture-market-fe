@@ -68,7 +68,13 @@ const WishlistItemList = () => {
                       </div>
                     </div>
                     <div className="mt-2 md:flex md:items-center md:justify-end">
-                      <button className="btn btn-ghost" onClick={() => addToWishlistMutation.mutate(item.id)}>
+                      <button
+                        className="btn btn-ghost"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          addToWishlistMutation.mutate(item.id)
+                        }}
+                      >
                         Bỏ yêu thích
                         <CiCircleRemove className="w-[30px] h-[30px]" />
                       </button>
