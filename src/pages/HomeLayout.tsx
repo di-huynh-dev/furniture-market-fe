@@ -16,12 +16,16 @@ import RecommendedProductList from './Home/components/RecommendedProductList'
 import MarketingProductList from './Home/components/MarketingProductList'
 import BestSellerProductList from './Home/components/BestSellerProductList'
 import WhishlistProductList from './Home/components/WhishlistProductList'
+import { useSelector } from 'react-redux'
+import { selectAuth } from '@/redux/reducers/authSlice'
 
 const HomeLayout = () => {
   useEffect(() => {
     window.scrollTo(0, 0)
     document.title = 'Fnest - Trang chủ'
   }, [])
+
+  const user = useSelector(selectAuth)
 
   const settings = {
     infinite: true,
@@ -141,22 +145,22 @@ const HomeLayout = () => {
         {/* Products hot */}
         <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4 ">Sản phẩm nổi bật</h2>
         <div className="w-[100px] h-[3px] bg-primary"></div>
-        <MarketingProductList />
+        <MarketingProductList userLogin={user.authData} />
 
         {/* Products whistlist */}
         <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4 ">Sản phẩm yêu thích</h2>
         <div className="w-[100px] h-[3px] bg-primary"></div>
-        <WhishlistProductList />
+        <WhishlistProductList userLogin={user.authData} />
 
         {/* Products whistlist */}
         <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4 ">Sản phẩm bán chạy</h2>
         <div className="w-[100px] h-[3px] bg-primary"></div>
-        <BestSellerProductList />
+        <BestSellerProductList userLogin={user.authData} />
 
         {/* Products  recommended */}
         <h2 className="lg:text-2xl text-lg font-bold pt-6 pb-4 ">Gợi ý mua sắm</h2>
         <div className="w-[100px] h-[3px] bg-primary"></div>
-        <RecommendedProductList />
+        <RecommendedProductList userLogin={user.authData} />
       </div>
 
       {/* Form contact */}

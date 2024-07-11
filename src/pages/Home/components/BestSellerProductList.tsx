@@ -2,18 +2,27 @@ import { LoadingComponent } from '@/components'
 import NextArrow from '@/components/ArrowButton/NextArrow'
 import PrevArrow from '@/components/ArrowButton/PrevArrow'
 import { Buyer_QueryKeys } from '@/constants/query-keys'
+import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 import axiosClient from '@/libs/axios-client'
 import { BuyerProductCard } from '@/pages/Buyer'
 import { ProductDetailType } from '@/types/product.type'
+import { LoginData } from '@/types/user.type'
 import { useQuery } from '@tanstack/react-query'
 import Slider from 'react-slick'
 
-const BestSellerProductList = () => {
+const BestSellerProductList = ({ userLogin }: { userLogin: LoginData }) => {
+  const axiosPrivate = useAxiosBuyerPrivate()
+
   const { data: products, isLoading } = useQuery({
     queryKey: [Buyer_QueryKeys.BESTSELLER_PRODUCTS],
     queryFn: async () => {
-      const resp = await axiosClient.get(`/product/most-buying?currentPage=0&pageSize=12`)
-      return resp.data.data.content
+      if (!userLogin.accessToken) {
+        const resp = await axiosClient.get(`/product/most-buying?currentPage=0&pageSize=32`)
+        return resp.data.data.content
+      } else {
+        const resp = await axiosPrivate.get(`/product/most-buying?currentPage=0&pageSize=22`)
+        return resp.data.data.content
+      }
     },
   })
   const settings = {

@@ -1,18 +1,29 @@
 import { LoadingComponent } from '@/components'
 import { Buyer_QueryKeys } from '@/constants/query-keys'
+import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 import axiosClient from '@/libs/axios-client'
 import { BuyerProductCard } from '@/pages/Buyer'
 import { ProductDetailType } from '@/types/product.type'
+import { LoginData } from '@/types/user.type'
 import { useQuery } from '@tanstack/react-query'
 
-const RecommendedProductList = () => {
+const RecommendedProductList = ({ userLogin }: { userLogin: LoginData }) => {
+  const axiosPrivate = useAxiosBuyerPrivate()
+
   const { data: products, isLoading } = useQuery({
     queryKey: [Buyer_QueryKeys.RECOMMENDED_PRODUCTS],
     queryFn: async () => {
-      const resp = await axiosClient.get(`/product/recommend?isExplicit=false&currentPage=0&pageSize=12`)
-      return resp.data.data
+      if (!userLogin.accessToken) {
+        const resp = await axiosClient.get(`/product/recommend?isExplicit=true&currentPage=0&pageSize=16`)
+        return resp.data.data
+      } else {
+        const resp = await axiosPrivate.get(`/product/recommend?isExplicit=true&currentPage=0&pageSize=16`)
+        return resp.data.data
+      }
     },
   })
+
+  console.log('recommend', products)
 
   if (isLoading) return <LoadingComponent />
 

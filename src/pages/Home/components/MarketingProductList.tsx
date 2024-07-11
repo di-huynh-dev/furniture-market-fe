@@ -8,13 +8,22 @@ import { ProductDetailType } from '@/types/product.type'
 import { useQuery } from '@tanstack/react-query'
 import NextArrow from '@/components/ArrowButton/NextArrow'
 import PrevArrow from '@/components/ArrowButton/PrevArrow'
+import { LoginData } from '@/types/api.type'
+import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 
-const MarketingProductList = () => {
+const MarketingProductList = ({ userLogin }: { userLogin: LoginData }) => {
+  const axiosPrivate = useAxiosBuyerPrivate()
+
   const { data: products, isLoading } = useQuery({
     queryKey: [Buyer_QueryKeys.MARKETING_PRODUCTS],
     queryFn: async () => {
-      const resp = await axiosClient.get(`/product/marketing?currentPage=0&pageSize=12`)
-      return resp.data.data.content
+      if (!userLogin.accessToken) {
+        const resp = await axiosClient.get(`/product/marketing?currentPage=0&pageSize=12`)
+        return resp.data.data.content
+      } else {
+        const resp = await axiosPrivate.get(`/product/marketing?currentPage=0&pageSize=12`)
+        return resp.data.data.content
+      }
     },
   })
 
