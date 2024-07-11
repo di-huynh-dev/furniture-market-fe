@@ -100,9 +100,7 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
               }-500 transition duration-300 group-hover:${favourite ? 'text-red-500' : 'text-red-500'}`}
             />
           </button>
-          {featured && (
-            <span className="absolute top-2 left-2 badge badge-error text-white tracking-wide p-3">Nổi bật</span>
-          )}
+          {/* {featured && <span className="absolute top-2 left-2 badge badge-error text-white tracking-wide p-3"></span>} */}
         </div>
         <div className="card-body p-4 md:p-4 lg:p-8">
           <div className="min-h-[50px]">
