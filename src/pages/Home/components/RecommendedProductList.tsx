@@ -17,7 +17,7 @@ const RecommendedProductList = ({ userLogin }: { userLogin: LoginData }) => {
         const resp = await axiosClient.get(`/product/recommend?isExplicit=true&currentPage=0&pageSize=16`)
         return resp.data.data
       } else {
-        const resp = await axiosPrivate.get(`/product/recommend?isExplicit=true&currentPage=0&pageSize=16`)
+        const resp = await axiosPrivate.get(`/product/recommend?isExplicit=false&currentPage=0&pageSize=16`)
         return resp.data.data
       }
     },
