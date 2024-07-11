@@ -39,7 +39,7 @@ const SettingShop = () => {
   const { previewImages: infoBanner, handleFileChange: handleInfoBanner } = useImagePreview()
   const info = useSelector(selectSellerShop)
   const user = useSelector(selectSellerAuth)
-
+  const url = import.meta.env.VITE_PUBLIC_WEBSITE_URL
   const [isPending, setIsPending] = useState(false)
   const [selectedProvinceId, setSelectedProvinceId] = useState<string>('')
   const [selectedProvinceName, setSelectedProvinceName] = useState<string>('')
@@ -328,7 +328,7 @@ const SettingShop = () => {
             <div className="flex gap-2">
               <button
                 onClick={() => {
-                  window.open(`http://localhost:5173/shop/${user.authData.user.id}`, '_blank')
+                  window.open(`${url}/shop/${user.authData.user.id}`, '_blank')
                 }}
                 className="btn btn-outline btn-sm btn-primary"
               >
