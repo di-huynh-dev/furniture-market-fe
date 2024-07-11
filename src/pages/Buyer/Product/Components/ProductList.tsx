@@ -3,20 +3,30 @@ import { ProductDetailType } from '@/types/product.type'
 import { useMutation } from '@tanstack/react-query'
 import BuyerProductCard from './BuyerProductCard'
 import { useEffect, useState } from 'react'
+import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
+import { useSelector } from 'react-redux'
+import { selectAuth } from '@/redux/reducers/authSlice'
 
 const ProductList = ({ selectedCategory }: { selectedCategory: string }) => {
   const [productList, setProductList] = useState<ProductDetailType[]>([])
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [pageSize, setPageSize] = useState<number>(12)
   const [totalPages, setTotalPages] = useState<number>(0)
-
+  const user = useSelector(selectAuth)
+  const axiosPrivate = useAxiosBuyerPrivate()
   const searchMutation = useMutation({
     mutationFn: async () => {
-      const resp = await axiosClient.get(
-        `/product/search-filter?category.contains=name,${selectedCategory}&currentPage=${currentPage}&pageSize=${pageSize}`,
-      )
-
-      return resp
+      if (!user.authData.accessToken) {
+        const resp = await axiosClient.get(
+          `/product/search-filter?category.contains=name,${selectedCategory}&currentPage=${currentPage}&pageSize=${pageSize}`,
+        )
+        return resp
+      } else {
+        const resp = await axiosPrivate.get(
+          `/product/search-filter?category.contains=name,${selectedCategory}&currentPage=${currentPage}&pageSize=${pageSize}`,
+        )
+        return resp
+      }
     },
     onSuccess: (resp) => {
       const searchData = resp.data.data || {}

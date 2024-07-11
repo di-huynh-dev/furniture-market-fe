@@ -32,6 +32,7 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
   onSale,
   reviewAmount,
   storeInfo,
+  favourite,
 }) => {
   const product = {
     id,
@@ -50,6 +51,7 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
     reviewAmount,
     storeInfo,
     material,
+    favourite,
   }
   const axiosPrivate = useAxiosBuyerPrivate()
   const user = useSelector(selectAuth)
@@ -88,9 +90,15 @@ const BuyerProductCard: React.FC<ProductDetailType> = ({
         <div className="flex">
           <button
             onClick={handleAddToWishlist}
-            className="absolute btn btn-circle bg-white top-[-20px] right-0 p-1 text-white tracking-wide group"
+            className={`absolute btn btn-circle top-[-20px] right-0 p-1 text-white tracking-wide group ${
+              favourite ? 'bg-primary' : 'bg-white '
+            }`}
           >
-            <AiOutlineHeart className="w-[30px] h-[30px] text-info transition duration-300 group-hover:text-red-500" />
+            <AiOutlineHeart
+              className={`w-[30px] h-[30px] text-${
+                favourite ? 'info' : 'red'
+              }-500 transition duration-300 group-hover:${favourite ? 'text-red-500' : 'text-red-500'}`}
+            />
           </button>
           {featured && (
             <span className="absolute top-2 left-2 badge badge-error text-white tracking-wide p-3">Nổi bật</span>

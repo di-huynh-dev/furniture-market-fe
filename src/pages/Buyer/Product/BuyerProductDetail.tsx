@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Seller_QueryKeys } from '@/constants/query-keys'
 import axiosClient from '@/libs/axios-client'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { FaStar } from 'react-icons/fa'
@@ -27,6 +27,7 @@ import {
   FacebookIcon,
   FacebookMessengerIcon,
 } from 'react-share'
+import { AiOutlineHeart } from 'react-icons/ai'
 
 const BuyerProductDetail = () => {
   const { id } = useParams()
@@ -39,6 +40,7 @@ const BuyerProductDetail = () => {
   const [reportReason, setReportReason] = useState('')
   const [reportDescription, setReportDescription] = useState('')
   const user = useSelector(selectAuth)
+  const client = useQueryClient()
 
   const url = import.meta.env.VITE_PUBLIC_WEBSITE_URL
   const shareLink = `${url}/product/${id}`
@@ -54,9 +56,15 @@ const BuyerProductDetail = () => {
   const { data: product_detail, isLoading } = useQuery({
     queryKey: [Seller_QueryKeys.PRODUCT_DETAIL],
     queryFn: async () => {
-      const resp = await axiosClient.get(`/product/${id}`)
-      setSelectedImage(resp.data.data.images[0])
-      return resp.data.data
+      if (!user.authData.accessToken) {
+        const resp = await axiosClient.get(`/product/${id}`)
+        setSelectedImage(resp.data.data.images[0])
+        return resp.data.data
+      } else {
+        const resp = await axiosPrivate.get(`/product/${id}`)
+        setSelectedImage(resp.data.data.images[0])
+        return resp.data.data
+      }
     },
     enabled: !!id,
   })
@@ -118,8 +126,28 @@ const BuyerProductDetail = () => {
     dispatch(addToCart(product_detail))
     dispatch(getTotals())
   }
-
-  const handleAddToWishList = () => {}
+  const addToWishlistMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const resp = await axiosPrivate.put(`/buyer/favourite-product/${id}`)
+      return resp
+    },
+    onSuccess: (resp) => {
+      toast.success(resp.data.messages[0])
+      client.invalidateQueries({
+        queryKey: [Seller_QueryKeys.PRODUCT_DETAIL],
+      })
+    },
+    onError: (error: any) => {
+      toast.error(error.response.data.messages[0])
+    },
+  })
+  const handleAddToWishList = () => {
+    if (!user.authData.accessToken) {
+      toast.error('Vui đăng nhập để yêu thích sản phẩm!')
+    } else {
+      addToWishlistMutation.mutate(product_detail.id)
+    }
+  }
 
   if (isLoading) {
     return <LoadingComponent />
@@ -163,7 +191,22 @@ const BuyerProductDetail = () => {
           </div>
         </dialog>
 
-        <div>
+        <div className="relative">
+          {product_detail.favourite && (
+            <div className="flex absolute items-center top-[-20px] gap-2">
+              <button
+                className={` btn btn-circle  right-0 p-1 text-white tracking-wide group 
+                 bg-primary
+                }`}
+              >
+                <AiOutlineHeart
+                  className={`w-[30px] h-[30px] text-white
+                   transition duration-300 `}
+                />
+              </button>
+              <div className="badge badge-primary text-white capitalize">Sản phẩm Yêu thích của bạn</div>
+            </div>
+          )}
           <img src={selectedImage} className="border-solid border-2 rounded-xl" />
           <div className="grid md:grid-cols-6 grid-cols-4 gap-1 mt-2 ">
             {product_detail.images.map((url: string) => {
@@ -272,7 +315,7 @@ const BuyerProductDetail = () => {
               Thêm vào giỏ hàng
             </button>
             <button className="btn btn-ghost bg-accent text-white" onClick={() => handleAddToWishList()}>
-              Thêm vào wishlist
+              {product_detail.favourite ? 'Bỏ yêu thích' : 'Thêm vào wishlist'}
             </button>
           </div>
         </div>

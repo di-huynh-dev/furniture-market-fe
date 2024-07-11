@@ -75,6 +75,7 @@ export type ProductDetailType = {
   images: string[]
   storeCategories: string[]
   storeInfo?: StoreInfo
+  favourite: boolean
 }
 
 export type StoreInfo = {
