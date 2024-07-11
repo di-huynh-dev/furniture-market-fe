@@ -8,6 +8,7 @@ import useAxiosBuyerPrivate from '@/hooks/useAxiosBuyerPrivate'
 import { toast } from 'react-toastify'
 import { CiCircleRemove } from 'react-icons/ci'
 import { LoadingComponent } from '@/components'
+import { Link } from 'react-router-dom'
 
 const WishlistItemList = () => {
   const axiosPrivate = useAxiosBuyerPrivate()
@@ -48,30 +49,36 @@ const WishlistItemList = () => {
           <p>Hãy tiếp tục mua sắm thoải mái bạn nhé!</p>
         </div>
       ) : (
-        <>
+        <div className="card py-4 bg-base-100 shadow-sm m-2 lg:px-10 px-4">
           {userWishlist.map((item: { id: string; thumbnail: string; name: string; material: string }) => (
-            <div className="flex space-x-3 w-full mb-10 border-b border-base-300 pb-6 last:border-b-0">
-              <img src={item.thumbnail} alt={item.name} className="lg:h-24 lg:w-24 h-12 w-12 rounded-lg object-cover" />
-              <div className="flex-1 flex flex-col">
-                <div className="flex flex-col lg:flex-row lg:items-center lg:space-x-6">
-                  <div className="flex-1">
-                    <p className="font-bold">{item.name}</p>
-                    <div className="mt-2 flex items-center gap-1 text-sm">
-                      <p className="font-bold">Chất liệu:</p>
-                      <p>{item.material}</p>
+            <Link to={`/product/${item.id}`}>
+              <div className="flex space-x-3 w-full mb-10 border-b border-base-300 pb-6 last:border-b-0">
+                <img
+                  src={item.thumbnail}
+                  alt={item.name}
+                  className="lg:h-24 lg:w-24 h-12 w-12 rounded-lg object-cover"
+                />
+                <div className="flex-1 flex flex-col">
+                  <div className="flex flex-col lg:flex-row lg:items-center lg:space-x-6">
+                    <div className="flex-1">
+                      <p className="font-bold">{item.name}</p>
+                      <div className="mt-2 flex items-center gap-1 text-sm">
+                        <p className="font-bold">Chất liệu:</p>
+                        <p>{item.material}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="mt-2 md:flex md:items-center md:justify-end">
-                    <button className="btn btn-ghost" onClick={() => addToWishlistMutation.mutate(item.id)}>
-                      Bỏ yêu thích
-                      <CiCircleRemove className="w-[30px] h-[30px]" />
-                    </button>
+                    <div className="mt-2 md:flex md:items-center md:justify-end">
+                      <button className="btn btn-ghost" onClick={() => addToWishlistMutation.mutate(item.id)}>
+                        Bỏ yêu thích
+                        <CiCircleRemove className="w-[30px] h-[30px]" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
-        </>
+        </div>
       )}
     </div>
   )
