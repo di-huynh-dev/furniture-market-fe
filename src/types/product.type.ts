@@ -47,6 +47,11 @@ export type UpdateProductApiType = {
   storeCategoryId?: string
   thumbnail?: FileList | string | null
   images?: FileList | string | null
+  weight?: number
+  height?: number
+  length?: number
+  width?: number
+  used?: boolean
 }
 
 export type ProductDetailType = {

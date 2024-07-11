@@ -49,6 +49,11 @@ const UpdateProduct = () => {
     if (data.material) info['material'] = data.material
     if (data.inStock) info['inStock'] = data.inStock
     if (data.featured) info['featured'] = data.featured
+    if (data.weight) info['weight'] = data.weight
+    if (data.height) info['height'] = data.height
+    if (data.length) info['length'] = data.length
+    if (data.width) info['width'] = data.width
+    if (data.used) info['used'] = data.used
 
     if (selectedCategory !== '') {
       info['storeCategoryId'] = selectedCategory
@@ -225,9 +230,35 @@ const UpdateProduct = () => {
                 </div>
                 <div>
                   <span>4. Thông tin vận chuyển</span>
-                  <div className="px-10">
-                    <span>Kích thước đóng gói</span>
-                    <div className="grid grid-cols-3 gap-2"></div>
+                  <div className="mx-10 md:grid grid-cols-4 gap-4">
+                    <FormInput
+                      label="Chiều dài(*)"
+                      prop="length"
+                      type="number"
+                      placeholder="Đơn vị: cm"
+                      register={register}
+                    />
+                    <FormInput
+                      label="Chiều rộng(*)"
+                      prop="width"
+                      type="number"
+                      placeholder="Đơn vị: cm"
+                      register={register}
+                    />
+                    <FormInput
+                      label="Chiều cao(*)"
+                      prop="height"
+                      type="number"
+                      placeholder="Đơn vị: cm"
+                      register={register}
+                    />
+                    <FormInput
+                      label="Cân nặng(*)"
+                      prop="weight"
+                      type="number"
+                      placeholder="Đơn vị: gram"
+                      register={register}
+                    />
                   </div>
                 </div>
 
@@ -248,13 +279,14 @@ const UpdateProduct = () => {
                           </option>
                         ))}
                     </select>
-                    <select className="select select-bordered w-full max-w-xs">
-                      <option disabled selected>
+                    <select className="select select-bordered w-full max-w-xs" {...register('used')}>
+                      <option disabled selected value="">
                         Tình trạng
                       </option>
-                      <option>Mới</option>
-                      <option>Đã qua sử dụng</option>
+                      <option value="false">Mới</option>
+                      <option value="true"> Đã qua sử dụng</option>
                     </select>
+
                     <div className="flex items-center">
                       <input
                         id="featured"
