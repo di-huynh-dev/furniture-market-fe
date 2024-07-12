@@ -231,7 +231,7 @@ const BuyerCheckout = () => {
         <div className="modal-box">
           <div className="flex justify-between">
             <h3 className="font-bold text-lg">Chọn địa chỉ giao hàng</h3>
-            <button onClick={() => navigation('/buyer/account/address')} className="btn  btn-sm">
+            <button onClick={() => navigation('/buyer/account/address')} className="btn btn-sm">
               Thêm địa chỉ mới
             </button>
           </div>
@@ -349,7 +349,7 @@ const BuyerCheckout = () => {
                   </div>
                   <div className="flex gap-2 items-center p-4">
                     <div
-                      className="dropdown dropdown-hover dropdown-bottom dropdown-end"
+                      className="dropdown dropdown-hover dropdown-bottom dropdown-end button"
                       onClick={() => getVoucherListByProductId(item.id)}
                     >
                       <div tabIndex={0} role="button" className="text-blue-500">
