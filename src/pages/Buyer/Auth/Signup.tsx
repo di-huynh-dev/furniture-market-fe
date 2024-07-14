@@ -146,7 +146,10 @@ const Signup: React.FC = () => {
           register={register}
           errorMessage={errors.confirmPassword?.message}
         />
-        <button type="submit" className="btn btn-outline btn-primary mt-4 capitalize">
+        <button
+          type="submit"
+          className="btn btn-outline text-primary hover:text-white hover:bg-primary hover:border-primary  mt-4 capitalize"
+        >
           {isLoading ? <LoadingButton /> : 'Đăng ký'}
         </button>
         <div className="divider">OR</div>

@@ -329,7 +329,7 @@ const ShopHome = () => {
               setSort('createdAt.DESC')
               getProductsByCategoryMutation.mutate({ categoryName: categoryName })
             }}
-            className="btn btn-outline hover:text-white text-error hover:bg-error  btn-sm w-40"
+            className="btn btn-outline  hover:text-white hover:border-error text-error hover:bg-error  btn-sm w-40"
           >
             Mới nhất
           </button>
@@ -338,7 +338,7 @@ const ShopHome = () => {
               setSort('sold.DESC')
               getProductsByCategoryMutation.mutate({ categoryName: categoryName })
             }}
-            className="btn btn-outline hover:text-white text-error hover:bg-error  btn-sm w-40"
+            className="btn btn-outline hover:text-white hover:border-error text-error hover:bg-error  btn-sm w-40"
           >
             Bán chạy nhất
           </button>

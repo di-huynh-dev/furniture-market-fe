@@ -275,7 +275,10 @@ const SettingProfile = () => {
                   <td>
                     <div className="flex items-center gap-4">
                       <img src={user.authData.user.avatar} className="w-20 h-20 rounded-full" alt="" />
-                      <a href="#update_avatar" className="btn btn-sm">
+                      <a
+                        href="#update_avatar"
+                        className="btn btn-outline text-primary  hover:text-white hover:bg-primary hover:border-primary btn-sm"
+                      >
                         Cập nhật
                       </a>
                     </div>
@@ -317,10 +320,16 @@ const SettingProfile = () => {
               </tbody>
             </table>
             <div className="flex justify-center gap-4">
-              <a href="#my_modal_8" className="btn btn-sm">
+              <a
+                href="#my_modal_8"
+                className="btn btn-outline text-primary  hover:text-white hover:bg-primary hover:border-primary btn-sm"
+              >
                 Cập nhật thông tin
               </a>
-              <a className="btn btn-sm" href="#change_password">
+              <a
+                className="btn btn-outline text-primary  hover:text-white hover:bg-primary hover:border-primary btn-sm"
+                href="#change_password"
+              >
                 Đổi mật khẩu
               </a>
             </div>

@@ -104,11 +104,13 @@ const OrdersManagement = () => {
         ) : row.status === 'COMPLETED' ? (
           <div className="badge badge-success text-white">Đã giao</div>
         ) : row.status === 'CANCELLED' ? (
-          <div className="badge badge-error text-white">Đã hủy</div>
+          <div className="badge badge-info text-white">Đã hủy</div>
         ) : row.status === 'REFUNDED' ? (
           <div className="badge badge-neutral text-white">Hoàn tiền</div>
         ) : (
-          <div>Giao hàng không thành công</div>
+          <div className="badge badge-error text-white">
+            <p>GH thất bại</p>
+          </div>
         ),
     },
     { name: 'Thanh toán', cell: (row) => (row.paid ? 'Đã thanh toán' : 'Chưa thanh toán') },
@@ -116,7 +118,7 @@ const OrdersManagement = () => {
     {
       name: 'Action',
       cell: (row) =>
-        row.status === 'TO_SHIP' || row.status === 'SHIPPING' ? (
+        row.status === 'TO_SHIP' ? (
           <button
             className="link"
             onClick={() => {
@@ -127,6 +129,29 @@ const OrdersManagement = () => {
           >
             Cập nhật trạng thái
           </button>
+        ) : row.status === 'SHIPPING' ? (
+          <div>
+            <button
+              className="link mr-2"
+              onClick={() => {
+                setSelectedOrder(row)
+                const dialog = document.getElementById('modal') as HTMLDialogElement
+                dialog.showModal()
+              }}
+            >
+              Giao hàng thành công
+            </button>
+            <button
+              className="link"
+              onClick={() => {
+                setSelectedOrder(row)
+                const dialog = document.getElementById('modal_fail_shipping') as HTMLDialogElement
+                dialog.showModal()
+              }}
+            >
+              Giao hàng thất bại
+            </button>
+          </div>
         ) : null,
     },
   ]
@@ -150,6 +175,24 @@ const OrdersManagement = () => {
 
       if (resp.status === 200) {
         const dialog = document.getElementById('modal') as HTMLDialogElement
+        dialog.close()
+        toast.success(resp.data.messages[0])
+        queryClient.invalidateQueries({ queryKey: [Seller_QueryKeys.ORDER_LIST] })
+      }
+    } catch (error: any) {
+      toast.error(error.response.data.messages[0])
+    }
+  }
+
+  const updateOrderStatusFail = async () => {
+    try {
+      const resp = await axiosPrivate.patch(`/seller/order/status`, {
+        orderId: selectedOrder?.id,
+        status: 'FAILED_DELIVERY',
+      })
+
+      if (resp.status === 200) {
+        const dialog = document.getElementById('modal_fail_shipping') as HTMLDialogElement
         dialog.close()
         toast.success(resp.data.messages[0])
         queryClient.invalidateQueries({ queryKey: [Seller_QueryKeys.ORDER_LIST] })
@@ -223,6 +266,29 @@ const OrdersManagement = () => {
                 className="btn"
                 onClick={() => {
                   const dialog = document.getElementById('modal') as HTMLDialogElement
+                  dialog.close()
+                  setSelectedOrder(null)
+                }}
+              >
+                Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      </dialog>
+      <dialog id="modal_fail_shipping" className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Cập nhật trạng thái đơn hàng!</h3>
+          <p className="py-4">Bạn chắc chắn muốn cập nhật trạng thái đơn hàng thành thất bại?</p>
+          <div className="modal-action">
+            <div className="flex gap-2">
+              <button className="btn btn-primary text-white" onClick={() => updateOrderStatusFail()}>
+                Cập nhật
+              </button>
+              <button
+                className="btn"
+                onClick={() => {
+                  const dialog = document.getElementById('modal_fail_shipping') as HTMLDialogElement
                   dialog.close()
                   setSelectedOrder(null)
                 }}
@@ -316,7 +382,10 @@ const OrdersManagement = () => {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                       />
-                      <button onClick={exportToCSV} className="btn btn-sm btn-outline btn-primary">
+                      <button
+                        onClick={exportToCSV}
+                        className="btn btn-outline text-primary  hover:text-white hover:bg-primary hover:border-primary btn-sm"
+                      >
                         Xuất báo cáo
                       </button>
                     </div>

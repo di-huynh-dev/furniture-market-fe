@@ -71,7 +71,10 @@ const NotifyManagement = () => {
             <div className="md:flex items-center justify-between">
               <div>
                 <div className="font-bold capitalize">Thông báo tài khoản của tôi</div>
-                <button className="btn btn-sm" onClick={handleMarkAllAsRead}>
+                <button
+                  className="btn btn-outline my-2 text-primary  hover:text-white hover:bg-primary hover:border-primary btn-sm"
+                  onClick={handleMarkAllAsRead}
+                >
                   Đánh dấu tất cả đã đọc
                 </button>
               </div>
@@ -110,7 +113,7 @@ const NotifyManagement = () => {
               }`}
               onClick={() => setCurrentTab('REPORT')}
             >
-              Báo cáo
+              Giải quyết khiếu nại
             </button>
           </div>
           {currentNotifications.length === 0 ? (

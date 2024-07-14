@@ -330,7 +330,7 @@ const SettingShop = () => {
                 onClick={() => {
                   window.open(`${url}/shop/${user.authData.user.id}`, '_blank')
                 }}
-                className="btn btn-outline btn-sm btn-primary"
+                className="btn btn-outline text-primary  hover:text-white hover:bg-primary hover:border-primary btn-sm"
               >
                 Xem cửa hàng của bạn
               </button>
@@ -339,7 +339,7 @@ const SettingShop = () => {
                   const dialog = document.getElementById('my_modal_8') as HTMLDialogElement
                   dialog.showModal()
                 }}
-                className="btn btn-outline btn-sm btn-primary"
+                className="btn btn-outline text-primary  hover:text-white hover:bg-primary hover:border-primary btn-sm"
               >
                 Cập nhật thông tin
               </button>

@@ -286,7 +286,7 @@ const ProductsManagement = () => {
                       />
                       <button
                         onClick={() => navigate('/seller/products/new')}
-                        className="btn btn-sm btn-outline btn-primary"
+                        className="btn btn-outline  hover:text-white hover:bg-primary hover:border-primary btn-sm"
                       >
                         + Thêm sản phẩm mới
                       </button>

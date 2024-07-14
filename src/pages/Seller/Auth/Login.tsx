@@ -103,7 +103,10 @@ const Login = () => {
             register={register}
             errorMessage={errors.password?.message}
           />
-          <button type="submit" className="btn btn-outline btn-primary mt-4 capitalize">
+          <button
+            type="submit"
+            className="btn btn-outline text-primary hover:text-white hover:bg-primary hover:border-primary  mt-4 capitalize"
+          >
             {isLoading ? <LoadingButton /> : 'Đăng nhập'}
           </button>
           <p className="text-left text-sm text-primary p-2">

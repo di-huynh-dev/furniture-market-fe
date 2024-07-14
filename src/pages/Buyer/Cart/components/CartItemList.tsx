@@ -47,12 +47,12 @@ const CartItemList = () => {
               onClick={() => {
                 navigation('/products')
               }}
-              className="btn btn-ghost btn-info"
+              className="btn btn-outline text-primary hover:text-white hover:bg-primary hover:border-primary  mt-4 capitalize"
             >
               Khám phá ngay
             </button>
             <button
-              className="btn btn-ghost btn-primary"
+              className="btn btn-outline text-primary hover:text-white hover:bg-primary hover:border-primary  mt-4 capitalize"
               onClick={() => {
                 handleDeleteAll()
               }}

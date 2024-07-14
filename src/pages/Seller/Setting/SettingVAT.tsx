@@ -101,7 +101,7 @@ const SettingVAT = () => {
                 const dialog = document.getElementById('my_modal_8') as HTMLDialogElement
                 dialog.showModal()
               }}
-              className="btn btn-outline btn-sm btn-primary"
+              className="btn btn-outline text-primary  hover:text-white hover:bg-primary hover:border-primary btn-sm"
             >
               Cập nhật thông tin
             </button>
