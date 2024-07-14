@@ -8,6 +8,12 @@ export type OrderItem = {
     logo: string
     name: string
   }
+  buyerInfo?: {
+    deliveryAddress: string
+    id: string
+    receiverName: string
+    receiverPhone: string
+  }
   paid: boolean
 }
 

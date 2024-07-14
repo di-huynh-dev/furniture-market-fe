@@ -33,6 +33,7 @@ const OrdersManagement = () => {
       return resp.data.data
     },
   })
+
   useEffect(() => {
     if (debouncedSearchQuery) {
       const filteredOrders = orders.filter((order: OrderItem) => order.id.toString().includes(debouncedSearchQuery))
@@ -62,6 +63,7 @@ const OrdersManagement = () => {
         .map((item: ResponseItem) => `ID: ${item.productId} - ${item.productName}`)
         .join(', '),
       'Trạng thái đơn': order.status,
+      'Thông tin vận chuyển': `${order.buyerInfo?.receiverName} - ${order.buyerInfo?.receiverPhone} - ${order.buyerInfo?.deliveryAddress}`,
       'Tổng tiền': formatPrice(order.total),
     }))
 
@@ -191,6 +193,13 @@ const OrdersManagement = () => {
                 </div>
               </div>
             ))}
+          </div>
+          <div>
+            <p className="text-lg">Thông tin vận chuyển</p>
+            <p className="font-bold">
+              {data.buyerInfo?.receiverName} - {data.buyerInfo?.receiverPhone}
+            </p>
+            <p className="font-bold">{data.buyerInfo?.deliveryAddress}</p>
           </div>
         </div>
       </div>
