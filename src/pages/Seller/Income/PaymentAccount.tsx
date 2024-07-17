@@ -120,15 +120,12 @@ const PaymentAccount = () => {
     },
     {
       name: 'Giá trị',
-      cell: (row) => (
-        <span
-          style={{
-            color: row.type === 'PAY' ? 'red' : 'green',
-          }}
-        >
-          {row.type === 'PAY' ? `-${formatPrice(row.value)}` : formatPrice(row.value)}
-        </span>
-      ),
+      cell: (row) =>
+        row.type === 'CHARGE' ? (
+          <p className="text-green-500">{formatPrice(row.value)}</p>
+        ) : (
+          <p className="text-red-500">{formatPrice(row.value * -1)}</p>
+        ),
     },
     { name: 'Thời gian', selector: (row) => row.createdAt },
   ]

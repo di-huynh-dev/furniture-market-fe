@@ -41,7 +41,7 @@ const MarketingProductList = ({ userLogin }: { userLogin: LoginData }) => {
 
   return (
     <div>
-      {products.length > 0 ? (
+      {products?.length > 0 ? (
         <Slider {...settings}>
           {products?.map((product: ProductDetailType) => (
             <div key={product.id} className="px-1 py-6">

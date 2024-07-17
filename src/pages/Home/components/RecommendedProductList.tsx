@@ -23,8 +23,6 @@ const RecommendedProductList = ({ userLogin }: { userLogin: LoginData }) => {
     },
   })
 
-  console.log('recommend', products)
-
   if (isLoading) return <LoadingComponent />
 
   return (
